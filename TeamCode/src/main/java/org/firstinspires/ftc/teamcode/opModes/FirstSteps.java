@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
+import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import dev.nextftc.core.commands.Command;
@@ -56,8 +57,11 @@ public class FirstSteps extends NextFTCOpMode {
                 .whenBecomesTrue(Intaker.INSTANCE.run)
                 .whenBecomesFalse(Intaker.INSTANCE.stop);
 
-
         Gamepads.gamepad1().b()
                 .whenBecomesTrue(Intaker.INSTANCE.toggle);
+
+        Gamepads.gamepad1().y()
+                .whenBecomesTrue(Shooter.INSTANCE.toggle);
+
     }
 }
