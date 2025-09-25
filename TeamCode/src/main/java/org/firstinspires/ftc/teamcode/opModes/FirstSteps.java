@@ -47,8 +47,8 @@ public class FirstSteps extends NextFTCOpMode {
                 backLeftMotor,
                 backRightMotor,
                 Gamepads.gamepad1().leftStickY(),
-                Gamepads.gamepad1().leftStickX().invert(),
-                Gamepads.gamepad1().rightStickX().invert()
+                Gamepads.gamepad1().leftStickX().negate(),
+                Gamepads.gamepad1().rightStickX().negate()
         );
         driverControlled.schedule();
 
