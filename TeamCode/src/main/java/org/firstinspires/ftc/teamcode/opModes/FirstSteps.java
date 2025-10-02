@@ -12,6 +12,7 @@ import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
+import dev.nextftc.hardware.driving.DriverControlledCommand;
 import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
@@ -42,7 +43,7 @@ public class FirstSteps extends NextFTCOpMode {
     public void onStartButtonPressed() {
 
 
-        Command driverControlled = new MecanumDriverControlled(
+        DriverControlledCommand driverControlled = new MecanumDriverControlled(
                 frontLeftMotor,
                 frontRightMotor,
                 backLeftMotor,
@@ -53,6 +54,10 @@ public class FirstSteps extends NextFTCOpMode {
         );
         driverControlled.schedule();
 
+        Gamepads.gamepad1().rightBumper()
+                        .whenBecomesTrue(()-> driverControlled.setScalar(0.5))
+                        .whenBecomesFalse(() -> driverControlled.setScalar(1));
+
         Gamepads.gamepad1().a()
                 .whenBecomesTrue(Intaker.INSTANCE.run)
                 .whenBecomesFalse(Intaker.INSTANCE.stop);
@@ -62,6 +67,8 @@ public class FirstSteps extends NextFTCOpMode {
 
         Gamepads.gamepad1().y()
                 .whenBecomesTrue(Shooter.INSTANCE.toggle);
+
+
 
     }
 }
