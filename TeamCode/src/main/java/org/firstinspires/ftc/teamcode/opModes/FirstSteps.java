@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
 import org.firstinspires.ftc.teamcode.subs.Shooter;
+import org.firstinspires.ftc.teamcode.subs.Spindex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import dev.nextftc.core.commands.Command;
@@ -25,7 +26,7 @@ public class FirstSteps extends NextFTCOpMode {
 
     public FirstSteps() {
         addComponents(
-                new SubsystemComponent(Intaker.INSTANCE),
+                new SubsystemComponent(Intaker.INSTANCE, Shooter.INSTANCE, Spindex.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
         );
@@ -67,6 +68,15 @@ public class FirstSteps extends NextFTCOpMode {
 
         Gamepads.gamepad1().y()
                 .whenBecomesTrue(Shooter.INSTANCE.toggle);
+
+        Gamepads.gamepad1().dpadUp()
+                .whenBecomesTrue(Spindex.INSTANCE.pos1);
+
+        Gamepads.gamepad1().dpadLeft()
+                .whenBecomesTrue(Spindex.INSTANCE.pos2);
+
+        Gamepads.gamepad1().dpadRight()
+                .whenBecomesTrue(Spindex.INSTANCE.pos3);
 
 
 
