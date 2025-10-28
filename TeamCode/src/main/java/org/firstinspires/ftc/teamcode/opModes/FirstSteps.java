@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
+//import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
@@ -21,17 +23,21 @@ import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 import org.firstinspires.ftc.teamcode.subs.Intaker;
 
+
 @TeleOp(name = "Baby's First Teleop")
 public class FirstSteps extends NextFTCOpMode {
-    private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
+    //private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
+
 
     public FirstSteps() {
         addComponents(
-                new SubsystemComponent
-                        (Intaker.INSTANCE,
+                new SubsystemComponent(
                         Shooter.INSTANCE,
-                        Spindex.INSTANCE,
-                        Kicker.INSTANCE),
+                        Intaker.INSTANCE,
+                        Kicker.INSTANCE,
+                        Spindex.INSTANCE
+                ),
+
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
         );
@@ -85,5 +91,12 @@ public class FirstSteps extends NextFTCOpMode {
 
 
 
+    }
+
+
+    @Override
+    public void onUpdate(){
+
+        //telemetry.addData("pos", Spindex.INSTANCE.);
     }
 }
