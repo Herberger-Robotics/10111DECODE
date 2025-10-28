@@ -27,11 +27,16 @@ import org.firstinspires.ftc.teamcode.subs.Intaker;
 @Configurable
 @TeleOp(name = "Baby's First Teleop")
 public class FirstSteps extends NextFTCOpMode {
+    private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
     //private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
 
     public static double posit1 = 0;
     public static double posit2 = 300;
     public static double posit3 = 600;
+
+    public static double posit4 = 0;
+    public static double posit5 = 300;
+    public static double posit6 = 600;
     public FirstSteps() {
         addComponents(
                 new SubsystemComponent(
@@ -83,14 +88,20 @@ public class FirstSteps extends NextFTCOpMode {
         Gamepads.gamepad1().y()
                 .whenBecomesTrue(Shooter.INSTANCE.toggle);
 
-        Gamepads.gamepad1().dpadUp()
+        Gamepads.gamepad2().dpadUp()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
 
-        Gamepads.gamepad1().dpadLeft()
+        Gamepads.gamepad2().dpadLeft()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit2));
 
-        Gamepads.gamepad1().dpadRight()
+        Gamepads.gamepad2().dpadRight()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
+
+        Gamepads.gamepad1().leftTrigger()
+                .greaterThan(0.167)
+                .whenBecomesTrue(Kicker.INSTANCE.toShooter)
+                .whenBecomesFalse(Kicker.INSTANCE.toSpindex);
+
 
 
 
