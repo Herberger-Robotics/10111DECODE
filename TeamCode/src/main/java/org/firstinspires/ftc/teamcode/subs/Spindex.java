@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.subs;
 
-import com.acmerobotics.dashboard.config.Config;
 
 import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.feedback.PIDCoefficients;
@@ -10,7 +9,6 @@ import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
 
-@Config
 public class Spindex implements Subsystem {
     public static final Spindex INSTANCE = new Spindex();
     private Spindex() { }
