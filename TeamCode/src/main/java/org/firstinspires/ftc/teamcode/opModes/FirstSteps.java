@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
+import org.firstinspires.ftc.teamcode.subs.Kicker;
 import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
 import org.slf4j.Logger;
@@ -26,16 +27,20 @@ public class FirstSteps extends NextFTCOpMode {
 
     public FirstSteps() {
         addComponents(
-                new SubsystemComponent(Intaker.INSTANCE, Shooter.INSTANCE, Spindex.INSTANCE),
+                new SubsystemComponent
+                        (Intaker.INSTANCE,
+                        Shooter.INSTANCE,
+                        Spindex.INSTANCE,
+                        Kicker.INSTANCE),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
         );
     }
 
-    private final MotorEx frontLeftMotor = new MotorEx("front_left").brakeMode();
-    private final MotorEx frontRightMotor = new MotorEx("front_right").brakeMode().reversed();
-    private final MotorEx backLeftMotor = new MotorEx("back_left").brakeMode();
-    private final MotorEx backRightMotor = new MotorEx("back_right").brakeMode().reversed();
+    private final MotorEx frontLeftMotor = new MotorEx("front_left").brakeMode().reversed();
+    private final MotorEx frontRightMotor = new MotorEx("front_right").brakeMode();
+    private final MotorEx backLeftMotor = new MotorEx("back_left").brakeMode().reversed();
+    private final MotorEx backRightMotor = new MotorEx("back_right").brakeMode();
     //for my eventual evil field centric
     //private IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed()
 
@@ -56,7 +61,7 @@ public class FirstSteps extends NextFTCOpMode {
         driverControlled.schedule();
 
         Gamepads.gamepad1().rightBumper()
-                        .whenBecomesTrue(()-> driverControlled.setScalar(0.5))
+                        .whenBecomesTrue(()-> driverControlled.setScalar(0.3))
                         .whenBecomesFalse(() -> driverControlled.setScalar(1));
 
         Gamepads.gamepad1().a()
