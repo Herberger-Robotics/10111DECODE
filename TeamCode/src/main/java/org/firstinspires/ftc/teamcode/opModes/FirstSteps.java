@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
 //import com.bylazar.configurables.annotations.Configurable;
+import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
@@ -23,12 +24,14 @@ import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
 import org.firstinspires.ftc.teamcode.subs.Intaker;
 
-
+@Configurable
 @TeleOp(name = "Baby's First Teleop")
 public class FirstSteps extends NextFTCOpMode {
     //private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
 
-
+    public static double posit1 = 0;
+    public static double posit2 = 300;
+    public static double posit3 = 600;
     public FirstSteps() {
         addComponents(
                 new SubsystemComponent(
@@ -81,13 +84,13 @@ public class FirstSteps extends NextFTCOpMode {
                 .whenBecomesTrue(Shooter.INSTANCE.toggle);
 
         Gamepads.gamepad1().dpadUp()
-                .whenBecomesTrue(Spindex.INSTANCE.pos1);
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
 
         Gamepads.gamepad1().dpadLeft()
-                .whenBecomesTrue(Spindex.INSTANCE.pos2);
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit2));
 
         Gamepads.gamepad1().dpadRight()
-                .whenBecomesTrue(Spindex.INSTANCE.pos3);
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
 
 
 
