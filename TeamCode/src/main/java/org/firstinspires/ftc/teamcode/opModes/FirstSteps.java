@@ -88,14 +88,7 @@ public class FirstSteps extends NextFTCOpMode {
         Gamepads.gamepad1().y()
                 .whenBecomesTrue(Shooter.INSTANCE.toggle);
 
-        Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
 
-        Gamepads.gamepad2().dpadLeft()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit2));
-
-        Gamepads.gamepad2().dpadRight()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
 
         Gamepads.gamepad1().leftTrigger()
                 .greaterThan(0.167)
@@ -110,7 +103,14 @@ public class FirstSteps extends NextFTCOpMode {
 
     @Override
     public void onUpdate(){
+        Gamepads.gamepad2().dpadUp()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
 
+        Gamepads.gamepad2().dpadLeft()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit2));
+
+        Gamepads.gamepad2().dpadRight()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
         //telemetry.addData("pos", Spindex.INSTANCE.);
     }
 }
