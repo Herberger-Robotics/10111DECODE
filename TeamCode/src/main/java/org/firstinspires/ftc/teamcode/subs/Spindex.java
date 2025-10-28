@@ -15,10 +15,10 @@ public class Spindex implements Subsystem {
     public static final Spindex INSTANCE = new Spindex();
     private Spindex() { }
 
-    double  p, i, d;
+    public static double  p, i, d;
     private MotorEx spindex = new MotorEx("spindex");
 
-    private PIDCoefficients coefficients = new PIDCoefficients(p,i,d);
+    public static PIDCoefficients coefficients = new PIDCoefficients(p,i,d);
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(coefficients)
             .build();
