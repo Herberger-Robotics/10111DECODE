@@ -111,6 +111,6 @@ public class FirstSteps extends NextFTCOpMode {
 
         Gamepads.gamepad2().dpadRight()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
-        //telemetry.addData("pos", Spindex.INSTANCE.);
+       // telemetry.addData("pos", Spindex.INSTANCE.);
     }
 }
