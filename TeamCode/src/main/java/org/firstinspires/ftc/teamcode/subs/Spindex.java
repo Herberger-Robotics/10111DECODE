@@ -26,7 +26,7 @@ public class Spindex implements Subsystem {
     public static final Spindex INSTANCE = new Spindex();
     private Spindex() { }
 
-    private MotorEx spindex = new MotorEx("spindex");
+    private MotorEx spindex = new MotorEx("spindex").zeroed();
 
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(coefficients)

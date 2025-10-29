@@ -31,8 +31,8 @@ public class FirstSteps extends NextFTCOpMode {
     //private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
 
     public static double posit1 = 0;
-    public static double posit2 = 300;
-    public static double posit3 = 600;
+    public static double posit2 = 320;
+    public static double posit3 = 640;
 
     public static double posit4 = 0;
     public static double posit5 = 300;
@@ -95,6 +95,14 @@ public class FirstSteps extends NextFTCOpMode {
                 .whenBecomesTrue(Kicker.INSTANCE.toShooter)
                 .whenBecomesFalse(Kicker.INSTANCE.toSpindex);
 
+        Gamepads.gamepad1().dpadUp()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
+
+        Gamepads.gamepad1().dpadLeft()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit2));
+
+        Gamepads.gamepad1().dpadRight()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
 
 
 
@@ -103,14 +111,7 @@ public class FirstSteps extends NextFTCOpMode {
 
     @Override
     public void onUpdate(){
-        Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
 
-        Gamepads.gamepad2().dpadLeft()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit2));
-
-        Gamepads.gamepad2().dpadRight()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
        // telemetry.addData("pos", Spindex.INSTANCE.);
     }
 }
