@@ -61,10 +61,7 @@ public class FirstSteps extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        Gamepads.gamepad1().options()
-                .whenBecomesTrue(Spindex.INSTANCE.reset);
-        Gamepads.gamepad2().options()
-                .whenBecomesTrue(Spindex.INSTANCE.reset);
+
 
     }
 
