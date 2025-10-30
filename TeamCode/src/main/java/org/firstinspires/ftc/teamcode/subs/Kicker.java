@@ -18,8 +18,8 @@ public class Kicker implements Subsystem {
 
 
     public Command toShooter = new SetPositions(
-            left_kicker.to(0.25),
-            right_kicker.to(0.75))
+            left_kicker.to(0.4),
+            right_kicker.to(0.6))
             .requires(this);
 
     public Command toSpindex = new SetPositions(
