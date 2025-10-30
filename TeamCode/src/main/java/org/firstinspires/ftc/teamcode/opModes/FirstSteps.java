@@ -34,9 +34,9 @@ public class FirstSteps extends NextFTCOpMode {
     public static double posit2 = 320;
     public static double posit3 = 640;
 
-    public static double posit4 = 0;
-    public static double posit5 = 300;
-    public static double posit6 = 600;
+    public static double posit4 = 160;
+    public static double posit5 = 480;
+    public static double posit6 = 800;
     public FirstSteps() {
         addComponents(
                 new SubsystemComponent(
@@ -58,6 +58,15 @@ public class FirstSteps extends NextFTCOpMode {
     //for my eventual evil field centric
     //private IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed()
 
+
+    @Override
+    public void onInit() {
+        Gamepads.gamepad1().options()
+                .whenBecomesTrue(Spindex.INSTANCE.reset);
+        Gamepads.gamepad2().options()
+                .whenBecomesTrue(Spindex.INSTANCE.reset);
+
+    }
 
     @Override
     public void onStartButtonPressed() {
@@ -88,6 +97,11 @@ public class FirstSteps extends NextFTCOpMode {
         Gamepads.gamepad1().y()
                 .whenBecomesTrue(Shooter.INSTANCE.toggle);
 
+        Gamepads.gamepad1().rightTrigger()
+                .greaterThan(.0167)
+                .whenBecomesTrue(Shooter.INSTANCE.run)
+                .whenBecomesFalse(Shooter.INSTANCE.stop);
+
 
 
         Gamepads.gamepad1().leftTrigger()
@@ -95,14 +109,23 @@ public class FirstSteps extends NextFTCOpMode {
                 .whenBecomesTrue(Kicker.INSTANCE.toShooter)
                 .whenBecomesFalse(Kicker.INSTANCE.toSpindex);
 
-        Gamepads.gamepad1().dpadUp()
+        Gamepads.gamepad2().dpadUp()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
 
-        Gamepads.gamepad1().dpadLeft()
+        Gamepads.gamepad2().dpadLeft()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit2));
 
-        Gamepads.gamepad1().dpadRight()
+        Gamepads.gamepad2().dpadRight()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
+
+        Gamepads.gamepad2().triangle()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit4));
+
+        Gamepads.gamepad2().square()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit5));
+
+        Gamepads.gamepad2().circle()
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit6));
 
 
 
@@ -112,6 +135,9 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onUpdate(){
 
-       // telemetry.addData("pos", Spindex.INSTANCE.);
+       telemetry.addData("pos", Spindex.pos);
+       telemetry.addData("targetpos", Spindex.targetPos);
+       telemetry.update();
+
     }
 }
