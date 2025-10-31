@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subs;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.Servo;
 
 import dev.nextftc.core.commands.Command;
@@ -28,9 +30,5 @@ public class Kicker implements Subsystem {
             .requires(this);
 
 
-    @Override
-    public void periodic(){
 
-
-    }
 }

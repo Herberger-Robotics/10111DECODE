@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.subs;
 
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.bylazar.configurables.annotations.Configurable;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -32,7 +35,7 @@ public class Spindex implements Subsystem {
         turnTo(0);
     }
 
-    private MotorEx spindex = new MotorEx("spindex").zeroed();
+    private MotorEx spindex = new MotorEx("spindex");
 
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(coefficients)
@@ -44,14 +47,6 @@ public class Spindex implements Subsystem {
 
 
     }
-
-    public final Command reset = new InstantCommand(() ->{
-        spindex.zero();
-    }).requires(this);
-
-
-
-
 
     /*public final Command rotate = new InstantCommand(() -> {
         if(shooter.getPower() != 0){
@@ -71,6 +66,12 @@ public class Spindex implements Subsystem {
         spindex.setPower(controlSystem.calculate(spindex.getState()));
 
 
+
+    }
+    @Override
+    public void initialize(){
+        spindex.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Spindex.INSTANCE.turnTo(0);
 
     }
 }

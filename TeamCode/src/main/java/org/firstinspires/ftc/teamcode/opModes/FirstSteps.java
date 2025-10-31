@@ -62,7 +62,11 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onInit() {
 
-
+    }
+    @Override
+    public void onWaitForStart() {
+        telemetry.addData("pos", Spindex.pos);
+        telemetry.update();
     }
 
     @Override
