@@ -31,8 +31,6 @@ public class Spindex implements Subsystem {
 
     public static final Spindex INSTANCE = new Spindex();
     private Spindex() {
-        spindex.zero();
-        turnTo(0);
     }
 
     private MotorEx spindex = new MotorEx("spindex");
@@ -60,13 +58,11 @@ public class Spindex implements Subsystem {
 
 
 
+
     @Override
     public void periodic() {
         pos = spindex.getCurrentPosition();
         spindex.setPower(controlSystem.calculate(spindex.getState()));
-
-
-
     }
     @Override
     public void initialize(){
