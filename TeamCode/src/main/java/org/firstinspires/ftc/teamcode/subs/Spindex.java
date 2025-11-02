@@ -30,10 +30,7 @@ public class Spindex implements Subsystem {
     public static double offset = 0;
 
     public static final Spindex INSTANCE = new Spindex();
-    private Spindex() {
-        spindex.zero();
-        turnTo(0);
-    }
+    private Spindex() {}
 
     private MotorEx spindex = new MotorEx("spindex");
 
