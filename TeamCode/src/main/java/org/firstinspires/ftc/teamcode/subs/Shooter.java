@@ -19,6 +19,7 @@ public class Shooter implements Subsystem {
             .velPid(coefficients)
             .basicFF(ffcoefficients)
             .build();
+
     public final Command run = new RunToVelocity(controlSystem,2000).requires(this);
     public final Command stop = new RunToVelocity(controlSystem, 0).requires(this);
     public final Command toggle() {
