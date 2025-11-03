@@ -30,7 +30,7 @@ public class Spindex implements Subsystem {
     public static double offset = 0;
 
     public static final Spindex INSTANCE = new Spindex();
-    private Spindex() {}
+    private Spindex() { }
 
     private MotorEx spindex = new MotorEx("spindex");
 
@@ -41,8 +41,6 @@ public class Spindex implements Subsystem {
     public Command turnTo(double position) {
         targetPos = position;
         return new RunToPosition(controlSystem, position + offset, new KineticState(10.0));
-
-
     }
 
     /*public final Command rotate = new InstantCommand(() -> {
@@ -56,14 +54,10 @@ public class Spindex implements Subsystem {
     */
 
 
-
     @Override
     public void periodic() {
         pos = spindex.getCurrentPosition();
         spindex.setPower(controlSystem.calculate(spindex.getState()));
-
-
-
     }
     @Override
     public void initialize(){

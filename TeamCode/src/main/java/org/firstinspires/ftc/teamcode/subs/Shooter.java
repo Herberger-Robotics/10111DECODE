@@ -10,11 +10,12 @@ import dev.nextftc.hardware.controllable.RunToVelocity;
 import dev.nextftc.hardware.impl.MotorEx;
 
 public class Shooter implements Subsystem {
+    public static PIDCoefficients coefficients = new PIDCoefficients(0.011,0.0,0.0);
+    public static BasicFeedforwardParameters ffcoefficients = new BasicFeedforwardParameters(.0005,0,0);
     public static final Shooter INSTANCE = new Shooter();
     private Shooter() { }
     private MotorEx shooter = new MotorEx("shooter").brakeMode();
-    public static PIDCoefficients coefficients = new PIDCoefficients(0.011,0.0,0.0);
-    public static BasicFeedforwardParameters ffcoefficients = new BasicFeedforwardParameters(.0005,0,0);
+
     private ControlSystem controlSystem = ControlSystem.builder()
             .velPid(coefficients)
             .basicFF(ffcoefficients)
@@ -33,8 +34,5 @@ public class Shooter implements Subsystem {
 
 
     @Override
-    public void periodic(){
-
-
-    }
+    public void periodic(){ }
 }

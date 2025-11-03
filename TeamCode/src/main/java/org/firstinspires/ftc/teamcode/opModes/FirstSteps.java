@@ -128,10 +128,7 @@ public class FirstSteps extends NextFTCOpMode {
         Gamepads.gamepad2().circle()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit6));
 
-
-
     }
-
 
     @Override
     public void onUpdate(){
