@@ -109,6 +109,8 @@ public class FirstSteps extends NextFTCOpMode {
                 .whenBecomesTrue(Kicker.INSTANCE.toShooter)
                 .whenBecomesFalse(Kicker.INSTANCE.toSpindex);
 
+
+
         Gamepads.gamepad2().dpadUp()
                 .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
 

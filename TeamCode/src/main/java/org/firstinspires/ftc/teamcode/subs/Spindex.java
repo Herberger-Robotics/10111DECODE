@@ -21,13 +21,23 @@ import dev.nextftc.hardware.impl.MotorEx;
 
 @Configurable
 public class Spindex implements Subsystem {
-
     public static PIDCoefficients coefficients = new PIDCoefficients(0.01,0.0,0.0);
 
     public static double targetPos = 0;
     public static double pos = 0;
 
     public static double offset = 0;
+
+    public int intakeIndex = 0;
+    public int shooterIndex = 0;
+
+    private final double[] intakePositions = {
+            160, 480, 800  // Intake 1, 2, 3
+    };
+
+    private final double[] shooterPositions = {
+            0, 320, 640  // Shooter 1, 2, 3
+    };
 
     public static final Spindex INSTANCE = new Spindex();
     private Spindex() { }
@@ -37,10 +47,33 @@ public class Spindex implements Subsystem {
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(coefficients)
             .build();
-
     public Command turnTo(double position) {
         targetPos = position;
         return new RunToPosition(controlSystem, position + offset, new KineticState(10.0));
+    }
+
+    public Command rightIntake(){
+        intakeIndex = (intakeIndex + 1) % intakePositions.length;
+        double target = intakePositions[intakeIndex];
+        return turnTo(target);
+    }
+
+    public Command rightShooter(){
+        shooterIndex = (shooterIndex + 1) % shooterPositions.length;
+        double target = shooterPositions[shooterIndex];
+        return  turnTo(target);
+    }
+    public Command leftIntake() {
+        // step backward and wrap around correctly
+        intakeIndex = (intakeIndex - 1 + intakePositions.length) % intakePositions.length;
+        double target = intakePositions[intakeIndex];
+        return turnTo(target);
+    }
+
+    public Command leftShooter() {
+        shooterIndex = (shooterIndex - 1 + shooterPositions.length) % shooterPositions.length;
+        double target = shooterPositions[shooterIndex];
+        return turnTo(target);
     }
 
     /*public final Command rotate = new InstantCommand(() -> {
@@ -52,7 +85,6 @@ public class Spindex implements Subsystem {
     }).requires(this);
     WIP
     */
-
 
     @Override
     public void periodic() {
