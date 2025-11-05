@@ -89,7 +89,7 @@ public class FirstSteps extends NextFTCOpMode {
                         .whenBecomesFalse(() -> driverControlled.setScalar(1));
 
         Gamepads.gamepad1().a()
-                .whenBecomesTrue(Intaker.INSTANCE.run)
+                .whenBecomesTrue(Intaker.INSTANCE.reverse)
                 .whenBecomesFalse(Intaker.INSTANCE.stop);
 
         Gamepads.gamepad1().b()
@@ -102,7 +102,6 @@ public class FirstSteps extends NextFTCOpMode {
                 .greaterThan(.0167)
                 .whenBecomesTrue(Shooter.INSTANCE.run)
                 .whenBecomesFalse(Shooter.INSTANCE.stop);
-
 
 
         Gamepads.gamepad1().leftTrigger()
