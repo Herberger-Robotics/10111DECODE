@@ -15,6 +15,7 @@ import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
+import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.impl.MotorEx;
 
@@ -53,27 +54,28 @@ public class Spindex implements Subsystem {
     }
 
     public Command rightIntake(){
-        intakeIndex = (intakeIndex + 1) % intakePositions.length;
-        double target = intakePositions[intakeIndex];
-        return turnTo(target);
+        intakeIndex++;
+        double target = intakePositions[Math.abs((intakeIndex) % intakePositions.length)];
+        return new RunToPosition(controlSystem, target, new KineticState(10));
     }
 
     public Command rightShooter(){
-        shooterIndex = (shooterIndex + 1) % shooterPositions.length;
-        double target = shooterPositions[shooterIndex];
-        return  turnTo(target);
+        shooterIndex++;
+        double target = shooterPositions[Math.abs((shooterIndex) % shooterPositions.length)];
+        return new RunToPosition(controlSystem, target, new KineticState(10));
     }
     public Command leftIntake() {
         // step backward and wrap around correctly
-        intakeIndex = (intakeIndex - 1 + intakePositions.length) % intakePositions.length;
-        double target = intakePositions[intakeIndex];
-        return turnTo(target);
+        intakeIndex--;
+        double target = intakePositions[Math.abs((intakeIndex) % intakePositions.length)];
+        return new RunToPosition(controlSystem, target, new KineticState(10));
     }
 
     public Command leftShooter() {
-        shooterIndex = (shooterIndex - 1 + shooterPositions.length) % shooterPositions.length;
-        double target = shooterPositions[shooterIndex];
-        return turnTo(target);
+        shooterIndex--;
+
+        double target = shooterPositions[Math.abs((shooterIndex) % shooterPositions.length)];
+        return new RunToPosition(controlSystem, target, new KineticState(10));
     }
 
     /*public final Command rotate = new InstantCommand(() -> {

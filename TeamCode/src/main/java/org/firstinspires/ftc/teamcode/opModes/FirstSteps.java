@@ -111,31 +111,29 @@ public class FirstSteps extends NextFTCOpMode {
 
 
 
-        Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit1));
+        Gamepads.gamepad2().leftTrigger()
+                .greaterThan(0.167)
+                .whenBecomesTrue(Spindex.INSTANCE.leftShooter());
 
-        Gamepads.gamepad2().dpadLeft()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit2));
+        Gamepads.gamepad2().rightTrigger()
+                .greaterThan(0.167)
+                .whenBecomesTrue(Spindex.INSTANCE.rightShooter());
 
-        Gamepads.gamepad2().dpadRight()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit3));
+        Gamepads.gamepad2().leftBumper()
+                .whenBecomesTrue(Spindex.INSTANCE.leftIntake());
 
-        Gamepads.gamepad2().triangle()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit4));
+        Gamepads.gamepad2().rightBumper()
+                .whenBecomesTrue(Spindex.INSTANCE.rightIntake());
 
-        Gamepads.gamepad2().square()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit5));
 
-        Gamepads.gamepad2().circle()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo(posit6));
 
     }
 
     @Override
     public void onUpdate(){
 
-       telemetry.addData("pos", Spindex.pos);
-       telemetry.addData("targetpos", Spindex.targetPos);
+       telemetry.addData("pos", -Shooter.INSTANCE.velocity);
+       telemetry.addData("targetpos", 2000);
        telemetry.update();
 
     }
