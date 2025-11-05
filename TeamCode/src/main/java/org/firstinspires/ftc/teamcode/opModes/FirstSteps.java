@@ -10,6 +10,8 @@ import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import dev.nextftc.bindings.BindingManager;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -37,6 +39,8 @@ public class FirstSteps extends NextFTCOpMode {
     public static double posit4 = 160;
     public static double posit5 = 480;
     public static double posit6 = 800;
+
+    public int inIndex = 0;
     public FirstSteps() {
         addComponents(
                 new SubsystemComponent(
@@ -120,10 +124,35 @@ public class FirstSteps extends NextFTCOpMode {
                 .whenBecomesTrue(Spindex.INSTANCE.rightShooter());
 
         Gamepads.gamepad2().leftBumper()
-                .whenBecomesTrue(Spindex.INSTANCE.leftIntake());
+                .whenBecomesTrue(() ->{
+                    inIndex--;
+                    if(Math.abs(inIndex % 3) == 0){
+                        Spindex.INSTANCE.turnTo(posit4);
+                    }
+                    else if(Math.abs(inIndex % 3) == 1){
+                        Spindex.INSTANCE.turnTo(posit5);
+                    }
+                    else if(Math.abs(inIndex % 3) == 2){
+                        Spindex.INSTANCE.turnTo(posit6);
+                    }
+                });
+
 
         Gamepads.gamepad2().rightBumper()
-                .whenBecomesTrue(Spindex.INSTANCE.rightIntake());
+                .whenBecomesTrue(() ->{
+                    inIndex++;
+                    if(Math.abs(inIndex % 3) == 0){
+                        Spindex.INSTANCE.turnTo(posit4);
+                    }
+                    else if(Math.abs(inIndex % 3) == 1){
+                        Spindex.INSTANCE.turnTo(posit5);
+                    }
+                    else if(Math.abs(inIndex % 3) == 2){
+                        Spindex.INSTANCE.turnTo(posit6);
+                    }
+                });
+
+
 
 
 
