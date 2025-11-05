@@ -40,6 +40,10 @@ public class FirstSteps extends NextFTCOpMode {
     public static double posit5 = 480;
     public static double posit6 = 800;
 
+    public static double position = 0;
+
+
+
     public int inIndex = 0;
     public FirstSteps() {
         addComponents(
@@ -111,44 +115,17 @@ public class FirstSteps extends NextFTCOpMode {
                 .whenBecomesFalse(Kicker.INSTANCE.toSpindex);
 
 
-
-        Gamepads.gamepad2().leftTrigger()
-                .greaterThan(0.167)
-                .whenBecomesTrue(Spindex.INSTANCE.leftShooter());
-
-        Gamepads.gamepad2().rightTrigger()
-                .greaterThan(0.167)
-                .whenBecomesTrue(Spindex.INSTANCE.rightShooter());
+//
+//        Gamepads.gamepad2().leftTrigger()
+//                .greaterThan(0.167)
+//                .whenBecomesTrue(Spindex.INSTANCE.leftShooter());
+//
+//        Gamepads.gamepad2().rightTrigger()
+//                .greaterThan(0.167)
+//                .whenBecomesTrue(Spindex.INSTANCE.rightShooter());
 
         Gamepads.gamepad2().leftBumper()
-                .whenBecomesTrue(() ->{
-                    inIndex--;
-                    if(Math.abs(inIndex % 3) == 0){
-                        Spindex.INSTANCE.turnTo(posit4);
-                    }
-                    else if(Math.abs(inIndex % 3) == 1){
-                        Spindex.INSTANCE.turnTo(posit5);
-                    }
-                    else if(Math.abs(inIndex % 3) == 2){
-                        Spindex.INSTANCE.turnTo(posit6);
-                    }
-                });
-
-
-        Gamepads.gamepad2().rightBumper()
-                .whenBecomesTrue(() ->{
-                    inIndex++;
-                    if(Math.abs(inIndex % 3) == 0){
-                        Spindex.INSTANCE.turnTo(posit4);
-                    }
-                    else if(Math.abs(inIndex % 3) == 1){
-                        Spindex.INSTANCE.turnTo(posit5);
-                    }
-                    else if(Math.abs(inIndex % 3) == 2){
-                        Spindex.INSTANCE.turnTo(posit6);
-                    }
-                });
-
+                .whenBecomesTrue(Spindex.INSTANCE.turnTo());
 
 
 
@@ -158,9 +135,9 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onUpdate(){
 
-       BindingManager.update();
        telemetry.addData("pos", -Shooter.INSTANCE.velocity);
        telemetry.addData("targetpos", 2000);
+       telemetry.addData("maybe", inIndex);
        telemetry.update();
 
     }

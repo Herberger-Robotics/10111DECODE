@@ -12,6 +12,7 @@ import dev.nextftc.control.ControlSystem;
 import dev.nextftc.control.KineticState;
 import dev.nextftc.control.feedback.PIDCoefficients;
 import dev.nextftc.core.commands.Command;
+import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.commands.utility.LambdaCommand;
 import dev.nextftc.core.subsystems.Subsystem;
@@ -29,16 +30,8 @@ public class Spindex implements Subsystem {
 
     public static double offset = 0;
 
-    public int intakeIndex = 0;
-    public int shooterIndex = 0;
+    public static double move = 120;
 
-    private final double[] intakePositions = {
-            160, 480, 800  // Intake 1, 2, 3
-    };
-
-    private final double[] shooterPositions = {
-            0, 320, 640  // Shooter 1, 2, 3
-    };
 
     public static final Spindex INSTANCE = new Spindex();
     private Spindex() { }
@@ -48,35 +41,11 @@ public class Spindex implements Subsystem {
     private ControlSystem controlSystem = ControlSystem.builder()
             .posPid(coefficients)
             .build();
-    public Command turnTo(double position) {
-        targetPos = position;
-        return new RunToPosition(controlSystem, position + offset, new KineticState(10.0));
+    public Command turnTo() {
+        targetPos = spindex.getCurrentPosition() + move;
+        return new RunToPosition(controlSystem, targetPos, new KineticState(10.0));
     }
 
-    public Command rightIntake(){
-        intakeIndex++;
-        double target = intakePositions[Math.abs((intakeIndex) % intakePositions.length)];
-        return new RunToPosition(controlSystem, target, new KineticState(10));
-    }
-
-    public Command rightShooter(){
-        shooterIndex++;
-        double target = shooterPositions[Math.abs((shooterIndex) % shooterPositions.length)];
-        return new RunToPosition(controlSystem, target, new KineticState(10));
-    }
-    public Command leftIntake() {
-        // step backward and wrap around correctly
-        intakeIndex--;
-        double target = intakePositions[Math.abs((intakeIndex) % intakePositions.length)];
-        return new RunToPosition(controlSystem, target, new KineticState(10));
-    }
-
-    public Command leftShooter() {
-        shooterIndex--;
-
-        double target = shooterPositions[Math.abs((shooterIndex) % shooterPositions.length)];
-        return new RunToPosition(controlSystem, target, new KineticState(10));
-    }
 
     /*public final Command rotate = new InstantCommand(() -> {
         if(shooter.getPower() != 0){
