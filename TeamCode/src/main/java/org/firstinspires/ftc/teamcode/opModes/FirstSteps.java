@@ -99,9 +99,6 @@ public class FirstSteps extends NextFTCOpMode {
         Gamepads.gamepad1().b()
                 .whenBecomesTrue(Intaker.INSTANCE.toggle);
 
-        Gamepads.gamepad1().y()
-                .whenBecomesTrue(Shooter.INSTANCE.toggle());
-
         Gamepads.gamepad1().rightTrigger()
                 .greaterThan(.0167)
                 .whenBecomesTrue(Shooter.INSTANCE.run)
@@ -161,6 +158,7 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onUpdate(){
 
+       BindingManager.update();
        telemetry.addData("pos", -Shooter.INSTANCE.velocity);
        telemetry.addData("targetpos", 2000);
        telemetry.update();
