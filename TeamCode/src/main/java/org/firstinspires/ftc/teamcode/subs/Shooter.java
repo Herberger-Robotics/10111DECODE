@@ -20,7 +20,7 @@ public class Shooter implements Subsystem {
     private Shooter() { }
 
     public double velocity = 0;
-    private MotorEx shooter = new MotorEx("shooter").brakeMode();
+    private MotorEx shooter = new MotorEx("shooter").brakeMode().reversed();
 
     private ControlSystem controlSystem = ControlSystem.builder()
             .velPid(coefficients)
@@ -34,7 +34,7 @@ public class Shooter implements Subsystem {
 
 
     public final InstantCommand start = new InstantCommand(() ->
-            controlSystem.setGoal(new KineticState(0.0, (2000)))
+            controlSystem.setGoal(new KineticState(0.0, (-1850)))
     );
 
     public final InstantCommand stop = new InstantCommand(() ->
