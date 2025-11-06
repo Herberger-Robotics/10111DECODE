@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.subs.Kicker;
 import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
+import org.opencv.dnn.Layer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +70,7 @@ public class FirstSteps extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-
+        BindingManager.setLayer("far");
     }
     @Override
     public void onWaitForStart() {
@@ -105,14 +106,27 @@ public class FirstSteps extends NextFTCOpMode {
 
         Gamepads.gamepad1().rightTrigger()
                 .greaterThan(.0167)
+                .inLayer("far")
                 .whenBecomesTrue(Shooter.INSTANCE.start)
+                .whenBecomesFalse(Shooter.INSTANCE.stop)
+                .inLayer("short")
+                .whenBecomesTrue(Shooter.INSTANCE.startclose)
                 .whenBecomesFalse(Shooter.INSTANCE.stop);
+
 
 
         Gamepads.gamepad1().leftTrigger()
                 .greaterThan(0.167)
+
                 .whenBecomesTrue(Kicker.INSTANCE.toShooter)
                 .whenBecomesFalse(Kicker.INSTANCE.toSpindex);
+
+        Gamepads.gamepad1().dpadUp()
+                        .whenBecomesTrue(() -> BindingManager.setLayer("far"));
+
+        Gamepads.gamepad1().dpadDown()
+                        .whenBecomesTrue(() -> BindingManager.setLayer("short"));
+
 
 
         Gamepads.gamepad2().circle()
