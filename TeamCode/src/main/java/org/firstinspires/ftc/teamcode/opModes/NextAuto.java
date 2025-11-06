@@ -50,8 +50,8 @@ public class NextAuto extends NextFTCOpMode {
     public static double posit6 = 1425.1 * 16/24 * 1/6;
     private final Pose startPose = new Pose(56, 9, Math.toRadians(90));
 
-    private final Pose initialFire = new Pose(67,16,Math.toRadians(125));
-    private final Pose spikeMark = new Pose(40, 36, Math.toRadians(180));
+    private final Pose initialFire = new Pose(60,16,Math.toRadians(110));
+    private final Pose spikeMark = new Pose(40, 46, Math.toRadians(180));
 
 
 
@@ -80,13 +80,21 @@ public class NextAuto extends NextFTCOpMode {
                 new Delay(1),
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
+                        new Delay(1),
                         Kicker.INSTANCE.toSpindex,
+                        new Delay(1),
                         Spindex.INSTANCE.turnIntake(posit2),
+                        new Delay(0.5),
                         Kicker.INSTANCE.toShooter,
+                        new Delay(1),
                         Kicker.INSTANCE.toSpindex,
+                        new Delay(1),
                         Spindex.INSTANCE.turnIntake(posit3),
+                        new Delay(0.5),
                         Kicker.INSTANCE.toShooter,
+                        new Delay(1),
                         Kicker.INSTANCE.toSpindex,
+                        new Delay(1),
                         Spindex.INSTANCE.turnIntake(posit4)
                 ),
                 new FollowPath(spikeMark1,true)

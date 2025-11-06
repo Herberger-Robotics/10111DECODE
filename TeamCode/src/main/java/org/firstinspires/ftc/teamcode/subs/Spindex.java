@@ -23,7 +23,7 @@ import dev.nextftc.hardware.impl.MotorEx;
 
 @Configurable
 public class Spindex implements Subsystem {
-    public static PIDCoefficients coefficients = new PIDCoefficients(0.01,0.0,0.0);
+    public static PIDCoefficients coefficients = new PIDCoefficients(0.012,0.0,0.0);
 
     public static double targetPos = 0;
     public static double pos = 0;
