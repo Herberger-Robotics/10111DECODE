@@ -28,14 +28,22 @@ public class Shooter implements Subsystem {
             .build();
 
 
-    public final Command run = new RunToVelocity(controlSystem,2000).requires(this).named("shooter on");
-    public final Command stop = new RunToVelocity(controlSystem, 0).requires(this).named("shooter off");
+    //public final Command run = new RunToVelocity(controlSystem,2000).requires(this).named("shooter on");
+    //public final Command stop = new RunToVelocity(controlSystem, 0).requires(this).named("shooter off");
+
+    public final Command run = new InstantCommand(() -> {
+        shooter.setPower(1);
+    });
+
+    public final Command stop = new InstantCommand(() -> {
+        shooter.setPower(0);
+    });
 
 
 
     @Override
     public void periodic(){
-        shooter.setPower(controlSystem.calculate(shooter.getState()));
+        //shooter.setPower(controlSystem.calculate(shooter.getState()));
 
     }
 }

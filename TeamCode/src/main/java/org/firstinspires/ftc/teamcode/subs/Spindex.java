@@ -30,21 +30,27 @@ public class Spindex implements Subsystem {
 
     public static double offset = 0;
 
-    public static double move = 120;
+    public static double move = 160;
+
 
 
     public static final Spindex INSTANCE = new Spindex();
     private Spindex() { }
 
+    public double tpr = 1425.1 * 16/24;
+
     private MotorEx spindex = new MotorEx("spindex");
 
     private ControlSystem controlSystem = ControlSystem.builder()
+
             .posPid(coefficients)
             .build();
-    public Command turnTo() {
-        targetPos = spindex.getCurrentPosition() + move;
-        return new RunToPosition(controlSystem, targetPos, new KineticState(10.0));
+    public Command turnIntake(double target) {
+        targetPos = target;
+        return new RunToPosition(controlSystem, target, new KineticState(10.0));
     }
+
+
 
 
     /*public final Command rotate = new InstantCommand(() -> {
@@ -60,12 +66,12 @@ public class Spindex implements Subsystem {
     @Override
     public void periodic() {
         pos = spindex.getCurrentPosition();
+
         spindex.setPower(controlSystem.calculate(spindex.getState()));
     }
     @Override
     public void initialize(){
         spindex.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Spindex.INSTANCE.turnTo(0);
 
     }
 }

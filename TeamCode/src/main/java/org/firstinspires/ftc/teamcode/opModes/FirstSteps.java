@@ -33,12 +33,12 @@ public class FirstSteps extends NextFTCOpMode {
     //private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
 
     public static double posit1 = 0;
-    public static double posit2 = 320;
-    public static double posit3 = 640;
+    public static double posit2 = 1425.1 * 16/24 * 2/6;
+    public static double posit3 = 1425.1 * 16/24 * 4/6;
 
-    public static double posit4 = 160;
-    public static double posit5 = 480;
-    public static double posit6 = 800;
+    public static double posit4 = 1425.1 * 16/24 * 3/6;
+    public static double posit5 = 1425.1 * 16/24 * 5/6;
+    public static double posit6 = 1425.1 * 16/24 * 1/6;
 
     public static double position = 0;
 
@@ -115,17 +115,27 @@ public class FirstSteps extends NextFTCOpMode {
                 .whenBecomesFalse(Kicker.INSTANCE.toSpindex);
 
 
-//
-//        Gamepads.gamepad2().leftTrigger()
-//                .greaterThan(0.167)
-//                .whenBecomesTrue(Spindex.INSTANCE.leftShooter());
-//
-//        Gamepads.gamepad2().rightTrigger()
-//                .greaterThan(0.167)
-//                .whenBecomesTrue(Spindex.INSTANCE.rightShooter());
+        Gamepads.gamepad2().circle()
+                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit1));
 
-        Gamepads.gamepad2().leftBumper()
-                .whenBecomesTrue(Spindex.INSTANCE.turnTo());
+        Gamepads.gamepad2().dpadRight()
+                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit4));
+
+        Gamepads.gamepad2().triangle()
+                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit2));
+
+        Gamepads.gamepad2().dpadUp()
+                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit5));
+
+        Gamepads.gamepad2().square()
+                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit3));
+
+        Gamepads.gamepad2().dpadLeft()
+                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit6));
+
+
+
+
 
 
 
@@ -139,6 +149,7 @@ public class FirstSteps extends NextFTCOpMode {
        telemetry.addData("targetpos", 2000);
        telemetry.addData("maybe", inIndex);
        telemetry.update();
+
 
     }
 }
