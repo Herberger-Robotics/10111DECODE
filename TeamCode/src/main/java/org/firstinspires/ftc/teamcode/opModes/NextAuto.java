@@ -48,7 +48,7 @@ public class NextAuto extends NextFTCOpMode {
     public static double posit4 = 1425.1 * 16/24 * 3/6;
     public static double posit5 = 1425.1 * 16/24 * 5/6;
     public static double posit6 = 1425.1 * 16/24 * 1/6;
-    private final Pose startPose = new Pose(56, 8, Math.toRadians(90));
+    private final Pose startPose = new Pose(56, 9, Math.toRadians(90));
 
     private final Pose initialFire = new Pose(67,16,Math.toRadians(125));
     private final Pose spikeMark = new Pose(40, 36, Math.toRadians(180));
@@ -84,7 +84,7 @@ public class NextAuto extends NextFTCOpMode {
                         Spindex.INSTANCE.turnIntake(posit2),
                         Kicker.INSTANCE.toShooter,
                         Kicker.INSTANCE.toSpindex,
-                        Spindex.INSTANCE.turnIntake(posit2),
+                        Spindex.INSTANCE.turnIntake(posit3),
                         Kicker.INSTANCE.toShooter,
                         Kicker.INSTANCE.toSpindex,
                         Spindex.INSTANCE.turnIntake(posit4)
