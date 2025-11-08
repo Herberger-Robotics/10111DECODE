@@ -20,13 +20,13 @@ public class Kicker implements Subsystem {
 
 
     public Command toShooter = new SetPositions(
-            left_kicker.to(0.30),
-            right_kicker.to(0.70))
+            left_kicker.to(0.34),
+            right_kicker.to(0.65))
             .requires(this);
 
     public Command toSpindex = new SetPositions(
-            left_kicker.to(0),
-            right_kicker.to(1))
+            left_kicker.to(0.04),
+            right_kicker.to(0.94))
             .requires(this);
 
 
