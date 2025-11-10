@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.opModes;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
@@ -15,6 +17,7 @@ import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
 import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
+import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
@@ -22,6 +25,9 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 import static dev.nextftc.extensions.pedro.PedroComponent.follower;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Autonomous(name = "close auto")
@@ -37,7 +43,9 @@ public class close_auto extends NextFTCOpMode {
                 BulkReadComponent.INSTANCE
         );
     }
+    private Limelight3A limelight;
 
+    int pathType = 1;
     public static double posit1 = 0;
     public static double posit2 = 1425.1 * 16/24 * 2/6;
     public static double posit3 = 1425.1 * 16/24 * 4/6;
@@ -63,6 +71,14 @@ public class close_auto extends NextFTCOpMode {
     private PathChain intake2;
     private PathChain intake3;
     private PathChain shootMark1;
+
+    //PRELOAD ORDER
+
+    //SLOT 1: PURPLE - shooter:POSIT1 - intake: POSIT4
+    //SLOT 2: GREEN - shooter: POSIT2 - intake: POSIT5
+    //SLOT 3: PURPLE - shooter: POSIT3 - intake: POSIT6
+
+
 
 
     public void buildPaths(){
@@ -93,8 +109,10 @@ public class close_auto extends NextFTCOpMode {
 
     }
 
-    private Command autonomousRoutine() {
+    private Command PPG() {
         return new SequentialGroup(
+                //must be purple
+                Spindex.INSTANCE.turnIntake(posit1),
                 new FollowPath(testPath,true),
                 new SequentialGroup(
                         Shooter.INSTANCE.startclose
@@ -105,12 +123,92 @@ public class close_auto extends NextFTCOpMode {
                         new Delay(1),
                         Kicker.INSTANCE.toSpindex,
                         new Delay(0.5),
+                        //should be purple
+                        Spindex.INSTANCE.turnIntake(posit3),
+                        new Delay(0.5),
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.5),
+                        //should be green
+                        Spindex.INSTANCE.turnIntake(posit2),
+                        new Delay(0.5),
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        Shooter.INSTANCE.stop,
+                        new Delay(0.5),
+
+                        Spindex.INSTANCE.turnIntake(posit4)
+                ),
+                new FollowPath(spikeMark1,true),
+
+                Intaker.INSTANCE.run,
+
+                new FollowPath(intake1,true),
+                Spindex.INSTANCE.turnIntake(posit6),
+
+                new FollowPath(intake2,true),
+                Spindex.INSTANCE.turnIntake(posit5),
+
+                new FollowPath(intake3,true),
+
+                //should be purple
+                Spindex.INSTANCE.turnIntake(posit1),
+
+                Shooter.INSTANCE.startclose,
+                Intaker.INSTANCE.stop,
+
+                new FollowPath(shootMark1),
+
+                new SequentialGroup(
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.5),
+
+                        //should be purple
+                        Spindex.INSTANCE.turnIntake(posit3),
+                        new Delay(0.5),
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.5),
+
+                        //should be green
+                        Spindex.INSTANCE.turnIntake(posit2),
+                        new Delay(0.5),
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        Shooter.INSTANCE.stop
+                )
+
+
+        );
+    }
+    private Command PGP() {
+        return new SequentialGroup(
+                //must be purple
+                Spindex.INSTANCE.turnIntake(posit1),
+                new FollowPath(testPath,true),
+                new SequentialGroup(
+                        Shooter.INSTANCE.startclose
+                ),
+                new Delay(1),
+                new SequentialGroup(
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.5),
+                        //should be purple
                         Spindex.INSTANCE.turnIntake(posit2),
                         new Delay(0.5),
                         Kicker.INSTANCE.toShooter,
                         new Delay(1),
                         Kicker.INSTANCE.toSpindex,
                         new Delay(0.5),
+                        //should be green
                         Spindex.INSTANCE.turnIntake(posit3),
                         new Delay(0.5),
                         Kicker.INSTANCE.toShooter,
@@ -125,13 +223,14 @@ public class close_auto extends NextFTCOpMode {
                 Intaker.INSTANCE.run,
 
                 new FollowPath(intake1,true),
-                Spindex.INSTANCE.turnIntake(posit5),
+                Spindex.INSTANCE.turnIntake(posit6),
 
                 new FollowPath(intake2,true),
-                Spindex.INSTANCE.turnIntake(posit6),
+                Spindex.INSTANCE.turnIntake(posit5),
 
                 new FollowPath(intake3,true),
 
+                //should be purple
                 Spindex.INSTANCE.turnIntake(posit1),
 
                 Shooter.INSTANCE.startclose,
@@ -139,18 +238,21 @@ public class close_auto extends NextFTCOpMode {
 
                 new FollowPath(shootMark1),
 
-
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
                         new Delay(1),
                         Kicker.INSTANCE.toSpindex,
                         new Delay(0.5),
+
+                        //should be purple
                         Spindex.INSTANCE.turnIntake(posit2),
                         new Delay(0.5),
                         Kicker.INSTANCE.toShooter,
                         new Delay(1),
                         Kicker.INSTANCE.toSpindex,
                         new Delay(0.5),
+
+                        //should be green
                         Spindex.INSTANCE.turnIntake(posit3),
                         new Delay(0.5),
                         Kicker.INSTANCE.toShooter,
@@ -162,25 +264,159 @@ public class close_auto extends NextFTCOpMode {
 
         );
     }
+    private Command GPP() {
+        return new SequentialGroup(
+                //must be purple
+                Spindex.INSTANCE.turnIntake(posit2),
+                new FollowPath(testPath,true),
+                new SequentialGroup(
+                        Shooter.INSTANCE.startclose
+                ),
+                new Delay(1),
+                new SequentialGroup(
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.5),
+                        //should be purple
+                        Spindex.INSTANCE.turnIntake(posit3),
+                        new Delay(0.5),
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.5),
+                        //should be green
+                        Spindex.INSTANCE.turnIntake(posit1),
+                        new Delay(0.5),
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        Shooter.INSTANCE.stop,
+                        new Delay(0.5),
+
+                        Spindex.INSTANCE.turnIntake(posit5)
+                ),
+                new FollowPath(spikeMark1,true),
+
+                Intaker.INSTANCE.run,
+
+                new FollowPath(intake1,true),
+                Spindex.INSTANCE.turnIntake(posit6),
+
+                new FollowPath(intake2,true),
+                Spindex.INSTANCE.turnIntake(posit4),
+
+                new FollowPath(intake3,true),
+
+                //should be purple
+                Spindex.INSTANCE.turnIntake(posit1),
+
+                Shooter.INSTANCE.startclose,
+                Intaker.INSTANCE.stop,
+
+                new FollowPath(shootMark1),
+
+                new SequentialGroup(
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.5),
+
+                        //should be purple
+                        Spindex.INSTANCE.turnIntake(posit3),
+                        new Delay(0.5),
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.5),
+
+                        //should be green
+                        Spindex.INSTANCE.turnIntake(posit2),
+                        new Delay(0.5),
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(1),
+                        Kicker.INSTANCE.toSpindex,
+                        Shooter.INSTANCE.stop
+                )
+
+
+        );
+    }
+
     @Override
     public void onInit() {
         //follower = Constants.createFollower(hardwareMap);
         follower().setStartingPose(startPose);
         buildPaths();
 
+    }
+    @Override
+    public void onWaitForStart() {
+        //follower = Constants.createFollower(hardwareMap);
 
+        if(gamepad1.dpad_left){
+            pathType = 0;
+        } else if(gamepad1.dpad_up){
+            pathType = 1;
 
-
+        } else if(gamepad1.dpad_right){
+            pathType = 2;
+        }
+        telemetry.addData("Path type", pathType);
+        telemetry.update();
 
     }
 
     @Override
     public void onStartButtonPressed() {
-        autonomousRoutine().schedule();
+        switch(pathType){
+            case 0:
+                GPP().schedule();
+                break;
+            case 1:
+                PGP().schedule();
+                break;
+            case 2:
+                PPG().schedule();
+                break;
+        }
+
+    }
+
+    public Command stopLimelight(){
+        return new InstantCommand(()->{
+            limelight.stop();
+        });
+    }
+    private ArrayList<Tag> processLimelightResults() {
+        List<LLResultTypes.FiducialResult> fiducials = limelight.getlatestResults();
+        for (LLResultTypes.FiducialResult fiducial : fiducials) {
+            int id = fiducial.getFiducialId(); // The ID number of the fiducial
+
+            telemetry.addData("ID:",id);
+        }
+
+    }
+    private void initializeLimelight() {
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight.pipelineSwitch(0);
+        limelight.start();
+
     }
 
     @Override
     public void onUpdate(){
         follower().update();
+    }
+}
+
+class Tag {
+    private int id;
+    public Tag(int id) {
+        this.id = id;
+
+    }
+    public int getId() {
+        return id;
     }
 }
