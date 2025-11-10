@@ -348,19 +348,23 @@ public class close_auto extends NextFTCOpMode {
         //follower = Constants.createFollower(hardwareMap);
         follower().setStartingPose(startPose);
         buildPaths();
+        initializeLimelight();
 
     }
     @Override
     public void onWaitForStart() {
         //follower = Constants.createFollower(hardwareMap);
+        int result = processLimelightResults();
 
-        if(gamepad1.dpad_left){
+        if(result == 21){
             pathType = 0;
-        } else if(gamepad1.dpad_up){
+        } else if(result == 22){
             pathType = 1;
 
-        } else if(gamepad1.dpad_right){
+        } else if(result == 23){
             pathType = 2;
+        }else{
+            pathType = 0;
         }
         telemetry.addData("Path type", pathType);
         telemetry.update();
@@ -380,6 +384,7 @@ public class close_auto extends NextFTCOpMode {
                 PPG().schedule();
                 break;
         }
+        stopLimelight();
 
     }
 
@@ -388,18 +393,20 @@ public class close_auto extends NextFTCOpMode {
             limelight.stop();
         });
     }
-    private ArrayList<Tag> processLimelightResults() {
-        List<LLResultTypes.FiducialResult> fiducials = limelight.getlatestResults();
+    private int processLimelightResults() {
+        List<LLResultTypes.FiducialResult> fiducials = limelight.getLatestResult().getFiducialResults();
+        int id = 0;
         for (LLResultTypes.FiducialResult fiducial : fiducials) {
-            int id = fiducial.getFiducialId(); // The ID number of the fiducial
+            id = fiducial.getFiducialId(); // The ID number of the fiducial
 
             telemetry.addData("ID:",id);
         }
-
+        return id;
     }
     private void initializeLimelight() {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         limelight.pipelineSwitch(0);
+        limelight.setPollRateHz(100);
         limelight.start();
 
     }
