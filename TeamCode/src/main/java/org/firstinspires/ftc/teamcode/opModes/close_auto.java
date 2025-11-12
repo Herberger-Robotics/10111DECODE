@@ -398,8 +398,6 @@ public class close_auto extends NextFTCOpMode {
         int id = 0;
         for (LLResultTypes.FiducialResult fiducial : fiducials) {
             id = fiducial.getFiducialId(); // The ID number of the fiducial
-
-            telemetry.addData("ID:",id);
         }
         return id;
     }
