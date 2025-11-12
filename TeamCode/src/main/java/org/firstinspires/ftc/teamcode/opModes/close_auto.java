@@ -53,7 +53,7 @@ public class close_auto extends NextFTCOpMode {
     public static double posit4 = 1425.1 * 16/24 * 3/6;
     public static double posit5 = 1425.1 * 16/24 * 5/6;
     public static double posit6 = 1425.1 * 16/24 * 1/6;
-    private final Pose startPose = new Pose(21.960, 125.225, Math.toRadians(144));
+    private final Pose startPose = new Pose(21.960, 125.225, Math.toRadians(0));
 
     private final Pose initialFire = new Pose(60.517,81.807,Math.toRadians(135));
     private final Pose spikeMark = new Pose(41.406, 90.154, Math.toRadians(180));
@@ -417,13 +417,3 @@ public class close_auto extends NextFTCOpMode {
     }
 }
 
-class Tag {
-    private int id;
-    public Tag(int id) {
-        this.id = id;
-
-    }
-    public int getId() {
-        return id;
-    }
-}
