@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
+import static dev.nextftc.extensions.pedro.PedroComponent.follower;
+
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -13,9 +15,10 @@ import org.firstinspires.ftc.teamcode.subs.Kicker;
 import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
 
+import java.util.List;
+
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.delays.Delay;
-import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -24,15 +27,10 @@ import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
-import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-@Autonomous(name = "close auto")
-public class close_auto extends NextFTCOpMode {
-    public close_auto() {
+@Autonomous(name = "Blue Close Auto")
+public class Close_Auto_Red extends NextFTCOpMode {
+    public Close_Auto_Red() {
         addComponents(
                 new SubsystemComponent(
                         Shooter.INSTANCE,
@@ -53,13 +51,13 @@ public class close_auto extends NextFTCOpMode {
     public static double posit4 = 1425.1 * 16/24 * 3/6;
     public static double posit5 = 1425.1 * 16/24 * 5/6;
     public static double posit6 = 1425.1 * 16/24 * 1/6;
-    private final Pose startPose = new Pose(21.960, 125.225, Math.toRadians(0));
+    private final Pose startPose = new Pose(21.960, 125.225, Math.toRadians(0)).mirror();
 
-    private final Pose initialFire = new Pose(60.517,81.807,Math.toRadians(135));
-    private final Pose spikeMark = new Pose(41.406, 90.154, Math.toRadians(180));
-    private final Pose ballMark1 = new Pose(32.210,90.154,Math.toRadians(180));
-    private final Pose ballMark2 = new Pose(28.210,90.154,Math.toRadians(180));
-    private final Pose ballMark3 = new Pose(24.210,90.154,Math.toRadians(180));
+    private final Pose initialFire = new Pose(68.517,88.807,Math.toRadians(124)).mirror();
+    private final Pose spikeMark = new Pose(50.406, 103.154, Math.toRadians(180)).mirror();
+    private final Pose ballMark1 = new Pose(46.210,103.154,Math.toRadians(180)).mirror();
+    private final Pose ballMark2 = new Pose(42.210,103.154,Math.toRadians(180)).mirror();
+    private final Pose ballMark3 = new Pose(36.210,103.154,Math.toRadians(180)).mirror();
 
 
 
@@ -112,11 +110,9 @@ public class close_auto extends NextFTCOpMode {
     private Command PPG() {
         return new SequentialGroup(
                 //must be purple
+                Shooter.INSTANCE.startclose,
                 Spindex.INSTANCE.turnIntake(posit1),
                 new FollowPath(testPath,true),
-                new SequentialGroup(
-                        Shooter.INSTANCE.startclose
-                ),
                 new Delay(1),
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
@@ -190,11 +186,10 @@ public class close_auto extends NextFTCOpMode {
     private Command PGP() {
         return new SequentialGroup(
                 //must be purple
+                Shooter.INSTANCE.startclose,
                 Spindex.INSTANCE.turnIntake(posit1),
                 new FollowPath(testPath,true),
-                new SequentialGroup(
-                        Shooter.INSTANCE.startclose
-                ),
+
                 new Delay(1),
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
@@ -267,11 +262,10 @@ public class close_auto extends NextFTCOpMode {
     private Command GPP() {
         return new SequentialGroup(
                 //must be purple
+                Shooter.INSTANCE.startclose,
                 Spindex.INSTANCE.turnIntake(posit2),
                 new FollowPath(testPath,true),
-                new SequentialGroup(
-                        Shooter.INSTANCE.startclose
-                ),
+
                 new Delay(1),
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
