@@ -28,7 +28,7 @@ import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 import java.util.List;
 
 
-@Autonomous(name = "Blue Close Auto")
+@Autonomous(name = "Blue Close Auto", preselectTeleOp = "Drive")
 public class Close_Auto_Blue extends NextFTCOpMode {
     public Close_Auto_Blue() {
         addComponents(
@@ -56,9 +56,13 @@ public class Close_Auto_Blue extends NextFTCOpMode {
     private final Pose initialFire = new Pose(68.517,88.807,Math.toRadians(124));
     private final Pose spikeMark = new Pose(50.406, 103.154, Math.toRadians(180));
     private final Pose ballMark1 = new Pose(46.210,103.154,Math.toRadians(180));
-    private final Pose ballMark2 = new Pose(42.210,103.154,Math.toRadians(180));
+    private final Pose ballMark2 = new Pose(41.210,103.154,Math.toRadians(180));
     private final Pose ballMark3 = new Pose(36.210,103.154,Math.toRadians(180));
 
+    private final Pose secondSpikeMarkPos = new Pose(53.406, 79.154, Math.toRadians(180));
+    private final Pose secondBallMark1 = new Pose(47.210,79.154,Math.toRadians(180));
+    private final Pose secondBallMark2 = new Pose(41.210,79.154,Math.toRadians(180));
+    private final Pose secondBallMark3 = new Pose(36.210,79.154,Math.toRadians(180));
 
 
     //private Follower follower;
@@ -69,6 +73,12 @@ public class Close_Auto_Blue extends NextFTCOpMode {
     private PathChain intake2;
     private PathChain intake3;
     private PathChain shootMark1;
+
+    private PathChain secondSpikeMarkPath;
+    private PathChain secondIntake1;
+    private PathChain secondIntake2;
+    private PathChain secondIntake3;
+    private PathChain secondShootMark1;
 
     //PRELOAD ORDER
 
@@ -105,233 +115,478 @@ public class Close_Auto_Blue extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(ballMark3.getHeading(), initialFire.getHeading())
                 .build();
 
-    }
 
+        secondSpikeMarkPath = follower().pathBuilder()
+                .addPath(new BezierLine(initialFire,secondSpikeMarkPos))
+                .setLinearHeadingInterpolation(initialFire.getHeading(),secondSpikeMarkPos.getHeading())
+                .build();
+
+        secondIntake1 = follower().pathBuilder()
+                .addPath(new BezierLine(spikeMark,secondBallMark1))
+                .setLinearHeadingInterpolation(spikeMark.getHeading(),secondBallMark1.getHeading())
+                .build();
+        secondIntake2 = follower().pathBuilder()
+                .addPath(new BezierLine(ballMark1,secondBallMark2))
+                .setLinearHeadingInterpolation(ballMark1.getHeading(),secondBallMark2.getHeading())
+                .build();
+        secondIntake3 = follower().pathBuilder()
+                .addPath(new BezierLine(ballMark2,secondBallMark3))
+                .setLinearHeadingInterpolation(ballMark2.getHeading(),secondBallMark3.getHeading())
+                .build();
+        secondShootMark1 = follower().pathBuilder()
+                .addPath(new BezierLine(secondBallMark3, initialFire))
+                .setLinearHeadingInterpolation(secondBallMark3.getHeading(), initialFire.getHeading())
+                .build();
+
+
+
+    }
     private Command PPG() {
         return new SequentialGroup(
-                //must be purple
                 Shooter.INSTANCE.startclose,
+
+                //PURPLE
                 Spindex.INSTANCE.turnIntake(posit1),
+
                 new FollowPath(testPath,true),
-                new Delay(1),
+                new Delay(0.25),
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.5),
                         Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
-                        //should be purple
-                        Spindex.INSTANCE.turnIntake(posit3),
-                        new Delay(0.5),
-                        Kicker.INSTANCE.toShooter,
-                        new Delay(1),
-                        Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
-                        //should be green
-                        Spindex.INSTANCE.turnIntake(posit2),
-                        new Delay(0.5),
-                        Kicker.INSTANCE.toShooter,
-                        new Delay(1),
-                        Kicker.INSTANCE.toSpindex,
-                        Shooter.INSTANCE.stop,
-                        new Delay(0.5),
+                        new Delay(0.25),
 
-                        Spindex.INSTANCE.turnIntake(posit4)
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit3),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //GREEN
+                        Spindex.INSTANCE.turnIntake(posit2),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        Shooter.INSTANCE.stop
+
                 ),
+
                 new FollowPath(spikeMark1,true),
 
-                Intaker.INSTANCE.run,
+                //INTAKING PURPLE
+                Spindex.INSTANCE.turnIntake(posit4),
 
+                Intaker.INSTANCE.run,
                 new FollowPath(intake1,true),
+
+                //INTAKING PURPLE
                 Spindex.INSTANCE.turnIntake(posit6),
 
                 new FollowPath(intake2,true),
+
+                //INTAKING GREEN
                 Spindex.INSTANCE.turnIntake(posit5),
 
                 new FollowPath(intake3,true),
+                Shooter.INSTANCE.startclose,
 
-                //should be purple
+                //PURPLE
                 Spindex.INSTANCE.turnIntake(posit1),
 
-                Shooter.INSTANCE.startclose,
                 Intaker.INSTANCE.stop,
 
                 new FollowPath(shootMark1),
 
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.25),
                         Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
+                        new Delay(0.25),
 
-                        //should be purple
+                        //PURPLE
                         Spindex.INSTANCE.turnIntake(posit3),
-                        new Delay(0.5),
-                        Kicker.INSTANCE.toShooter,
-                        new Delay(1),
-                        Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
 
-                        //should be green
-                        Spindex.INSTANCE.turnIntake(posit2),
-                        new Delay(0.5),
+                        new Delay(0.25),
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //GREEN
+                        Spindex.INSTANCE.turnIntake(posit2),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+
+                        Shooter.INSTANCE.stop
+                ),
+
+                //this is the SECOND spike mark pick up start
+                new FollowPath(secondSpikeMarkPath,true),
+
+                //PURPLE
+                Spindex.INSTANCE.turnIntake(posit4),
+
+                Intaker.INSTANCE.run,
+
+                new FollowPath(secondIntake1,true),
+
+                //GREEN
+                Spindex.INSTANCE.turnIntake(posit6),
+
+                new FollowPath(secondIntake2,true),
+
+                //PURPLE
+                Spindex.INSTANCE.turnIntake(posit5),
+
+                new FollowPath(secondIntake3,true),
+                Shooter.INSTANCE.startclose,
+
+                //PURPLE
+                Spindex.INSTANCE.turnIntake(posit1),
+
+                Intaker.INSTANCE.stop,
+
+                new FollowPath(secondShootMark1),
+
+                //TODO: CHANGE WHAT POSITION IS CHANGED FOR SPINDEX
+                new SequentialGroup(
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit2),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //GREEN
+                        Spindex.INSTANCE.turnIntake(posit3),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
                         Kicker.INSTANCE.toSpindex,
                         Shooter.INSTANCE.stop
                 )
+
 
 
         );
     }
     private Command PGP() {
         return new SequentialGroup(
-                //must be purple
                 Shooter.INSTANCE.startclose,
-                Spindex.INSTANCE.turnIntake(posit1),
-                new FollowPath(testPath,true),
 
-                new Delay(1),
+                //PURPLE
+                Spindex.INSTANCE.turnIntake(posit1),
+
+                new FollowPath(testPath,true),
+                new Delay(0.25),
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
-                        Kicker.INSTANCE.toSpindex,
                         new Delay(0.5),
-                        //should be purple
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //GREEN
                         Spindex.INSTANCE.turnIntake(posit2),
-                        new Delay(0.5),
+
+                        new Delay(0.25),
+
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.25),
                         Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
-                        //should be green
+                        new Delay(0.25),
+
+                        //PURPLE
                         Spindex.INSTANCE.turnIntake(posit3),
-                        new Delay(0.5),
+
+                        new Delay(0.25),
+
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.25),
                         Kicker.INSTANCE.toSpindex,
-                        Shooter.INSTANCE.stop,
-                        new Delay(0.5),
-                        Spindex.INSTANCE.turnIntake(posit4)
+                        Shooter.INSTANCE.stop
+
                 ),
+
                 new FollowPath(spikeMark1,true),
 
-                Intaker.INSTANCE.run,
+                //INTAKING PURPLE
+                Spindex.INSTANCE.turnIntake(posit4),
 
+                Intaker.INSTANCE.run,
                 new FollowPath(intake1,true),
+
+                //INTAKING PURPLE
                 Spindex.INSTANCE.turnIntake(posit6),
 
                 new FollowPath(intake2,true),
+
+                //INTAKING GREEN
                 Spindex.INSTANCE.turnIntake(posit5),
 
                 new FollowPath(intake3,true),
+                Shooter.INSTANCE.startclose,
 
-                //should be purple
+                //PURPLE
                 Spindex.INSTANCE.turnIntake(posit1),
 
-                Shooter.INSTANCE.startclose,
                 Intaker.INSTANCE.stop,
 
                 new FollowPath(shootMark1),
 
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.25),
                         Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
+                        new Delay(0.25),
 
-                        //should be purple
+                        //GREEN
                         Spindex.INSTANCE.turnIntake(posit2),
-                        new Delay(0.5),
-                        Kicker.INSTANCE.toShooter,
-                        new Delay(1),
-                        Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
 
-                        //should be green
-                        Spindex.INSTANCE.turnIntake(posit3),
-                        new Delay(0.5),
+                        new Delay(0.25),
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit3),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+
+                        Shooter.INSTANCE.stop
+                ),
+
+                //this is the SECOND spike mark pick up start
+                new FollowPath(secondSpikeMarkPath,true),
+
+                //INTAKING PURPLE
+                Spindex.INSTANCE.turnIntake(posit4),
+
+                Intaker.INSTANCE.run,
+
+                new FollowPath(secondIntake1,true),
+
+                //INTAKING GREEN
+                Spindex.INSTANCE.turnIntake(posit6),
+
+                new FollowPath(secondIntake2,true),
+
+                //INTAKING PURPLE
+                Spindex.INSTANCE.turnIntake(posit5),
+
+                new FollowPath(secondIntake3,true),
+                Shooter.INSTANCE.startclose,
+
+                //PURPLE
+                Spindex.INSTANCE.turnIntake(posit1),
+
+                Intaker.INSTANCE.stop,
+
+                new FollowPath(secondShootMark1),
+
+                //TODO: CHANGE WHAT POSITION IS CHANGED FOR SPINDEX
+                new SequentialGroup(
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //GREEN
+                        Spindex.INSTANCE.turnIntake(posit3),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit2),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
                         Kicker.INSTANCE.toSpindex,
                         Shooter.INSTANCE.stop
                 )
+
 
 
         );
     }
     private Command GPP() {
         return new SequentialGroup(
-                //must be purple
                 Shooter.INSTANCE.startclose,
-                Spindex.INSTANCE.turnIntake(posit2),
-                new FollowPath(testPath,true),
 
-                new Delay(1),
+                //GREEN
+                Spindex.INSTANCE.turnIntake(posit2),
+
+                new FollowPath(testPath,true),
+                new Delay(0.25),
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.5),
                         Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
-                        //should be purple
-                        Spindex.INSTANCE.turnIntake(posit3),
-                        new Delay(0.5),
-                        Kicker.INSTANCE.toShooter,
-                        new Delay(1),
-                        Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
-                        //should be green
-                        Spindex.INSTANCE.turnIntake(posit1),
-                        new Delay(0.5),
-                        Kicker.INSTANCE.toShooter,
-                        new Delay(1),
-                        Kicker.INSTANCE.toSpindex,
-                        Shooter.INSTANCE.stop,
-                        new Delay(0.5),
+                        new Delay(0.25),
 
-                        Spindex.INSTANCE.turnIntake(posit5)
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit3),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit1),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        Shooter.INSTANCE.stop
+
                 ),
+
                 new FollowPath(spikeMark1,true),
 
-                Intaker.INSTANCE.run,
+                //INTAKING PURPLE
+                Spindex.INSTANCE.turnIntake(posit4),
 
+                Intaker.INSTANCE.run,
                 new FollowPath(intake1,true),
+
+                //INTAKING PURPLE
                 Spindex.INSTANCE.turnIntake(posit6),
 
                 new FollowPath(intake2,true),
-                Spindex.INSTANCE.turnIntake(posit4),
+
+                //INTAKING GREEN
+                Spindex.INSTANCE.turnIntake(posit5),
 
                 new FollowPath(intake3,true),
-
-                //should be purple
-                Spindex.INSTANCE.turnIntake(posit1),
-
                 Shooter.INSTANCE.startclose,
+
+                //GREEN
+                Spindex.INSTANCE.turnIntake(posit2),
+
                 Intaker.INSTANCE.stop,
 
                 new FollowPath(shootMark1),
 
                 new SequentialGroup(
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.25),
                         Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
+                        new Delay(0.25),
 
-                        //should be purple
+                        //PURPLE
                         Spindex.INSTANCE.turnIntake(posit3),
-                        new Delay(0.5),
-                        Kicker.INSTANCE.toShooter,
-                        new Delay(1),
-                        Kicker.INSTANCE.toSpindex,
-                        new Delay(0.5),
 
-                        //should be green
-                        Spindex.INSTANCE.turnIntake(posit2),
-                        new Delay(0.5),
+                        new Delay(0.25),
                         Kicker.INSTANCE.toShooter,
-                        new Delay(1),
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit1),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+
+                        Shooter.INSTANCE.stop
+                ),
+
+                //this is the SECOND spike mark pick up start
+                new FollowPath(secondSpikeMarkPath,true),
+
+                //PURPLE
+                Spindex.INSTANCE.turnIntake(posit4),
+
+                Intaker.INSTANCE.run,
+
+                new FollowPath(secondIntake1,true),
+
+                //GREEN
+                Spindex.INSTANCE.turnIntake(posit6),
+
+                new FollowPath(secondIntake2,true),
+
+                //PURPLE
+                Spindex.INSTANCE.turnIntake(posit5),
+
+                new FollowPath(secondIntake3,true),
+                Shooter.INSTANCE.startclose,
+
+                //GREEN
+                Spindex.INSTANCE.turnIntake(posit1),
+
+                Intaker.INSTANCE.stop,
+
+                new FollowPath(secondShootMark1),
+
+                //TODO: CHANGE WHAT POSITION IS CHANGED FOR SPINDEX
+                new SequentialGroup(
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit2),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
+                        Kicker.INSTANCE.toSpindex,
+                        new Delay(0.25),
+
+                        //PURPLE
+                        Spindex.INSTANCE.turnIntake(posit3),
+
+                        new Delay(0.25),
+
+                        Kicker.INSTANCE.toShooter,
+                        new Delay(0.25),
                         Kicker.INSTANCE.toSpindex,
                         Shooter.INSTANCE.stop
                 )
+
 
 
         );

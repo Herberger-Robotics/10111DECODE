@@ -28,7 +28,7 @@ import dev.nextftc.hardware.impl.MotorEx;
 import org.firstinspires.ftc.teamcode.subs.Intaker;
 
 @Configurable
-@TeleOp(name = "Baby's First Teleop")
+@TeleOp(name = "Drive")
 public class FirstSteps extends NextFTCOpMode {
     private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
     //private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);

@@ -17,8 +17,8 @@ public class Shooter implements Subsystem {
     public static PIDCoefficients coefficients = new PIDCoefficients(0.011,0.0,0.0);
     public static BasicFeedforwardParameters ffcoefficients = new BasicFeedforwardParameters(0,0,0);
 
-    public static double closevelo = 1500;
-    public static double farvelo = 1850;
+    public static double closevelo = 1475;
+    public static double farvelo = 1820;
     public static final Shooter INSTANCE = new Shooter();
     private Shooter() { }
 

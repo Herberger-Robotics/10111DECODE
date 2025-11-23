@@ -26,7 +26,7 @@ public class Constants {
             .centripetalScaling(0.001)
             .mass(8);
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 0.2, 1);
+    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 0.4, 0.85);
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
@@ -47,9 +47,11 @@ public class Constants {
     //61.64
     //61.98
     public static MecanumConstants driveConstants = new MecanumConstants()
-            .xVelocity(56.5)
-            .yVelocity(45.1)
-            .maxPower(0.7)
+            //78
+            .xVelocity(78)
+            //64
+            .yVelocity(64)
+            .maxPower(1)
             .rightFrontMotorName("front_right")
             .rightRearMotorName("back_right")
             .leftRearMotorName("back_left")
