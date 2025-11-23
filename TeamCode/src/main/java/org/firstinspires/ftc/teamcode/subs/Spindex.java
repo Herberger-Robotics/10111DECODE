@@ -53,6 +53,9 @@ public class Spindex implements Subsystem {
 
 
 
+
+
+
     /*public final Command rotate = new InstantCommand(() -> {
         if(shooter.getPower() != 0){
             shooter.setPower(0.0);

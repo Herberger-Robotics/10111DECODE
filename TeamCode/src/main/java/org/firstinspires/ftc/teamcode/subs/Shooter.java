@@ -49,6 +49,26 @@ public class Shooter implements Subsystem {
             controlSystem.setGoal(new KineticState())
     );
 
+    public final Command toggleClose = new InstantCommand(() -> {
+        if(velocity > 0){
+            controlSystem.setGoal(new KineticState(0.0, (-closevelo)));
+        }else{
+            controlSystem.setGoal(new KineticState());
+
+        }
+    }).requires(this);
+
+
+    public final Command toggleFar = new InstantCommand(() -> {
+        if(velocity > 0){
+            controlSystem.setGoal(new KineticState(0.0, (-farvelo)));
+        }else{
+            controlSystem.setGoal(new KineticState());
+
+        }
+    }).requires(this);
+
+
     @Override
     public void periodic(){
         velocity = shooter.getVelocity();

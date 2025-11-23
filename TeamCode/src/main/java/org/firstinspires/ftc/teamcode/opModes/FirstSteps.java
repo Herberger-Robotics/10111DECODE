@@ -107,11 +107,9 @@ public class FirstSteps extends NextFTCOpMode {
         Gamepads.gamepad1().rightTrigger()
                 .greaterThan(.0167)
                 .inLayer("far")
-                .whenBecomesTrue(Shooter.INSTANCE.start)
-                .whenBecomesFalse(Shooter.INSTANCE.stop)
+                .whenBecomesTrue(Shooter.INSTANCE.toggleFar)
                 .inLayer("short")
-                .whenBecomesTrue(Shooter.INSTANCE.startclose)
-                .whenBecomesFalse(Shooter.INSTANCE.stop);
+                .whenBecomesTrue(Shooter.INSTANCE.toggleClose);
 
 
 
@@ -128,7 +126,15 @@ public class FirstSteps extends NextFTCOpMode {
                         .whenBecomesTrue(() -> BindingManager.setLayer("short"));
 
 
+        Gamepads.gamepad2().rightTrigger()
+                .greaterThan(0.167)
+                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(Spindex.INSTANCE.pos + posit2));
 
+        Gamepads.gamepad2().leftTrigger()
+                .greaterThan(0.167)
+                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(0));
+
+        /*
         Gamepads.gamepad2().circle()
                 .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit1));
 
@@ -146,7 +152,7 @@ public class FirstSteps extends NextFTCOpMode {
 
         Gamepads.gamepad2().dpadLeft()
                 .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit6));
-
+        */
 
 
 
