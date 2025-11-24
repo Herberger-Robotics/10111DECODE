@@ -2,6 +2,11 @@ package org.firstinspires.ftc.teamcode.opModes;
 
 //import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.configurables.annotations.Configurable;
+import com.bylazar.graph.GraphManager;
+import com.bylazar.graph.PanelsGraph;
+import com.bylazar.panels.Panels;
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
@@ -42,6 +47,9 @@ public class FirstSteps extends NextFTCOpMode {
     public static double posit6 = 1425.1 * 16/24 * 1/6;
 
     public static double position = 0;
+
+    private TelemetryManager panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
+    private GraphManager graphManager = PanelsGraph.INSTANCE.getManager();
 
 
 
@@ -165,10 +173,11 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onUpdate(){
 
-       telemetry.addData("pos", -Shooter.INSTANCE.velocity);
-       telemetry.addData("targetpos", 2000);
-       telemetry.addData("maybe", inIndex);
-       telemetry.update();
+       panelsTelemetry.addData("shooterpos", -Shooter.INSTANCE.velocity);
+       panelsTelemetry.addData("targetshooterpos", 1820);
+       graphManager.addData("shooterpos", -Shooter.INSTANCE.velocity);
+       graphManager.addData("targetshooterpos", 1820);
+       panelsTelemetry.update();
 
 
     }
