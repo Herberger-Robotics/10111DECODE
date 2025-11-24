@@ -128,7 +128,7 @@ public class FirstSteps extends NextFTCOpMode {
 
         Gamepads.gamepad2().rightTrigger()
                 .greaterThan(0.167)
-                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(Spindex.INSTANCE.pos + posit2));
+                .whenBecomesTrue(Spindex.INSTANCE.turn());
 
         Gamepads.gamepad2().leftTrigger()
                 .greaterThan(0.167)

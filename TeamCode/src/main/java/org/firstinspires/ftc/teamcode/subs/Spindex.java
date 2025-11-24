@@ -50,6 +50,11 @@ public class Spindex implements Subsystem {
         return new RunToPosition(controlSystem, target, new KineticState(10.0));
     }
 
+    public Command turn() {
+        double target = spindex.getCurrentPosition() + (1425.1 * 16/24 * 2/6);
+        return new RunToPosition(controlSystem, target, new KineticState(10.0));
+    }
+
 
 
 
