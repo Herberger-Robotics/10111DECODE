@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.subs;
 
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.bylazar.configurables.annotations.Configurable;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -23,15 +26,29 @@ import dev.nextftc.hardware.impl.MotorEx;
 
 @Configurable
 public class Spindex implements Subsystem {
-    public static PIDCoefficients coefficients = new PIDCoefficients(0.015,0.0,0.0);
 
-    public static double targetPos = 0;
-    public static double pos = 0;
+//    public static PIDCoefficients coefficients = new PIDCoefficients(0.015,0.0,0.0);
+//
+//    public static double targetPos = 0;
+//    public static double pos = 0;
+//
+//    public static double offset = 0;
+//
+//    public static double move = 160;
 
-    public static double offset = 0;
 
-    public static double move = 160;
+    private PIDController controller;
 
+    public static double p = 0, i = 0, d = 0;
+    public static double f = 0;
+
+    public final int target = 0;
+
+    private final double tick_in_degrees = 0; //TODO: DO THIS KRISHAAN
+
+    private DcMotorEx spindex;
+
+    //private MotorEx spindex = new MotorEx("spindex");
 
 
     public static final Spindex INSTANCE = new Spindex();
@@ -39,21 +56,21 @@ public class Spindex implements Subsystem {
 
     public double tpr = 1425.1 * 16/24;
 
-    private MotorEx spindex = new MotorEx("spindex");
 
-    private ControlSystem controlSystem = ControlSystem.builder()
 
-            .posPid(coefficients)
-            .build();
-    public Command turnIntake(double target) {
-        targetPos = target;
-        return new RunToPosition(controlSystem, target, new KineticState(10.0));
-    }
-
-    public Command turn() {
-        double target = spindex.getCurrentPosition() + (1425.1 * 16/24 * 2/6);
-        return new RunToPosition(controlSystem, target, new KineticState(10.0));
-    }
+//    private ControlSystem controlSystem = ControlSystem.builder()
+//
+//            .posPid(coefficients)
+//            .build();
+//    public Command turnIntake(double target) {
+//        targetPos = target;
+//        return new RunToPosition(controlSystem, target, new KineticState(10.0));
+//    }
+//
+//    public Command turn() {
+//        double target = spindex.getCurrentPosition() + (1425.1 * 16/24 * 2/6);
+//        return new RunToPosition(controlSystem, target, new KineticState(10.0));
+//    }
 
 
 
@@ -73,13 +90,24 @@ public class Spindex implements Subsystem {
 
     @Override
     public void periodic() {
-        pos = spindex.getCurrentPosition();
+      //  pos = spindex.getCurrentPosition();
 
-        spindex.setPower(controlSystem.calculate(spindex.getState()));
+       // spindex.setPower(controlSystem.calculate(spindex.getState()));
+        controller.setPID(p,i,d);
+        int spindexPos = spindex.getCurrentPosition();
+        double pid = controller.calculate(spindexPos, target);
+        double ff = Math.cos(Math.toRadians(target/tick_in_degrees)) * f;
+
+        double power = pid + ff;
+
+        spindex.setPower(power);
     }
     @Override
     public void initialize(){
-        spindex.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       // spindex.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        controller = new PIDController(p,i,d);
+        spindex = hardwareMap.get(DcMotorEx.class,"spindex");
 
     }
 }

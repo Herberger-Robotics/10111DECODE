@@ -115,9 +115,11 @@ public class FirstSteps extends NextFTCOpMode {
         Gamepads.gamepad1().rightTrigger()
                 .greaterThan(.0167)
                 .inLayer("far")
-                .whenBecomesTrue(Shooter.INSTANCE.toggleFar)
+                .whenBecomesTrue(Shooter.INSTANCE.start)
+                .whenBecomesFalse(Shooter.INSTANCE.stop)
                 .inLayer("short")
-                .whenBecomesTrue(Shooter.INSTANCE.toggleClose);
+                .whenBecomesTrue(Shooter.INSTANCE.startclose)
+                .whenBecomesFalse(Shooter.INSTANCE.stop);
 
 
 
