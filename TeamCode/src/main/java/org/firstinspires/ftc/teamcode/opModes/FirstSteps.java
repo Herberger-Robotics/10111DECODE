@@ -82,7 +82,7 @@ public class FirstSteps extends NextFTCOpMode {
     }
     @Override
     public void onWaitForStart() {
-        telemetry.addData("pos", Spindex.pos);
+      //  telemetry.addData("pos", Spindex.pos);
         telemetry.update();
     }
 
@@ -136,13 +136,13 @@ public class FirstSteps extends NextFTCOpMode {
                         .whenBecomesTrue(() -> BindingManager.setLayer("short"));
 
 
-        Gamepads.gamepad2().rightTrigger()
-                .greaterThan(0.167)
-                .whenBecomesTrue(Spindex.INSTANCE.turn());
-
-        Gamepads.gamepad2().leftTrigger()
-                .greaterThan(0.167)
-                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(0));
+//        Gamepads.gamepad2().rightTrigger()
+//                .greaterThan(0.167)
+//                .whenBecomesTrue(Spindex.INSTANCE.turn());
+//
+//        Gamepads.gamepad2().leftTrigger()
+//                .greaterThan(0.167)
+//                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(0));
 
         /*
         Gamepads.gamepad2().circle()
