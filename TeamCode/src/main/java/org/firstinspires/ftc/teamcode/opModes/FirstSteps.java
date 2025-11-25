@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
 //import com.bylazar.configurables.annotations.Configurable;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.graph.GraphManager;
 import com.bylazar.graph.PanelsGraph;
@@ -8,6 +9,7 @@ import com.bylazar.panels.Panels;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 
 import org.firstinspires.ftc.teamcode.subs.Kicker;
@@ -22,6 +24,7 @@ import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.ftc.ActiveOpMode;
+import dev.nextftc.ftc.GamepadEx;
 import dev.nextftc.ftc.Gamepads;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
@@ -30,6 +33,8 @@ import dev.nextftc.hardware.driving.MecanumDriverControlled;
 import dev.nextftc.hardware.impl.Direction;
 import dev.nextftc.hardware.impl.IMUEx;
 import dev.nextftc.hardware.impl.MotorEx;
+import kotlin.jvm.functions.Function0;
+
 import org.firstinspires.ftc.teamcode.subs.Intaker;
 
 @Configurable
@@ -50,7 +55,6 @@ public class FirstSteps extends NextFTCOpMode {
 
     private TelemetryManager panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
     private GraphManager graphManager = PanelsGraph.INSTANCE.getManager();
-
 
 
     public int inIndex = 0;
@@ -79,6 +83,7 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onInit() {
         BindingManager.setLayer("far");
+
     }
     @Override
     public void onWaitForStart() {
@@ -123,11 +128,6 @@ public class FirstSteps extends NextFTCOpMode {
 
 
 
-        Gamepads.gamepad1().leftTrigger()
-                .greaterThan(0.167)
-
-                .whenBecomesTrue(Kicker.INSTANCE.toShooter)
-                .whenBecomesFalse(Kicker.INSTANCE.toSpindex);
 
         Gamepads.gamepad1().dpadUp()
                         .whenBecomesTrue(() -> BindingManager.setLayer("far"));
@@ -174,6 +174,17 @@ public class FirstSteps extends NextFTCOpMode {
 
     @Override
     public void onUpdate(){
+
+        if(gamepad2.circleWasPressed()){
+            Spindex.INSTANCE.newTurn();
+        }
+
+        if(gamepad2.circleWasPressed()){
+            Spindex.INSTANCE.newReTurn();
+        }
+
+
+
 
        panelsTelemetry.addData("shooterpos", -Shooter.INSTANCE.velocity);
        panelsTelemetry.addData("targetshooterpos", 1820);

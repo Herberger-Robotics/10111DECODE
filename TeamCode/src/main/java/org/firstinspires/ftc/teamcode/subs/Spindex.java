@@ -39,10 +39,10 @@ public class Spindex implements Subsystem {
 
     private PIDController controller;
 
-    public static double p = 0, i = 0, d = 0;
+    public static double p = 0.015, i = 0, d = 0;
     public static double f = 0;
 
-    public final int target = 0;
+    public int target = 0;
 
     private final double tick_in_degrees = 0; //TODO: DO THIS KRISHAAN
 
@@ -88,6 +88,14 @@ public class Spindex implements Subsystem {
     WIP
     */
 
+    public void newTurn(){
+        target += tpr * 1/3;
+    }
+
+    public void newReTurn(){
+        target = 0;
+    }
+
     @Override
     public void periodic() {
       //  pos = spindex.getCurrentPosition();
@@ -96,7 +104,7 @@ public class Spindex implements Subsystem {
         controller.setPID(p,i,d);
         int spindexPos = spindex.getCurrentPosition();
         double pid = controller.calculate(spindexPos, target);
-        double ff = Math.cos(Math.toRadians(target/tick_in_degrees)) * f;
+        double ff = 0;
 
         double power = pid + ff;
 
