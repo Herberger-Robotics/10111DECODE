@@ -46,9 +46,9 @@ public class Spindex implements Subsystem {
 
     private final double tick_in_degrees = 0; //TODO: DO THIS KRISHAAN
 
-    private DcMotorEx spindex;
+    //private DcMotorEx spindex;
 
-    //private MotorEx spindex = new MotorEx("spindex");
+    private MotorEx spindex = new MotorEx("spindex");
 
 
     public static final Spindex INSTANCE = new Spindex();
@@ -89,11 +89,18 @@ public class Spindex implements Subsystem {
     */
 
     public void newTurn(){
-        target += tpr * 1/3;
+        target -= tpr * 1/3;
     }
 
     public void newReTurn(){
         target = 0;
+    }
+    @Override
+    public void initialize(){
+        spindex.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        controller = new PIDController(p,i,d);
+
     }
 
     @Override
@@ -102,7 +109,7 @@ public class Spindex implements Subsystem {
 
        // spindex.setPower(controlSystem.calculate(spindex.getState()));
         controller.setPID(p,i,d);
-        int spindexPos = spindex.getCurrentPosition();
+        double spindexPos = spindex.getCurrentPosition();
         double pid = controller.calculate(spindexPos, target);
         double ff = 0;
 
@@ -110,12 +117,5 @@ public class Spindex implements Subsystem {
 
         spindex.setPower(power);
     }
-    @Override
-    public void initialize(){
-       // spindex.getMotor().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        controller = new PIDController(p,i,d);
-        spindex = hardwareMap.get(DcMotorEx.class,"spindex");
-
-    }
 }

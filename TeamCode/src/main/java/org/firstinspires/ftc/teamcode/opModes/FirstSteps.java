@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
 //import com.bylazar.configurables.annotations.Configurable;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.bylazar.configurables.annotations.Configurable;
-import com.bylazar.graph.GraphManager;
-import com.bylazar.graph.PanelsGraph;
+
 import com.bylazar.panels.Panels;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 
@@ -43,6 +46,9 @@ public class FirstSteps extends NextFTCOpMode {
     private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
     //private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
 
+
+
+
     public static double posit1 = 0;
     public static double posit2 = 1425.1 * 16/24 * 2/6;
     public static double posit3 = 1425.1 * 16/24 * 4/6;
@@ -54,7 +60,6 @@ public class FirstSteps extends NextFTCOpMode {
     public static double position = 0;
 
     private TelemetryManager panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
-    private GraphManager graphManager = PanelsGraph.INSTANCE.getManager();
 
 
     public int inIndex = 0;
@@ -83,6 +88,8 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onInit() {
         BindingManager.setLayer("far");
+
+
 
     }
     @Override
@@ -175,23 +182,28 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onUpdate(){
 
+
         if(gamepad2.circleWasPressed()){
             Spindex.INSTANCE.newTurn();
         }
 
-        if(gamepad2.circleWasPressed()){
+        if(gamepad2.squareWasPressed()){
             Spindex.INSTANCE.newReTurn();
+
         }
+
 
 
 
 
        panelsTelemetry.addData("shooterpos", -Shooter.INSTANCE.velocity);
        panelsTelemetry.addData("targetshooterpos", 1820);
-       graphManager.addData("shooterpos", -Shooter.INSTANCE.velocity);
-       graphManager.addData("targetshooterpos", 1820);
+
        panelsTelemetry.update();
 
 
+
+
     }
+
 }
