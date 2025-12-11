@@ -14,11 +14,11 @@ import dev.nextftc.hardware.controllable.RunToVelocity;
 import dev.nextftc.hardware.impl.MotorEx;
 @Configurable
 public class Shooter implements Subsystem {
-    public static PIDCoefficients coefficients = new PIDCoefficients(0.011,0.0,0.0);
-    public static BasicFeedforwardParameters ffcoefficients = new BasicFeedforwardParameters(0,0,0);
+    public static PIDCoefficients coefficients = new PIDCoefficients(0.005,0.0,0.0001);
+    public static BasicFeedforwardParameters ffcoefficients = new BasicFeedforwardParameters(0.0,0.0,0.0);
 
-    public static double closevelo = 1475;
-    public static double farvelo = 1820;
+    public static double closevelo = 1650;
+    public static double farvelo = 2000;
     public static final Shooter INSTANCE = new Shooter();
     private Shooter() { }
 
@@ -46,27 +46,8 @@ public class Shooter implements Subsystem {
     );
 
     public final InstantCommand stop = new InstantCommand(() ->
-            controlSystem.setGoal(new KineticState())
+            controlSystem.setGoal(new KineticState(0.0, 0))
     );
-
-    public final Command toggleClose = new InstantCommand(() -> {
-        if(velocity > 0){
-            controlSystem.setGoal(new KineticState(0.0, (-closevelo)));
-        }else{
-            controlSystem.setGoal(new KineticState());
-
-        }
-    }).requires(this);
-
-
-    public final Command toggleFar = new InstantCommand(() -> {
-        if(velocity > 0){
-            controlSystem.setGoal(new KineticState(0.0, (-farvelo)));
-        }else{
-            controlSystem.setGoal(new KineticState());
-
-        }
-    }).requires(this);
 
 
     @Override

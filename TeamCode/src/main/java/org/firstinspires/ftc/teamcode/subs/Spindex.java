@@ -39,7 +39,7 @@ public class Spindex implements Subsystem {
 
     private PIDController controller;
 
-    public static double p = 0.015, i = 0, d = 0;
+    public static double p = 0.00375, i = 0, d = 0.0001;
     public static double f = 0;
 
     public int target = 0;
@@ -56,6 +56,7 @@ public class Spindex implements Subsystem {
 
     public double tpr = 1425.1 * 16/24;
 
+    public int toggle = 0;
 
 
 //    private ControlSystem controlSystem = ControlSystem.builder()
@@ -93,6 +94,22 @@ public class Spindex implements Subsystem {
     }
 
     public void newReTurn(){
+        target += tpr * 1/3;
+    }
+    public void zero(){
+        if(toggle == 0) {
+            target = 0;
+            toggle++;
+        }else{
+            target += tpr * .07;
+            toggle = 0;
+        }
+    }
+    public void micro(){
+        target += tpr * .07;
+    }
+
+    public void zeroAuto(){
         target = 0;
     }
     @Override

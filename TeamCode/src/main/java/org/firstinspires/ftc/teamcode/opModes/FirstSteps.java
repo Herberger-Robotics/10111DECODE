@@ -44,20 +44,6 @@ import org.firstinspires.ftc.teamcode.subs.Intaker;
 @TeleOp(name = "Drive")
 public class FirstSteps extends NextFTCOpMode {
     private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
-    //private static final Logger log = LoggerFactory.getLogger(FirstSteps.class);
-
-
-
-
-    public static double posit1 = 0;
-    public static double posit2 = 1425.1 * 16/24 * 2/6;
-    public static double posit3 = 1425.1 * 16/24 * 4/6;
-
-    public static double posit4 = 1425.1 * 16/24 * 3/6;
-    public static double posit5 = 1425.1 * 16/24 * 5/6;
-    public static double posit6 = 1425.1 * 16/24 * 1/6;
-
-    public static double position = 0;
 
     private TelemetryManager panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
@@ -71,7 +57,6 @@ public class FirstSteps extends NextFTCOpMode {
                         Kicker.INSTANCE,
                         Spindex.INSTANCE
                 ),
-
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
         );
@@ -87,7 +72,7 @@ public class FirstSteps extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        BindingManager.setLayer("far");
+        BindingManager.setLayer("short");
 
 
 
@@ -124,14 +109,16 @@ public class FirstSteps extends NextFTCOpMode {
         Gamepads.gamepad1().b()
                 .whenBecomesTrue(Intaker.INSTANCE.toggle);
 
-        Gamepads.gamepad1().rightTrigger()
-                .greaterThan(.0167)
+        Gamepads.gamepad2().square()
                 .inLayer("far")
                 .whenBecomesTrue(Shooter.INSTANCE.start)
-                .whenBecomesFalse(Shooter.INSTANCE.stop)
                 .inLayer("short")
-                .whenBecomesTrue(Shooter.INSTANCE.startclose)
-                .whenBecomesFalse(Shooter.INSTANCE.stop);
+                .whenBecomesTrue(Shooter.INSTANCE.startclose);
+
+
+        Gamepads.gamepad2().triangle()
+                        .whenBecomesTrue(Shooter.INSTANCE.stop);
+
 
 
 
@@ -143,37 +130,6 @@ public class FirstSteps extends NextFTCOpMode {
                         .whenBecomesTrue(() -> BindingManager.setLayer("short"));
 
 
-//        Gamepads.gamepad2().rightTrigger()
-//                .greaterThan(0.167)
-//                .whenBecomesTrue(Spindex.INSTANCE.turn());
-//
-//        Gamepads.gamepad2().leftTrigger()
-//                .greaterThan(0.167)
-//                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(0));
-
-        /*
-        Gamepads.gamepad2().circle()
-                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit1));
-
-        Gamepads.gamepad2().dpadRight()
-                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit4));
-
-        Gamepads.gamepad2().triangle()
-                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit2));
-
-        Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit5));
-
-        Gamepads.gamepad2().square()
-                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit3));
-
-        Gamepads.gamepad2().dpadLeft()
-                .whenBecomesTrue(Spindex.INSTANCE.turnIntake(posit6));
-        */
-
-
-
-
 
 
 
@@ -182,24 +138,31 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onUpdate(){
 
-
         if(gamepad2.circleWasPressed()){
             Spindex.INSTANCE.newTurn();
         }
 
-        if(gamepad2.squareWasPressed()){
+        if(gamepad1.squareWasPressed()){
             Spindex.INSTANCE.newReTurn();
-
         }
 
+        if(gamepad1.triangleWasPressed()){
+            Spindex.INSTANCE.zeroAuto();
+        }
 
+        if(gamepad1.leftBumperWasPressed()){
+            Spindex.INSTANCE.micro();
+        }
 
 
 
        panelsTelemetry.addData("shooterpos", -Shooter.INSTANCE.velocity);
        panelsTelemetry.addData("targetshooterpos", 1820);
-
        panelsTelemetry.update();
+
+       telemetry.addData("shooterpos", -Shooter.INSTANCE.velocity);
+       telemetry.addData("targetshooterpos", 1820);
+       telemetry.update();
 
 
 
