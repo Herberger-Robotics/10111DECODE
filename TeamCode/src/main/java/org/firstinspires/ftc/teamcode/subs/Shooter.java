@@ -23,26 +23,22 @@ public class Shooter implements Subsystem {
     private Shooter() { }
 
     public double velocity = 0;
-    private MotorEx shooter = new MotorEx("shooter").brakeMode().reversed();
+    private MotorEx shooter = new MotorEx("shooter").brakeMode();
+    private MotorEx shooter2 = new MotorEx("shooter2").brakeMode().reversed();
+
 
     private ControlSystem controlSystem = ControlSystem.builder()
             .velPid(coefficients)
             .basicFF(ffcoefficients)
             .build();
 
-
-    //public final Command run = new RunToVelocity(controlSystem,2000).requires(this).named("shooter on");
-    //public final Command stop = new RunToVelocity(controlSystem, 0).requires(this).named("shooter off");
-
-
-
     public final InstantCommand start = new InstantCommand(() ->
-            controlSystem.setGoal(new KineticState(0.0, (-farvelo)))
+            controlSystem.setGoal(new KineticState(0.0, (farvelo)))
     );
 
 
     public final InstantCommand startclose = new InstantCommand(() ->
-            controlSystem.setGoal(new KineticState(0.0, (-closevelo)))
+            controlSystem.setGoal(new KineticState(0.0, (closevelo)))
     );
 
     public final InstantCommand stop = new InstantCommand(() ->
@@ -54,5 +50,6 @@ public class Shooter implements Subsystem {
     public void periodic(){
         velocity = shooter.getVelocity();
         shooter.setPower(controlSystem.calculate(shooter.getState()));
+        shooter2.setPower(controlSystem.calculate(shooter.getState()));
     }
 }
