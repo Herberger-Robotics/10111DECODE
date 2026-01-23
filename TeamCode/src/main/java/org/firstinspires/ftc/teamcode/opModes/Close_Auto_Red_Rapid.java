@@ -91,13 +91,6 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private PathChain newIntake3;
     private PathChain thirdShootMark1;
 
-    //PRELOAD ORDER
-
-    //SLOT 1: PURPLE - shooter:POSIT1 - intake: POSIT4
-    //SLOT 2: GREEN - shooter: POSIT2 - intake: POSIT5
-    //SLOT 3: PURPLE - shooter: POSIT3 - intake: POSIT6
-
-
     private Command scorePreload(){
         return new SequentialGroup(
 
@@ -175,7 +168,6 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                         new Delay(0.5),
                         spinSpindex()
                 )
-
 
         );
     };
