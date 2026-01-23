@@ -329,6 +329,7 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 spinSpindex().thenWait(0.3),
                 spinSpindex().thenWait(0.3),
                 scorePreload(),
+                new FollowPath(spikeMark1),
                 Intaker.INSTANCE.run,
                 newIntakeFirstSpikeMark(),
                 Intaker.INSTANCE.stop,
@@ -337,11 +338,15 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 spinSpindex().thenWait(0.3),
 
                 scoreFirstSpikeMark(),
+                new FollowPath(secondSpikeMarkPath),
+
                 Intaker.INSTANCE.run,
                 newIntakeSecondSpikeMark(),
                 Intaker.INSTANCE.stop,
                 spinSpindex().thenWait(0.3),
                 scoreSecondSpikeMark(),
+                new FollowPath(thirdSpikeMarkPath),
+
                 Intaker.INSTANCE.run,
                 newIntakeThirdSpikeMark(),
                 Intaker.INSTANCE.stop,
@@ -355,10 +360,13 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
         return new SequentialGroup(
 
                 scorePreload(),
+                new FollowPath(spikeMark1),
+
                 Intaker.INSTANCE.run,
                 newIntakeFirstSpikeMark(),
                 Intaker.INSTANCE.stop,
                 scoreFirstSpikeMark(),
+                new FollowPath(secondSpikeMarkPath),
 
                 Intaker.INSTANCE.run,
                 newIntakeSecondSpikeMark(),
@@ -367,6 +375,8 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 spinSpindex().thenWait(0.3),
 
                 scoreSecondSpikeMark(),
+                new FollowPath(thirdSpikeMarkPath),
+
                 Intaker.INSTANCE.run,
                 newIntakeThirdSpikeMark(),
                 Intaker.INSTANCE.stop,
@@ -382,6 +392,8 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 spinSpindex().thenWait(0.3),
 
                 scorePreload(),
+                new FollowPath(spikeMark1),
+
                 Intaker.INSTANCE.run,
                 newIntakeFirstSpikeMark(),
                 Intaker.INSTANCE.stop,
@@ -389,11 +401,16 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 spinSpindex().thenWait(0.3),
 
                 scoreFirstSpikeMark(),
+
+                new FollowPath(secondSpikeMarkPath),
+
                 Intaker.INSTANCE.run,
                 newIntakeSecondSpikeMark(),
                 Intaker.INSTANCE.stop,
 
                 scoreSecondSpikeMark(),
+                new FollowPath(thirdSpikeMarkPath),
+
                 Intaker.INSTANCE.run,
                 newIntakeThirdSpikeMark(),
                 Intaker.INSTANCE.stop,
