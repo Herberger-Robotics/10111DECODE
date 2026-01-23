@@ -125,20 +125,15 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     };
 
     private Command newIntakeSecondSpikeMark(){
-        return new SequentialGroup(
+        return new ParallelGroup(
 
-                Intaker.INSTANCE.run,
-                new ParallelGroup(
-
-                     new FollowPath(newIntake1, true, 0.6),
-                        new SequentialGroup(
-                                new Delay(0.8),
-                                spinSpindex(),
-                                new Delay(0.8),
-                                spinSpindex()
-                        )
-                ),
-                Intaker.INSTANCE.stop
+                new FollowPath(newIntake1, true, 0.6),
+                new SequentialGroup(
+                        new Delay(0.5),
+                        spinSpindex(),
+                        new Delay(0.5),
+                        spinSpindex()
+                )
 
 
         );
@@ -171,20 +166,15 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     };
 
     private Command newIntakeFirstSpikeMark(){
-        return new SequentialGroup(
+        return new ParallelGroup(
 
-                Intaker.INSTANCE.run,
-                new ParallelGroup(
-
-                        new FollowPath(newIntake2, true, 0.6),
-                        new SequentialGroup(
-                                new Delay(0.8),
-                                spinSpindex(),
-                                new Delay(0.8),
-                                spinSpindex()
-                        )
-                ),
-                Intaker.INSTANCE.stop
+                new FollowPath(newIntake2, true, 0.6),
+                new SequentialGroup(
+                        new Delay(0.5),
+                        spinSpindex(),
+                        new Delay(0.5),
+                        spinSpindex()
+                )
 
 
         );
@@ -217,20 +207,17 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     };
 
     private Command newIntakeThirdSpikeMark(){
-        return new SequentialGroup(
+        return new ParallelGroup(
 
-                Intaker.INSTANCE.run,
-                new ParallelGroup(
 
-                        new FollowPath(newIntake3, true, 0.6),
-                        new SequentialGroup(
-                                new Delay(0.8),
-                                spinSpindex(),
-                                new Delay(0.8),
-                                spinSpindex()
-                        )
-                ),
-                Intaker.INSTANCE.stop
+                new FollowPath(newIntake3, true, 0.6),
+                new SequentialGroup(
+                        new Delay(0.5),
+                        spinSpindex(),
+                        new Delay(0.5),
+                        spinSpindex()
+                )
+
 
 
         );
@@ -342,19 +329,22 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 spinSpindex().thenWait(0.3),
                 spinSpindex().thenWait(0.3),
                 scorePreload(),
+                Intaker.INSTANCE.run,
                 newIntakeFirstSpikeMark(),
+                Intaker.INSTANCE.stop,
 
                 spinSpindex().thenWait(0.3),
                 spinSpindex().thenWait(0.3),
 
                 scoreFirstSpikeMark(),
-
+                Intaker.INSTANCE.run,
                 newIntakeSecondSpikeMark(),
-
+                Intaker.INSTANCE.stop,
                 spinSpindex().thenWait(0.3),
                 scoreSecondSpikeMark(),
-
+                Intaker.INSTANCE.run,
                 newIntakeThirdSpikeMark(),
+                Intaker.INSTANCE.stop,
                 scoreThirdSpikeMark(),
 
                 new FollowPath(secondIntake3,true)
@@ -365,21 +355,23 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
         return new SequentialGroup(
 
                 scorePreload(),
+                Intaker.INSTANCE.run,
                 newIntakeFirstSpikeMark(),
-
+                Intaker.INSTANCE.stop,
                 scoreFirstSpikeMark(),
-                newIntakeSecondSpikeMark(),
 
+                Intaker.INSTANCE.run,
+                newIntakeSecondSpikeMark(),
+                Intaker.INSTANCE.stop,
                 spinSpindex().thenWait(0.3),
                 spinSpindex().thenWait(0.3),
 
                 scoreSecondSpikeMark(),
-
+                Intaker.INSTANCE.run,
                 newIntakeThirdSpikeMark(),
+                Intaker.INSTANCE.stop,
                 scoreThirdSpikeMark(),
 
-                newIntakeThirdSpikeMark(),
-                scoreThirdSpikeMark(),
 
                 new FollowPath(secondIntake3,true)
         );
@@ -390,16 +382,21 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 spinSpindex().thenWait(0.3),
 
                 scorePreload(),
+                Intaker.INSTANCE.run,
                 newIntakeFirstSpikeMark(),
+                Intaker.INSTANCE.stop,
 
                 spinSpindex().thenWait(0.3),
 
                 scoreFirstSpikeMark(),
+                Intaker.INSTANCE.run,
                 newIntakeSecondSpikeMark(),
+                Intaker.INSTANCE.stop,
 
                 scoreSecondSpikeMark(),
-
+                Intaker.INSTANCE.run,
                 newIntakeThirdSpikeMark(),
+                Intaker.INSTANCE.stop,
                 scoreThirdSpikeMark(),
 
 
