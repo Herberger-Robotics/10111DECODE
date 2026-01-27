@@ -168,7 +168,7 @@ public class FirstSteps extends NextFTCOpMode {
         }
 
         if(gamepad1.squareWasPressed()){
-            Spindex.INSTANCE.newReTurn();
+            Spindex.INSTANCE.rapid();
         }
 
         if(gamepad1.triangleWasPressed()){
@@ -181,6 +181,10 @@ public class FirstSteps extends NextFTCOpMode {
 
         if(gamepad1.bWasPressed()){
             Intaker.INSTANCE.toggleIntake();
+        }
+
+        if(gamepad1.optionsWasPressed()){
+            Spindex.INSTANCE.newReTurn();
         }
 //
 //        if(gamepad1.dpadLeftWasPressed()){

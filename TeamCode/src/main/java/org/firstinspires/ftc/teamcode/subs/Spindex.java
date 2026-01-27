@@ -106,7 +106,7 @@ public class Spindex implements Subsystem {
         }
     }
     public void micro(){
-        target += tpr * .07;
+        target += tpr * .14;
     }
 
     public void rapid(){
