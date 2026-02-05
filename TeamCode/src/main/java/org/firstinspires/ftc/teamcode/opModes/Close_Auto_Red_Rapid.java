@@ -69,7 +69,7 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private final Pose thirdBallMark2 = new Pose(144 - 39.210,88.807 - 70,Math.toRadians(0));
     private final Pose thirdBallMark3 = new Pose(144 - 12,88.807 - 70,Math.toRadians(0));
 
-    private final Pose gateIntake = new Pose(144 - 12,88.807 - 46.5,Math.toRadians(28));
+    private final Pose gateIntake = new Pose(144 - 10,88.807 - 46.5,Math.toRadians(35));
 
 
 
@@ -248,18 +248,22 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     };
 
 
-    private Command cycle(){
+    private Command cycle2(){
         return new SequentialGroup(
                 new FollowPath(leverPathIntake,true),
                 new SequentialGroup(
                         new Delay(1.1),
                         spinSpindex(),
-                        new Delay(0.7),
-                        spinSpindex(),
                         new Delay(0.3),
-                        Shooter.INSTANCE.startclose,
-                        new FollowPath(shootGate,true),
 
+                        Shooter.INSTANCE.startclose,
+                        new ParallelGroup(
+                                new FollowPath(shootGate,true),
+                                new SequentialGroup(
+                                        new Delay(0.4),
+                                        spinSpindex().thenWait(0.2)
+                                )
+                                ),
                         rapid().thenWait(0.8),
                         Shooter.INSTANCE.stop
                 )
@@ -268,6 +272,29 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
         );
     };
 
+    private Command cycle1(){
+        return new SequentialGroup(
+                new FollowPath(leverPathIntake,true),
+                new SequentialGroup(
+                        new Delay(1.1),
+                        spinSpindex(),
+                        new Delay(0.5),
+
+                        Shooter.INSTANCE.startclose,
+                        new ParallelGroup(
+                                new FollowPath(shootGate,true),
+                                new SequentialGroup(
+                                        new Delay(0.4),
+                                        spinSpindex().thenWait(0.2)
+                                )
+                        ),
+                        rapid().thenWait(0.8),
+                        Shooter.INSTANCE.stop
+                )
+
+
+        );
+    };
 
     public void buildPaths(){
         testPath = follower().pathBuilder()
@@ -370,25 +397,30 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 .build();
 
         leverPathIntake = follower().pathBuilder()
-                .addPath(new BezierLine(initialFire, gateIntake))
+                .addPath(new BezierCurve(initialFire, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)), gateIntake))
                 .setLinearHeadingInterpolation(initialFire.getHeading(), gateIntake.getHeading())
                 .build();
 
         shootGate = follower().pathBuilder()
-                .addPath(new BezierLine(gateIntake, initialFire))
+                .addPath(new BezierCurve(gateIntake, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)),initialFire))
                 .setLinearHeadingInterpolation(gateIntake.getHeading(), initialFire.getHeading())
                 .build();
     }
 
     private Command GPP(){
         return new SequentialGroup(
-                new FollowPath(testPath),
+                scorePreload(),
                 Intaker.INSTANCE.run,
-                cycle(),
-                cycle(),
-                cycle(),
-                cycle()
-
+                new FollowPath(spikeMark1),
+                newIntakeSecondSpikeMark(),
+                scoreSecondSpikeMark(),
+                cycle1(),
+                cycle2(),
+                cycle2(),
+                new FollowPath(secondSpikeMarkPath),
+                newIntakeFirstSpikeMark(),
+                scoreFirstSpikeMark(),
+                Intaker.INSTANCE.stop
 
                 /*scorePreload(),
                 Intaker.INSTANCE.run,
