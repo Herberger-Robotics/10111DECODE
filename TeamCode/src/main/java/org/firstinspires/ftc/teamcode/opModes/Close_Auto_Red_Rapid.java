@@ -49,7 +49,7 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45));
 
-    private final Pose initialFire = new Pose(144 - 50.517,88.807 - 32,Math.toRadians(52));
+    private final Pose initialFire = new Pose(144 - 50.517,88.807- 26,Math.toRadians(54));
     private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0));
     private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0));
     private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
@@ -70,6 +70,10 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private final Pose thirdBallMark3 = new Pose(144 - 12,88.807 - 70,Math.toRadians(0));
 
     private final Pose gateIntake = new Pose(144 - 10,88.807 - 46.5,Math.toRadians(33.5));
+    private final Pose gateIntake2 = new Pose(144 - 9,88.807 - 49,Math.toRadians(60));
+
+    private final Pose gateIntake3 = new Pose(144 - 9,88.807 - 47,Math.toRadians(60));
+
 
 
 
@@ -104,6 +108,9 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private PathChain leverPath;
 
     private PathChain leverPathIntake;
+    private PathChain leverPathIntakePivot;
+
+    private PathChain leverPathIntakeShimmy;
 
     private PathChain shootGate;
     private Command scorePreload(){
@@ -112,8 +119,8 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 Shooter.INSTANCE.startclose,
                 new FollowPath(testPath,true),
 
-                rapid().thenWait(.6),
-                Shooter.INSTANCE.stop
+                rapid().thenWait(.5)
+
 
         );
     };
@@ -137,6 +144,10 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
                 new FollowPath(newIntake1, true, 0.7),
                 new SequentialGroup(
+                        new Delay(.2),
+                        Shooter.INSTANCE.stop
+                ),
+                new SequentialGroup(
                         new Delay(0.6),
                         spinSpindex(),
                         new Delay(0.4),
@@ -152,10 +163,12 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
         return new SequentialGroup(
 
                 Shooter.INSTANCE.startclose,
+                Intaker.INSTANCE.reverse,
                 new FollowPath(shootMark1,true),
 
-                rapid().thenWait(.6),
-                Shooter.INSTANCE.stop
+                rapid().thenWait(.5),
+                Intaker.INSTANCE.run
+
 
         );
     };
@@ -177,7 +190,10 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private Command newIntakeFirstSpikeMark(){
         return new ParallelGroup(
                 new FollowPath(newIntake2, true, 0.7),
-
+                new SequentialGroup(
+                        new Delay(.2),
+                        Shooter.INSTANCE.stop
+                ),
                 new SequentialGroup(
                         new Delay(0.6),
                         spinSpindex(),
@@ -194,10 +210,12 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
 
                 Shooter.INSTANCE.startclose,
+                Intaker.INSTANCE.reverse,
                 new FollowPath(secondShootMark1,true),
 
-                rapid().thenWait(.6),
-                Shooter.INSTANCE.stop
+                rapid().thenWait(.5),
+                Intaker.INSTANCE.run
+
 
         );
     };
@@ -218,30 +236,36 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     };
 
     private Command newIntakeThirdSpikeMark(){
-        return new SequentialGroup(
 
-                new ParallelGroup(
+        return new ParallelGroup(
 
 
                 new FollowPath(newIntake3, true, 0.7),
+                new SequentialGroup(
+                        new Delay(.2),
+                        Shooter.INSTANCE.stop
+                ),
                 new SequentialGroup(
                         new Delay(0.8),
                         spinSpindex(),
                         new Delay(0.4),
                         spinSpindex(),
                         new Delay(0.3)
+
                 )
 
-            )
         );
+
     };
     private Command scoreThirdSpikeMark(){
         return new SequentialGroup(
 
                 Shooter.INSTANCE.startclose,
+                Intaker.INSTANCE.reverse,
                 new FollowPath(thirdShootMark1,true),
 
-                rapid().thenWait(0.6),
+                rapid().thenWait(0.7),
+                Intaker.INSTANCE.stop,
                 Shooter.INSTANCE.stop
 
         );
@@ -250,7 +274,10 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
     private Command cycle2(){
         return new SequentialGroup(
-                new FollowPath(leverPathIntake,true),
+                new FollowPath(leverPathIntake,true).thenWait(.2),
+                new FollowPath(leverPathIntakePivot, true),
+                new ParallelGroup(
+                        new FollowPath(leverPathIntakeShimmy, true),
                 new SequentialGroup(
                         new Delay(1.1),
                         spinSpindex(),
@@ -261,11 +288,14 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                                 new FollowPath(shootGate,true),
                                 new SequentialGroup(
                                         new Delay(0.4),
-                                        spinSpindex().thenWait(0.2)
+                                        spinSpindex().thenWait(0.2),
+                                        Intaker.INSTANCE.reverse
                                 )
                                 ),
-                        rapid().thenWait(0.6),
-                        Shooter.INSTANCE.stop
+                        rapid().thenWait(0.7),
+                        Shooter.INSTANCE.stop,
+                        Intaker.INSTANCE.run
+                )
                 )
 
 
@@ -274,7 +304,8 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
     private Command cycle1(){
         return new SequentialGroup(
-                new FollowPath(leverPathIntake,true),
+                new FollowPath(leverPathIntake,true).thenWait(.1),
+                new FollowPath(leverPathIntakePivot, true),
                 new SequentialGroup(
                         new Delay(1.1),
                         spinSpindex(),
@@ -285,11 +316,13 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                                 new FollowPath(shootGate,true),
                                 new SequentialGroup(
                                         new Delay(0.4),
-                                        spinSpindex().thenWait(0.2)
+                                        spinSpindex().thenWait(0.2),
+                                        Intaker.INSTANCE.reverse
                                 )
                         ),
-                        rapid().thenWait(0.6),
-                        Shooter.INSTANCE.stop
+                        rapid().thenWait(0.7),
+                        Shooter.INSTANCE.stop,
+                        Intaker.INSTANCE.run
                 )
 
 
@@ -401,9 +434,19 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(initialFire.getHeading(), gateIntake.getHeading())
                 .build();
 
+        leverPathIntakePivot = follower().pathBuilder()
+                .addPath(new BezierLine(gateIntake, gateIntake2))
+                .setLinearHeadingInterpolation(gateIntake.getHeading(), gateIntake2.getHeading())
+                .build();
+
+        leverPathIntakeShimmy = follower().pathBuilder()
+                .addPath(new BezierCurve(gateIntake2, gateIntake3, gateIntake2))
+                .setLinearHeadingInterpolation(gateIntake2.getHeading(), gateIntake2.getHeading())
+                .build();
+
         shootGate = follower().pathBuilder()
-                .addPath(new BezierCurve(gateIntake, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)),initialFire))
-                .setLinearHeadingInterpolation(gateIntake.getHeading(), initialFire.getHeading())
+                .addPath(new BezierCurve(gateIntake2, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)),initialFire))
+                .setLinearHeadingInterpolation(gateIntake2.getHeading(), initialFire.getHeading())
                 .build();
     }
 
@@ -411,7 +454,13 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
         return new SequentialGroup(
                 scorePreload(),
                 Intaker.INSTANCE.run,
-                new FollowPath(spikeMark1),
+                new ParallelGroup(
+                        new FollowPath(spikeMark1),
+                        new SequentialGroup(
+                                new Delay(.2),
+                                Shooter.INSTANCE.stop
+                        )
+                ),
                 newIntakeSecondSpikeMark(),
                 scoreSecondSpikeMark(),
                 cycle1(),

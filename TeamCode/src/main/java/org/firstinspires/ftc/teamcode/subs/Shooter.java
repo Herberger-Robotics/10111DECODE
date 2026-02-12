@@ -18,7 +18,7 @@ public class Shooter implements Subsystem {
     public static BasicFeedforwardParameters ffcoefficients = new BasicFeedforwardParameters(0.0,0.0,0.0);
 
     public static double closevelo = 1650;
-    public static double farvelo = 2100;
+    public static double farvelo = 2200;
     public static final Shooter INSTANCE = new Shooter();
     private Shooter() { }
 
