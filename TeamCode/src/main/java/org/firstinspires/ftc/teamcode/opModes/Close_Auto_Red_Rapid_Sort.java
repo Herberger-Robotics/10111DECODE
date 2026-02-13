@@ -54,10 +54,10 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
     private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
     private final Pose ballMark3 = new Pose(144 - 17.0,88.807 - 45,Math.toRadians(0));
 
-    private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 20, Math.toRadians(0));
+    private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 23, Math.toRadians(0));
     private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0));
     private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0));
-    private final Pose secondBallMark3 = new Pose(144 - 24.210,88.807 - 20,Math.toRadians(0));
+    private final Pose secondBallMark3 = new Pose(144 - 25.210,88.807 - 23,Math.toRadians(0));
 
     private final Pose lever = new Pose(144 - 20.210,88.807 - 30,Math.toRadians(0));
     private final Pose backitup = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0));
@@ -205,11 +205,11 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 new FollowPath(newIntake2, true, 0.7),
 
                 new SequentialGroup(
-                        new Delay(0.4),
+                        new Delay(1),
                         spinSpindex(),
-                        new Delay(0.4),
+                        new Delay(0.5),
                         spinSpindex(),
-                        new Delay(0.3)
+                        new Delay(0.1)
 
                 )
         );
@@ -456,17 +456,19 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 scorePreload(),
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
+
                 newIntakeFirstSpikeMark(),
-                spinSpindex().thenWait(0.3),
                 new FollowPath(leverPath).thenWait(0.2),
+                spinSpindex().thenWait(0.6),
+
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
                 newIntakeSecondSpikeMark(),
                 scoreSecondSpikeMark(),
                 new FollowPath(thirdSpikeMarkPath),
                 newIntakeThirdSpikeMark(),
-                spinSpindex().thenWait(0.3),
-                spinSpindex().thenWait(0.3),
+                spinSpindex().thenWait(0.6),
+                spinSpindex().thenWait(0.6),
                 scoreThirdSpikeMark(),
                 Intaker.INSTANCE.stop
 
@@ -500,12 +502,12 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
                 newIntakeSecondSpikeMark(),
-                spinSpindex().thenWait(0.3),
-                spinSpindex().thenWait(0.3),
+                spinSpindex().thenWait(0.5),
+                spinSpindex().thenWait(0.5),
                 scoreSecondSpikeMark(),
                 new FollowPath(thirdSpikeMarkPath),
                 newIntakeThirdSpikeMark(),
-                spinSpindex().thenWait(0.3),
+                spinSpindex().thenWait(0.5),
                 scoreThirdSpikeMark(),
                 Intaker.INSTANCE.stop
 
@@ -536,12 +538,12 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 new FollowPath(secondSpikeMarkPath),
                 newIntakeFirstSpikeMark(),
                 new FollowPath(leverPath).thenWait(0.2),
-                spinSpindex().thenWait(0.3),
-                spinSpindex().thenWait(0.3),
+                spinSpindex().thenWait(0.5),
+                spinSpindex().thenWait(0.5),
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
                 newIntakeSecondSpikeMark(),
-                spinSpindex().thenWait(0.3),
+                spinSpindex().thenWait(0.5),
                 scoreSecondSpikeMark(),
                 new FollowPath(thirdSpikeMarkPath),
                 newIntakeThirdSpikeMark(),
