@@ -163,7 +163,7 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
         return new SequentialGroup(
 
                 Shooter.INSTANCE.startclose,
-                Intaker.INSTANCE.reverse,
+
                 new FollowPath(shootMark1,true),
 
                 rapid().thenWait(.5),
@@ -210,7 +210,7 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
 
                 Shooter.INSTANCE.startclose,
-                Intaker.INSTANCE.reverse,
+
                 new FollowPath(secondShootMark1,true),
 
                 rapid().thenWait(.5),
@@ -261,7 +261,7 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
         return new SequentialGroup(
 
                 Shooter.INSTANCE.startclose,
-                Intaker.INSTANCE.reverse,
+
                 new FollowPath(thirdShootMark1,true),
 
                 rapid().thenWait(0.7),
@@ -288,8 +288,8 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                                 new FollowPath(shootGate,true),
                                 new SequentialGroup(
                                         new Delay(0.4),
-                                        spinSpindex().thenWait(0.2),
-                                        Intaker.INSTANCE.reverse
+                                        spinSpindex().thenWait(0.2)
+
                                 )
                                 ),
                         rapid().thenWait(0.7),
@@ -316,8 +316,8 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                                 new FollowPath(shootGate,true),
                                 new SequentialGroup(
                                         new Delay(0.4),
-                                        spinSpindex().thenWait(0.2),
-                                        Intaker.INSTANCE.reverse
+                                        spinSpindex().thenWait(0.2)
+
                                 )
                         ),
                         rapid().thenWait(0.7),

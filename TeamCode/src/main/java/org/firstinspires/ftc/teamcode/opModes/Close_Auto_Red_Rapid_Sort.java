@@ -52,7 +52,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
     private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0));
     private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0));
     private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
-    private final Pose ballMark3 = new Pose(144 - 17.0,88.807 - 45,Math.toRadians(0));
+    private final Pose ballMark3 = new Pose(144 - 14.0,88.807 - 45,Math.toRadians(0));
 
     private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 23, Math.toRadians(0));
     private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0));
@@ -162,9 +162,9 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 new SequentialGroup(
                         new Delay(0.6),
                         spinSpindex(),
-                        new Delay(0.4),
+                        new Delay(0.5),
                         spinSpindex(),
-                        new Delay(.3)
+                        new Delay(.4)
                 )
 
 
@@ -174,7 +174,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
     private Command scoreSecondSpikeMark(){
         return new SequentialGroup(
 
-                Shooter.INSTANCE.startclose,
+                Shooter.INSTANCE.startclose.thenWait(0.3),
                 micro(),
                 new FollowPath(shootMark1,true),
                 turnSpindex().thenWait(0.6),
@@ -205,11 +205,11 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 new FollowPath(newIntake2, true, 0.7),
 
                 new SequentialGroup(
-                        new Delay(1),
+                        new Delay(0.7),
                         spinSpindex(),
-                        new Delay(0.5),
+                        new Delay(0.3),
                         spinSpindex(),
-                        new Delay(0.1)
+                        new Delay(0.3)
 
                 )
         );
@@ -219,7 +219,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
 
 
 
-                Shooter.INSTANCE.startclose,
+                Shooter.INSTANCE.startclose.thenWait(0.3),
                 micro(),
                 new FollowPath(secondShootMark1,true),
                 turnSpindex().thenWait(0.6),
@@ -256,9 +256,9 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 new SequentialGroup(
                         new Delay(0.8),
                         spinSpindex(),
-                        new Delay(0.4),
+                        new Delay(0.6),
                         spinSpindex(),
-                        new Delay(0.3)
+                        new Delay(0.4)
                 )
 
             )
@@ -267,7 +267,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
     private Command scoreThirdSpikeMark(){
         return new SequentialGroup(
 
-                Shooter.INSTANCE.startclose,
+                Shooter.INSTANCE.startclose.thenWait(0.3),
                 micro(),
                 new FollowPath(thirdShootMark1,true),
                 turnSpindex().thenWait(0.6),
@@ -451,13 +451,14 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 .build();
     }
 
-    private Command GPP(){
+    private Command PPG(){
         return new SequentialGroup(
                 scorePreload(),
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
 
                 newIntakeFirstSpikeMark(),
+
                 new FollowPath(leverPath).thenWait(0.2),
                 spinSpindex().thenWait(0.6),
 
@@ -471,6 +472,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 spinSpindex().thenWait(0.6),
                 scoreThirdSpikeMark(),
                 Intaker.INSTANCE.stop
+
 
                 /*scorePreload(),
                 Intaker.INSTANCE.run,
@@ -529,7 +531,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
 
         );
     }
-    private Command PPG(){
+    private Command GPP(){
         return new SequentialGroup(
 
 
