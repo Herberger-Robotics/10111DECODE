@@ -48,7 +48,7 @@ public class Sorted_Blue extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45)).mirror();
 
-    private final Pose initialFire = new Pose(144 - 52.517,88.807- 28.5,Math.toRadians(52)).mirror();
+    private final Pose initialFire = new Pose(144 - 52.517,88.807- 28.5,Math.toRadians(55)).mirror();
     private final Pose spikeMark = new Pose(144 - 38.406, 88.807 - 39, Math.toRadians(0)).mirror();
     private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0)).mirror();
     private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0)).mirror();
@@ -57,7 +57,7 @@ public class Sorted_Blue extends NextFTCOpMode {
     private final Pose secondSpikeMarkPos = new Pose(144 - 40.406, 88.807 - 17, Math.toRadians(0)).mirror();
     private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0)).mirror();
     private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0)).mirror();
-    private final Pose secondBallMark3 = new Pose(144 - 13.210,88.807 - 17,Math.toRadians(0)).mirror();
+    private final Pose secondBallMark3 = new Pose(144 - 12.210,88.807 - 17,Math.toRadians(0)).mirror();
 
     private final Pose lever = new Pose(144 - 10.210,88.807 - 25,Math.toRadians(0)).mirror();
     private final Pose backitup = new Pose(144 - 29.210,88.807 - 24,Math.toRadians(0)).mirror();
@@ -160,7 +160,7 @@ public class Sorted_Blue extends NextFTCOpMode {
 
                 new FollowPath(newIntake1, true, 0.7),
                 new SequentialGroup(
-                        new Delay(0.6),
+                        new Delay(0.9),
                         spinSpindex(),
                         new Delay(0.5),
                         spinSpindex(),
@@ -205,7 +205,7 @@ public class Sorted_Blue extends NextFTCOpMode {
                 new FollowPath(newIntake2, true, 0.7),
 
                 new SequentialGroup(
-                        new Delay(0.7),
+                        new Delay(1.3),
                         spinSpindex(),
                         new Delay(0.3),
                         spinSpindex(),
@@ -369,7 +369,7 @@ public class Sorted_Blue extends NextFTCOpMode {
 
         shootMark1 = follower().pathBuilder()
                 .addPath(new BezierCurve(ballMark3,
-                        new Pose(144 - 40.210,88.807 - 62,Math.toRadians(0)).mirror()
+                        new Pose(144 - 30.210,88.807 - 56,Math.toRadians(0)).mirror()
                         ,initialFire))
                 .setLinearHeadingInterpolation(ballMark3.getHeading(), initialFire.getHeading())
                 .build();
@@ -431,12 +431,12 @@ public class Sorted_Blue extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(ballMark2.getHeading(),ballMark3.getHeading())
                 .build();
         thirdShootMark1 = follower().pathBuilder()
-                .addPath(new BezierCurve(thirdBallMark3, new Pose(144 - 40.210,88.807 - 62,Math.toRadians(0)).mirror(), initialFire))
+                .addPath(new BezierCurve(thirdBallMark3, new Pose(144 - 30.210,88.807 - 56,Math.toRadians(0)).mirror(), initialFire))
                 .setLinearHeadingInterpolation(thirdBallMark3.getHeading(), initialFire.getHeading())
                 .build();
 
         leverPathIntake = follower().pathBuilder()
-                .addPath(new BezierCurve(initialFire, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)).mirror(), gateIntake))
+                .addPath(new BezierCurve(initialFire, new Pose(144 - 30,88.807 - 34,Math.toRadians(35)).mirror(), gateIntake))
                 .setLinearHeadingInterpolation(initialFire.getHeading(), gateIntake.getHeading())
                 .build();
 
@@ -446,7 +446,7 @@ public class Sorted_Blue extends NextFTCOpMode {
                 .build();
 
         shootGate = follower().pathBuilder()
-                .addPath(new BezierCurve(gateIntake2, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)).mirror(),initialFire))
+                .addPath(new BezierCurve(gateIntake2, new Pose(144 - 30,88.807 - 34,Math.toRadians(35)).mirror(),initialFire))
                 .setLinearHeadingInterpolation(gateIntake2.getHeading(), initialFire.getHeading())
                 .build();
     }

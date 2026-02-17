@@ -459,8 +459,14 @@ public class Sorted_Red extends NextFTCOpMode {
 
                 newIntakeFirstSpikeMark(),
 
-                Intaker.INSTANCE.stop,
-                new FollowPath(leverPath).thenWait(0.2),
+                new ParallelGroup(
+                        new SequentialGroup(
+                                new Delay(0.3),
+                                Intaker.INSTANCE.stop
+                        ),
+
+                        new FollowPath(leverPath).thenWait(0.2)
+                ),
                 spinSpindex().thenWait(0.6),
 
                 scoreFirstSpikeMark(),
@@ -504,8 +510,14 @@ public class Sorted_Red extends NextFTCOpMode {
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
                 newIntakeFirstSpikeMark(),
-                Intaker.INSTANCE.stop,
-                new FollowPath(leverPath).thenWait(0.2),
+                new ParallelGroup(
+                        new SequentialGroup(
+                                new Delay(0.3),
+                                Intaker.INSTANCE.stop
+                        ),
+
+                        new FollowPath(leverPath).thenWait(0.2)
+                ),
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
                 Intaker.INSTANCE.run,
@@ -545,11 +557,14 @@ public class Sorted_Red extends NextFTCOpMode {
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
                 newIntakeFirstSpikeMark(),
-
                 new ParallelGroup(
-                    Intaker.INSTANCE.stop,
-                    new FollowPath(leverPath).thenWait(0.2)
+                        new SequentialGroup(
+                                new Delay(0.3),
+                                Intaker.INSTANCE.stop
                         ),
+
+                        new FollowPath(leverPath).thenWait(0.2)
+                ),
                 spinSpindex().thenWait(0.5),
                 spinSpindex().thenWait(0.5),
                 scoreFirstSpikeMark(),
