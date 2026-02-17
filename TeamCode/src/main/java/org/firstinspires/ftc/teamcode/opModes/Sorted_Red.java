@@ -459,11 +459,15 @@ public class Sorted_Red extends NextFTCOpMode {
 
                 newIntakeFirstSpikeMark(),
 
+                Intaker.INSTANCE.stop,
                 new FollowPath(leverPath).thenWait(0.2),
                 spinSpindex().thenWait(0.6),
 
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
+
+                Intaker.INSTANCE.run,
+
                 newIntakeSecondSpikeMark(),
                 scoreSecondSpikeMark(),
                 new FollowPath(thirdSpikeMarkPath),
@@ -500,9 +504,11 @@ public class Sorted_Red extends NextFTCOpMode {
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
                 newIntakeFirstSpikeMark(),
+                Intaker.INSTANCE.stop,
                 new FollowPath(leverPath).thenWait(0.2),
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
+                Intaker.INSTANCE.run,
                 newIntakeSecondSpikeMark(),
                 spinSpindex().thenWait(0.5),
                 spinSpindex().thenWait(0.5),
@@ -539,11 +545,17 @@ public class Sorted_Red extends NextFTCOpMode {
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
                 newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath).thenWait(0.2),
+
+                new ParallelGroup(
+                    Intaker.INSTANCE.stop,
+                    new FollowPath(leverPath).thenWait(0.2)
+                        ),
                 spinSpindex().thenWait(0.5),
                 spinSpindex().thenWait(0.5),
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
+
+                Intaker.INSTANCE.run,
                 newIntakeSecondSpikeMark(),
                 spinSpindex().thenWait(0.5),
                 scoreSecondSpikeMark(),

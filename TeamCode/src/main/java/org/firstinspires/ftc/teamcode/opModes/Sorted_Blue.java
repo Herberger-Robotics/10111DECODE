@@ -48,28 +48,28 @@ public class Sorted_Blue extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45)).mirror();
 
-    private final Pose initialFire = new Pose(144 - 50.517,88.807- 26,Math.toRadians(54)).mirror();
-    private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0)).mirror();
+    private final Pose initialFire = new Pose(144 - 52.517,88.807- 28.5,Math.toRadians(52)).mirror();
+    private final Pose spikeMark = new Pose(144 - 38.406, 88.807 - 39, Math.toRadians(0)).mirror();
     private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0)).mirror();
     private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0)).mirror();
-    private final Pose ballMark3 = new Pose(144 - 14.0,88.807 - 45,Math.toRadians(0)).mirror();
+    private final Pose ballMark3 = new Pose(144 - 4.0,88.807 - 39,Math.toRadians(0)).mirror();
 
-    private final Pose secondSpikeMarkPos = new Pose(144 - 40.406, 88.807 - 23, Math.toRadians(0)).mirror();
+    private final Pose secondSpikeMarkPos = new Pose(144 - 40.406, 88.807 - 17, Math.toRadians(0)).mirror();
     private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0)).mirror();
     private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0)).mirror();
-    private final Pose secondBallMark3 = new Pose(144 - 17.210,88.807 - 23,Math.toRadians(0)).mirror();
+    private final Pose secondBallMark3 = new Pose(144 - 13.210,88.807 - 17,Math.toRadians(0)).mirror();
 
-    private final Pose lever = new Pose(144 - 20.210,88.807 - 30,Math.toRadians(0)).mirror();
-    private final Pose backitup = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0)).mirror();
+    private final Pose lever = new Pose(144 - 10.210,88.807 - 25,Math.toRadians(0)).mirror();
+    private final Pose backitup = new Pose(144 - 29.210,88.807 - 24,Math.toRadians(0)).mirror();
 
 
-    private final Pose thirdSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 70, Math.toRadians(0)).mirror();
+    private final Pose thirdSpikeMarkPos = new Pose(144 - 38.406, 88.807 - 64, Math.toRadians(0)).mirror();
     private final Pose thirdBallMark1 = new Pose(144 - 44.210,88.807 - 70,Math.toRadians(0)).mirror();
     private final Pose thirdBallMark2 = new Pose(144 - 39.210,88.807 - 70,Math.toRadians(0)).mirror();
-    private final Pose thirdBallMark3 = new Pose(144 - 12,88.807 - 70,Math.toRadians(0)).mirror();
+    private final Pose thirdBallMark3 = new Pose(144 - 2,88.807 - 64,Math.toRadians(0)).mirror();
 
-    private final Pose gateIntake = new Pose(144 - 10,88.807 - 46.5,Math.toRadians(33.5)).mirror();
-    private final Pose gateIntake2 = new Pose(144 - 9,88.807 - 49,Math.toRadians(60)).mirror();
+    private final Pose gateIntake = new Pose(144 - 0,88.807 - 40.5,Math.toRadians(33.5)).mirror();
+    private final Pose gateIntake2 = new Pose(144 + 1,88.807 - 43,Math.toRadians(60)).mirror();
 
 
 
@@ -456,14 +456,23 @@ public class Sorted_Blue extends NextFTCOpMode {
                 scorePreload(),
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
-
                 newIntakeFirstSpikeMark(),
 
-                new FollowPath(leverPath).thenWait(0.2),
-                spinSpindex().thenWait(0.6),
 
+                new ParallelGroup(
+                        new SequentialGroup(
+                                new Delay(0.3),
+                                Intaker.INSTANCE.stop
+                        ),
+
+                        new FollowPath(leverPath).thenWait(0.2)
+                ),
+                spinSpindex().thenWait(0.6),
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
+
+                Intaker.INSTANCE.run,
+
                 newIntakeSecondSpikeMark(),
                 scoreSecondSpikeMark(),
                 new FollowPath(thirdSpikeMarkPath),
@@ -500,9 +509,20 @@ public class Sorted_Blue extends NextFTCOpMode {
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
                 newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath).thenWait(0.2),
+                new ParallelGroup(
+                        new SequentialGroup(
+                                new Delay(0.3),
+                                Intaker.INSTANCE.stop
+                        ),
+
+                        new FollowPath(leverPath).thenWait(0.2)
+                ),
+
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
+
+                Intaker.INSTANCE.run,
+
                 newIntakeSecondSpikeMark(),
                 spinSpindex().thenWait(0.5),
                 spinSpindex().thenWait(0.5),
@@ -539,11 +559,21 @@ public class Sorted_Blue extends NextFTCOpMode {
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
                 newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath).thenWait(0.2),
+
+                new ParallelGroup(
+                        new SequentialGroup(
+                                new Delay(0.3),
+                                Intaker.INSTANCE.stop
+                        ),
+
+                        new FollowPath(leverPath).thenWait(0.2)
+                ),
+
                 spinSpindex().thenWait(0.5),
                 spinSpindex().thenWait(0.5),
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
+                Intaker.INSTANCE.run,
                 newIntakeSecondSpikeMark(),
                 spinSpindex().thenWait(0.5),
                 scoreSecondSpikeMark(),
