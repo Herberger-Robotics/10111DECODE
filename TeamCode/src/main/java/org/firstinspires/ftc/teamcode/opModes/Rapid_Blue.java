@@ -14,8 +14,6 @@ import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
 
 import dev.nextftc.core.commands.Command;
-import dev.nextftc.core.commands.delays.Delay;
-import dev.nextftc.core.commands.groups.ParallelGroup;
 import dev.nextftc.core.commands.groups.SequentialGroup;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.SubsystemComponent;
@@ -29,9 +27,9 @@ import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 import java.util.List;
 
 
-@Autonomous(name = "Blue Close Auto", preselectTeleOp = "Drive")
-public class Close_Auto_Blue extends NextFTCOpMode {
-    public Close_Auto_Blue() {
+@Autonomous(name = "Blitzin' Blue", preselectTeleOp = "Drive")
+public class Rapid_Blue extends NextFTCOpMode {
+    public Rapid_Blue() {
         addComponents(
                 new SubsystemComponent(
                         Shooter.INSTANCE,

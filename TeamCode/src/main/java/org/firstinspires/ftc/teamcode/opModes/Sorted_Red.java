@@ -26,14 +26,13 @@ import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.components.SubsystemComponent;
 import dev.nextftc.extensions.pedro.FollowPath;
 import dev.nextftc.extensions.pedro.PedroComponent;
-import dev.nextftc.extensions.pedro.TurnTo;
 import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 
-@Autonomous(name = "Rapid Red Close Auto", preselectTeleOp = "Drive")
-public class Close_Auto_Red_Rapid extends NextFTCOpMode {
-    public Close_Auto_Red_Rapid() {
+@Autonomous(name = "Sorted Red", preselectTeleOp = "Drive")
+public class Sorted_Red extends NextFTCOpMode {
+    public Sorted_Red() {
         addComponents(
                 new SubsystemComponent(
                         Shooter.INSTANCE,
@@ -53,12 +52,12 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0));
     private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0));
     private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
-    private final Pose ballMark3 = new Pose(144 - 17.0,88.807 - 45,Math.toRadians(0));
+    private final Pose ballMark3 = new Pose(144 - 14.0,88.807 - 45,Math.toRadians(0));
 
-    private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 20, Math.toRadians(0));
+    private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 23, Math.toRadians(0));
     private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0));
     private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0));
-    private final Pose secondBallMark3 = new Pose(144 - 24.210,88.807 - 20,Math.toRadians(0));
+    private final Pose secondBallMark3 = new Pose(144 - 25.210,88.807 - 23,Math.toRadians(0));
 
     private final Pose lever = new Pose(144 - 20.210,88.807 - 30,Math.toRadians(0));
     private final Pose backitup = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0));
@@ -71,9 +70,6 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
     private final Pose gateIntake = new Pose(144 - 10,88.807 - 46.5,Math.toRadians(33.5));
     private final Pose gateIntake2 = new Pose(144 - 9,88.807 - 49,Math.toRadians(60));
-
-    private final Pose gateIntake3 = new Pose(144 - 9,88.807 - 47,Math.toRadians(60));
-
 
 
 
@@ -110,17 +106,37 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private PathChain leverPathIntake;
     private PathChain leverPathIntakePivot;
 
-    private PathChain leverPathIntakeShimmy;
-
     private PathChain shootGate;
+    private Command scorePreloadSlow(){
+        return new SequentialGroup(
+
+                Shooter.INSTANCE.startclose,
+
+
+
+                micro(),
+
+                new FollowPath(testPath,true),
+                turnSpindex().thenWait(0.6),
+                turnSpindex().thenWait(0.6),
+                turnSpindex().thenWait(0.6),
+                zero(),
+
+
+
+                Shooter.INSTANCE.stop
+
+        );
+    };
+
     private Command scorePreload(){
         return new SequentialGroup(
 
                 Shooter.INSTANCE.startclose,
                 new FollowPath(testPath,true),
 
-                rapid().thenWait(.5)
-
+                rapid().thenWait(.7),
+                Shooter.INSTANCE.stop
 
         );
     };
@@ -144,15 +160,11 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
                 new FollowPath(newIntake1, true, 0.7),
                 new SequentialGroup(
-                        new Delay(.2),
-                        Shooter.INSTANCE.stop
-                ),
-                new SequentialGroup(
                         new Delay(0.6),
                         spinSpindex(),
-                        new Delay(0.4),
+                        new Delay(0.5),
                         spinSpindex(),
-                        new Delay(.3)
+                        new Delay(.4)
                 )
 
 
@@ -162,13 +174,14 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private Command scoreSecondSpikeMark(){
         return new SequentialGroup(
 
-                Shooter.INSTANCE.startclose,
-
+                Shooter.INSTANCE.startclose.thenWait(0.3),
+                micro(),
                 new FollowPath(shootMark1,true),
-
-                rapid().thenWait(.5),
-                Intaker.INSTANCE.run
-
+                turnSpindex().thenWait(0.6),
+                turnSpindex().thenWait(0.6),
+                turnSpindex().thenWait(0.6),
+                zero(),
+                Shooter.INSTANCE.stop
 
         );
     };
@@ -190,14 +203,11 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     private Command newIntakeFirstSpikeMark(){
         return new ParallelGroup(
                 new FollowPath(newIntake2, true, 0.7),
+
                 new SequentialGroup(
-                        new Delay(.2),
-                        Shooter.INSTANCE.stop
-                ),
-                new SequentialGroup(
-                        new Delay(0.6),
+                        new Delay(0.7),
                         spinSpindex(),
-                        new Delay(0.4),
+                        new Delay(0.3),
                         spinSpindex(),
                         new Delay(0.3)
 
@@ -209,13 +219,14 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
 
 
-                Shooter.INSTANCE.startclose,
-
+                Shooter.INSTANCE.startclose.thenWait(0.3),
+                micro(),
                 new FollowPath(secondShootMark1,true),
-
-                rapid().thenWait(.5),
-                Intaker.INSTANCE.run
-
+                turnSpindex().thenWait(0.6),
+                turnSpindex().thenWait(0.6),
+                turnSpindex().thenWait(0.6),
+                zero(),
+                Shooter.INSTANCE.stop
 
         );
     };
@@ -236,36 +247,33 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
     };
 
     private Command newIntakeThirdSpikeMark(){
+        return new SequentialGroup(
 
-        return new ParallelGroup(
+                new ParallelGroup(
 
 
                 new FollowPath(newIntake3, true, 0.7),
                 new SequentialGroup(
-                        new Delay(.2),
-                        Shooter.INSTANCE.stop
-                ),
-                new SequentialGroup(
                         new Delay(0.8),
                         spinSpindex(),
-                        new Delay(0.4),
+                        new Delay(0.6),
                         spinSpindex(),
-                        new Delay(0.3)
-
+                        new Delay(0.4)
                 )
 
+            )
         );
-
     };
     private Command scoreThirdSpikeMark(){
         return new SequentialGroup(
 
-                Shooter.INSTANCE.startclose,
-
+                Shooter.INSTANCE.startclose.thenWait(0.3),
+                micro(),
                 new FollowPath(thirdShootMark1,true),
-
-                rapid().thenWait(0.7),
-                Intaker.INSTANCE.stop,
+                turnSpindex().thenWait(0.6),
+                turnSpindex().thenWait(0.6),
+                turnSpindex().thenWait(0.6),
+                zero(),
                 Shooter.INSTANCE.stop
 
         );
@@ -274,10 +282,9 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
     private Command cycle2(){
         return new SequentialGroup(
-                new FollowPath(leverPathIntake,true).thenWait(.2),
+                new FollowPath(leverPathIntake,true),
                 new FollowPath(leverPathIntakePivot, true),
-                new ParallelGroup(
-                        new FollowPath(leverPathIntakeShimmy, true),
+
                 new SequentialGroup(
                         new Delay(1.1),
                         spinSpindex(),
@@ -289,13 +296,10 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                                 new SequentialGroup(
                                         new Delay(0.4),
                                         spinSpindex().thenWait(0.2)
-
                                 )
                                 ),
-                        rapid().thenWait(0.7),
-                        Shooter.INSTANCE.stop,
-                        Intaker.INSTANCE.run
-                )
+                        rapid().thenWait(0.5),
+                        Shooter.INSTANCE.stop
                 )
 
 
@@ -304,7 +308,7 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
     private Command cycle1(){
         return new SequentialGroup(
-                new FollowPath(leverPathIntake,true).thenWait(.1),
+                new FollowPath(leverPathIntake,true),
                 new FollowPath(leverPathIntakePivot, true),
                 new SequentialGroup(
                         new Delay(1.1),
@@ -317,12 +321,14 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                                 new SequentialGroup(
                                         new Delay(0.4),
                                         spinSpindex().thenWait(0.2)
-
                                 )
                         ),
-                        rapid().thenWait(0.7),
-                        Shooter.INSTANCE.stop,
-                        Intaker.INSTANCE.run
+                        micro(),
+                        turnSpindex().thenWait(0.6),
+                        turnSpindex().thenWait(0.6),
+                        turnSpindex().thenWait(0.6),
+                        zero(),
+                        Shooter.INSTANCE.stop
                 )
 
 
@@ -439,39 +445,34 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(gateIntake.getHeading(), gateIntake2.getHeading())
                 .build();
 
-        leverPathIntakeShimmy = follower().pathBuilder()
-                .addPath(new BezierCurve(gateIntake2, gateIntake3, gateIntake2))
-                .setLinearHeadingInterpolation(gateIntake2.getHeading(), gateIntake2.getHeading())
-                .build();
-
         shootGate = follower().pathBuilder()
                 .addPath(new BezierCurve(gateIntake2, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)),initialFire))
                 .setLinearHeadingInterpolation(gateIntake2.getHeading(), initialFire.getHeading())
                 .build();
     }
 
-    private Command GPP(){
+    private Command PPG(){
         return new SequentialGroup(
                 scorePreload(),
                 Intaker.INSTANCE.run,
-                new ParallelGroup(
-                        new FollowPath(spikeMark1),
-                        new SequentialGroup(
-                                new Delay(.2),
-                                Shooter.INSTANCE.stop
-                        )
-                ),
+                new FollowPath(secondSpikeMarkPath),
+
+                newIntakeFirstSpikeMark(),
+
+                new FollowPath(leverPath).thenWait(0.2),
+                spinSpindex().thenWait(0.6),
+
+                scoreFirstSpikeMark(),
+                new FollowPath(spikeMark1),
                 newIntakeSecondSpikeMark(),
                 scoreSecondSpikeMark(),
-                cycle1(),
-                cycle2(),
-                new FollowPath(secondSpikeMarkPath),
-                newIntakeFirstSpikeMark(),
-                scoreFirstSpikeMark(),
                 new FollowPath(thirdSpikeMarkPath),
                 newIntakeThirdSpikeMark(),
+                spinSpindex().thenWait(0.6),
+                spinSpindex().thenWait(0.6),
                 scoreThirdSpikeMark(),
                 Intaker.INSTANCE.stop
+
 
                 /*scorePreload(),
                 Intaker.INSTANCE.run,
@@ -499,14 +500,18 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
                 newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath),
+                new FollowPath(leverPath).thenWait(0.2),
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
                 newIntakeSecondSpikeMark(),
+                spinSpindex().thenWait(0.5),
+                spinSpindex().thenWait(0.5),
                 scoreSecondSpikeMark(),
                 new FollowPath(thirdSpikeMarkPath),
                 newIntakeThirdSpikeMark(),
-                scoreThirdSpikeMark()
+                spinSpindex().thenWait(0.5),
+                scoreThirdSpikeMark(),
+                Intaker.INSTANCE.stop
 
 //                new FollowPath(spikeMark1),
 //
@@ -526,23 +531,26 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
 
         );
     }
-    private Command PPG(){
+    private Command GPP(){
         return new SequentialGroup(
 
 
                 scorePreload(),
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
-                
                 newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath),
+                new FollowPath(leverPath).thenWait(0.2),
+                spinSpindex().thenWait(0.5),
+                spinSpindex().thenWait(0.5),
                 scoreFirstSpikeMark(),
                 new FollowPath(spikeMark1),
                 newIntakeSecondSpikeMark(),
+                spinSpindex().thenWait(0.5),
                 scoreSecondSpikeMark(),
                 new FollowPath(thirdSpikeMarkPath),
                 newIntakeThirdSpikeMark(),
-                scoreThirdSpikeMark()
+                scoreThirdSpikeMark(),
+                Intaker.INSTANCE.stop
 
 
 //
@@ -578,12 +586,12 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
         int result = processLimelightResults();
 
         if(result == 21){
-            pathType = 0;
+            pathType = 2;
         } else if(result == 22){
-            pathType = 1;
+            pathType = 0;
 
         } else if(result == 23){
-            pathType = 2;
+            pathType = 1;
         }else{
             pathType = 0;
         }
@@ -599,10 +607,10 @@ public class Close_Auto_Red_Rapid extends NextFTCOpMode {
                 GPP().schedule();
                 break;
             case 1:
-                GPP().schedule();
+                PGP().schedule();
                 break;
             case 2:
-                GPP().schedule();
+                PPG().schedule();
         }
 
         stopLimelight();

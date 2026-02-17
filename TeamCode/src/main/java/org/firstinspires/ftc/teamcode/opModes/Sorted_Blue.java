@@ -30,9 +30,9 @@ import dev.nextftc.ftc.NextFTCOpMode;
 import dev.nextftc.ftc.components.BulkReadComponent;
 
 
-@Autonomous(name = "Rapid Red Close Auto Sort", preselectTeleOp = "Drive")
-public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
-    public Close_Auto_Red_Rapid_Sort() {
+@Autonomous(name = "Sorted Blue", preselectTeleOp = "Drive")
+public class Sorted_Blue extends NextFTCOpMode {
+    public Sorted_Blue() {
         addComponents(
                 new SubsystemComponent(
                         Shooter.INSTANCE,
@@ -46,30 +46,30 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
     private Limelight3A limelight;
 
     int pathType = 1;
-    private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45));
+    private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45)).mirror();
 
-    private final Pose initialFire = new Pose(144 - 50.517,88.807- 26,Math.toRadians(54));
-    private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0));
-    private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0));
-    private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
-    private final Pose ballMark3 = new Pose(144 - 14.0,88.807 - 45,Math.toRadians(0));
+    private final Pose initialFire = new Pose(144 - 50.517,88.807- 26,Math.toRadians(54)).mirror();
+    private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0)).mirror();
+    private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0)).mirror();
+    private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0)).mirror();
+    private final Pose ballMark3 = new Pose(144 - 14.0,88.807 - 45,Math.toRadians(0)).mirror();
 
-    private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 23, Math.toRadians(0));
-    private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0));
-    private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0));
-    private final Pose secondBallMark3 = new Pose(144 - 25.210,88.807 - 23,Math.toRadians(0));
+    private final Pose secondSpikeMarkPos = new Pose(144 - 40.406, 88.807 - 23, Math.toRadians(0)).mirror();
+    private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0)).mirror();
+    private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0)).mirror();
+    private final Pose secondBallMark3 = new Pose(144 - 17.210,88.807 - 23,Math.toRadians(0)).mirror();
 
-    private final Pose lever = new Pose(144 - 20.210,88.807 - 30,Math.toRadians(0));
-    private final Pose backitup = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0));
+    private final Pose lever = new Pose(144 - 20.210,88.807 - 30,Math.toRadians(0)).mirror();
+    private final Pose backitup = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0)).mirror();
 
 
-    private final Pose thirdSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 70, Math.toRadians(0));
-    private final Pose thirdBallMark1 = new Pose(144 - 44.210,88.807 - 70,Math.toRadians(0));
-    private final Pose thirdBallMark2 = new Pose(144 - 39.210,88.807 - 70,Math.toRadians(0));
-    private final Pose thirdBallMark3 = new Pose(144 - 12,88.807 - 70,Math.toRadians(0));
+    private final Pose thirdSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 70, Math.toRadians(0)).mirror();
+    private final Pose thirdBallMark1 = new Pose(144 - 44.210,88.807 - 70,Math.toRadians(0)).mirror();
+    private final Pose thirdBallMark2 = new Pose(144 - 39.210,88.807 - 70,Math.toRadians(0)).mirror();
+    private final Pose thirdBallMark3 = new Pose(144 - 12,88.807 - 70,Math.toRadians(0)).mirror();
 
-    private final Pose gateIntake = new Pose(144 - 10,88.807 - 46.5,Math.toRadians(33.5));
-    private final Pose gateIntake2 = new Pose(144 - 9,88.807 - 49,Math.toRadians(60));
+    private final Pose gateIntake = new Pose(144 - 10,88.807 - 46.5,Math.toRadians(33.5)).mirror();
+    private final Pose gateIntake2 = new Pose(144 - 9,88.807 - 49,Math.toRadians(60)).mirror();
 
 
 
@@ -252,16 +252,16 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 new ParallelGroup(
 
 
-                new FollowPath(newIntake3, true, 0.7),
-                new SequentialGroup(
-                        new Delay(0.8),
-                        spinSpindex(),
-                        new Delay(0.6),
-                        spinSpindex(),
-                        new Delay(0.4)
-                )
+                        new FollowPath(newIntake3, true, 0.7),
+                        new SequentialGroup(
+                                new Delay(0.8),
+                                spinSpindex(),
+                                new Delay(0.6),
+                                spinSpindex(),
+                                new Delay(0.4)
+                        )
 
-            )
+                )
         );
     };
     private Command scoreThirdSpikeMark(){
@@ -297,7 +297,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                                         new Delay(0.4),
                                         spinSpindex().thenWait(0.2)
                                 )
-                                ),
+                        ),
                         rapid().thenWait(0.5),
                         Shooter.INSTANCE.stop
                 )
@@ -369,7 +369,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
 
         shootMark1 = follower().pathBuilder()
                 .addPath(new BezierCurve(ballMark3,
-                        new Pose(144 - 40.210,88.807 - 62,Math.toRadians(0))
+                        new Pose(144 - 40.210,88.807 - 62,Math.toRadians(0)).mirror()
                         ,initialFire))
                 .setLinearHeadingInterpolation(ballMark3.getHeading(), initialFire.getHeading())
                 .build();
@@ -431,12 +431,12 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(ballMark2.getHeading(),ballMark3.getHeading())
                 .build();
         thirdShootMark1 = follower().pathBuilder()
-                .addPath(new BezierCurve(thirdBallMark3, new Pose(144 - 40.210,88.807 - 62,Math.toRadians(0)), initialFire))
+                .addPath(new BezierCurve(thirdBallMark3, new Pose(144 - 40.210,88.807 - 62,Math.toRadians(0)).mirror(), initialFire))
                 .setLinearHeadingInterpolation(thirdBallMark3.getHeading(), initialFire.getHeading())
                 .build();
 
         leverPathIntake = follower().pathBuilder()
-                .addPath(new BezierCurve(initialFire, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)), gateIntake))
+                .addPath(new BezierCurve(initialFire, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)).mirror(), gateIntake))
                 .setLinearHeadingInterpolation(initialFire.getHeading(), gateIntake.getHeading())
                 .build();
 
@@ -446,7 +446,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
                 .build();
 
         shootGate = follower().pathBuilder()
-                .addPath(new BezierCurve(gateIntake2, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)),initialFire))
+                .addPath(new BezierCurve(gateIntake2, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)).mirror(),initialFire))
                 .setLinearHeadingInterpolation(gateIntake2.getHeading(), initialFire.getHeading())
                 .build();
     }
@@ -520,7 +520,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
 //                Intaker.INSTANCE.stop,
 
 
-             //   scoreSecondSpikeMark(),
+                //   scoreSecondSpikeMark(),
 //                new FollowPath(thirdSpikeMarkPath),
 //
 //                Intaker.INSTANCE.run,
@@ -560,7 +560,7 @@ public class Close_Auto_Red_Rapid_Sort extends NextFTCOpMode {
 //                newIntakeSecondSpikeMark(),
 //                Intaker.INSTANCE.stop,
 
-               // scoreSecondSpikeMark(),
+                // scoreSecondSpikeMark(),
 //                new FollowPath(thirdSpikeMarkPath),
 //
 //                Intaker.INSTANCE.run,
