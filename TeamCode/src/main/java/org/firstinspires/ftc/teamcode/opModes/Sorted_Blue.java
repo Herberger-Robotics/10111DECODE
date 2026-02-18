@@ -46,30 +46,31 @@ public class Sorted_Blue extends NextFTCOpMode {
     private Limelight3A limelight;
 
     int pathType = 1;
-    private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45)).mirror();
+    private final Pose startPose = new Pose(17.5,  118.16, Math.toRadians(137));
 
-    private final Pose initialFire = new Pose(144 - 52.517,88.807- 28.5,Math.toRadians(55)).mirror();
-    private final Pose spikeMark = new Pose(144 - 38.406, 88.807 - 39, Math.toRadians(0)).mirror();
-    private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0)).mirror();
-    private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0)).mirror();
-    private final Pose ballMark3 = new Pose(144 - 4.0,88.807 - 39,Math.toRadians(0)).mirror();
-
-    private final Pose secondSpikeMarkPos = new Pose(144 - 40.406, 88.807 - 17, Math.toRadians(0)).mirror();
-    private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0)).mirror();
-    private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0)).mirror();
-    private final Pose secondBallMark3 = new Pose(144 - 12.210,88.807 - 17,Math.toRadians(0)).mirror();
-
-    private final Pose lever = new Pose(144 - 10.210,88.807 - 25,Math.toRadians(0)).mirror();
-    private final Pose backitup = new Pose(144 - 29.210,88.807 - 24,Math.toRadians(0)).mirror();
+    private final Pose initialFire = new Pose( 44.28,78.1,Math.toRadians(127));
 
 
-    private final Pose thirdSpikeMarkPos = new Pose(144 - 38.406, 88.807 - 64, Math.toRadians(0)).mirror();
-    private final Pose thirdBallMark1 = new Pose(144 - 44.210,88.807 - 70,Math.toRadians(0)).mirror();
-    private final Pose thirdBallMark2 = new Pose(144 - 39.210,88.807 - 70,Math.toRadians(0)).mirror();
-    private final Pose thirdBallMark3 = new Pose(144 - 2,88.807 - 64,Math.toRadians(0)).mirror();
 
-    private final Pose gateIntake = new Pose(144 - 0,88.807 - 40.5,Math.toRadians(33.5)).mirror();
-    private final Pose gateIntake2 = new Pose(144 + 1,88.807 - 43,Math.toRadians(60)).mirror();
+    private final Pose spikeMark = new Pose( 36.406, 63, Math.toRadians(180));
+
+    private final Pose ballMark3 = new Pose( 1.0,63,Math.toRadians(180));
+
+
+
+    private final Pose secondSpikeMarkPos = new Pose( 39, 85.4, Math.toRadians(180));
+
+    private final Pose secondBallMark3 = new Pose( 11.210,85.4,Math.toRadians(180));
+
+    private final Pose lever = new Pose( 8.210,74.6,Math.toRadians(180));
+    private final Pose backitup = new Pose( 29.210,76.83,Math.toRadians(180));
+
+
+    private final Pose thirdSpikeMarkPos = new Pose(40.406, 37, Math.toRadians(180));
+
+    private final Pose thirdBallMark3 = new Pose(2,37,Math.toRadians(180));
+
+
 
 
 
@@ -78,56 +79,25 @@ public class Sorted_Blue extends NextFTCOpMode {
 
     private PathChain testPath;
     private PathChain spikeMark1;
-    private PathChain intake1;
-    private PathChain intake2;
-    private PathChain intake3;
 
     private PathChain newIntake1;
     private PathChain shootMark1;
 
     private PathChain secondSpikeMarkPath;
-    private PathChain secondIntake1;
-    private PathChain secondIntake2;
-    private PathChain secondIntake3;
+
 
     private PathChain newIntake2;
     private PathChain secondShootMark1;
 
     private PathChain thirdSpikeMarkPath;
-    private PathChain thirdIntake1;
-    private PathChain thirdIntake2;
-    private PathChain thirdIntake3;
+
 
     private PathChain newIntake3;
     private PathChain thirdShootMark1;
 
     private PathChain leverPath;
 
-    private PathChain leverPathIntake;
-    private PathChain leverPathIntakePivot;
 
-    private PathChain shootGate;
-    private Command scorePreloadSlow(){
-        return new SequentialGroup(
-
-                Shooter.INSTANCE.startclose,
-
-
-
-                micro(),
-
-                new FollowPath(testPath,true),
-                turnSpindex().thenWait(0.6),
-                turnSpindex().thenWait(0.6),
-                turnSpindex().thenWait(0.6),
-                zero(),
-
-
-
-                Shooter.INSTANCE.stop
-
-        );
-    };
 
     private Command scorePreload(){
         return new SequentialGroup(
@@ -140,20 +110,7 @@ public class Sorted_Blue extends NextFTCOpMode {
 
         );
     };
-    private Command intakeSecondSpikeMark(){
-        return new SequentialGroup(
-                new FollowPath(spikeMark1,true),
-                Intaker.INSTANCE.run,
-                new FollowPath(intake1,true),
-                spinSpindex(),
-                new FollowPath(intake2,true),
-                spinSpindex(),
-                new FollowPath(intake3,true),
-                Intaker.INSTANCE.stop
 
-
-        );
-    };
 
     private Command newIntakeSecondSpikeMark(){
         return new ParallelGroup(
@@ -185,27 +142,14 @@ public class Sorted_Blue extends NextFTCOpMode {
 
         );
     };
-    private Command intakeFirstSpikeMark(){
-        return new SequentialGroup(
-                new FollowPath(secondSpikeMarkPath,true),
-                Intaker.INSTANCE.run,
-                new FollowPath(secondIntake1,true),
-                spinSpindex(),
-                new FollowPath(secondIntake2,true),
-                spinSpindex(),
-                new FollowPath(secondIntake3,true),
-                Intaker.INSTANCE.stop
 
-
-        );
-    };
 
     private Command newIntakeFirstSpikeMark(){
         return new ParallelGroup(
                 new FollowPath(newIntake2, true, 0.7),
 
                 new SequentialGroup(
-                        new Delay(1.3),
+                        new Delay(0.8),
                         spinSpindex(),
                         new Delay(0.3),
                         spinSpindex(),
@@ -231,20 +175,7 @@ public class Sorted_Blue extends NextFTCOpMode {
         );
     };
 
-    private Command intakeThirdSpikeMark(){
-        return new SequentialGroup(
-                new FollowPath(thirdSpikeMarkPath,true),
-                Intaker.INSTANCE.run,
-                new FollowPath(thirdIntake1,true),
-                spinSpindex(),
-                new FollowPath(thirdIntake2,true),
-                spinSpindex(),
-                new FollowPath(thirdIntake3,true),
-                Intaker.INSTANCE.stop
 
-
-        );
-    };
 
     private Command newIntakeThirdSpikeMark(){
         return new SequentialGroup(
@@ -279,62 +210,6 @@ public class Sorted_Blue extends NextFTCOpMode {
         );
     };
 
-
-    private Command cycle2(){
-        return new SequentialGroup(
-                new FollowPath(leverPathIntake,true),
-                new FollowPath(leverPathIntakePivot, true),
-
-                new SequentialGroup(
-                        new Delay(1.1),
-                        spinSpindex(),
-                        new Delay(0.3),
-
-                        Shooter.INSTANCE.startclose,
-                        new ParallelGroup(
-                                new FollowPath(shootGate,true),
-                                new SequentialGroup(
-                                        new Delay(0.4),
-                                        spinSpindex().thenWait(0.2)
-                                )
-                        ),
-                        rapid().thenWait(0.5),
-                        Shooter.INSTANCE.stop
-                )
-
-
-        );
-    };
-
-    private Command cycle1(){
-        return new SequentialGroup(
-                new FollowPath(leverPathIntake,true),
-                new FollowPath(leverPathIntakePivot, true),
-                new SequentialGroup(
-                        new Delay(1.1),
-                        spinSpindex(),
-                        new Delay(0.5),
-
-                        Shooter.INSTANCE.startclose,
-                        new ParallelGroup(
-                                new FollowPath(shootGate,true),
-                                new SequentialGroup(
-                                        new Delay(0.4),
-                                        spinSpindex().thenWait(0.2)
-                                )
-                        ),
-                        micro(),
-                        turnSpindex().thenWait(0.6),
-                        turnSpindex().thenWait(0.6),
-                        turnSpindex().thenWait(0.6),
-                        zero(),
-                        Shooter.INSTANCE.stop
-                )
-
-
-        );
-    };
-
     public void buildPaths(){
         testPath = follower().pathBuilder()
                 .addPath(new BezierLine(startPose, initialFire))
@@ -345,31 +220,15 @@ public class Sorted_Blue extends NextFTCOpMode {
                 .addPath(new BezierLine(initialFire,spikeMark))
                 .setLinearHeadingInterpolation(initialFire.getHeading(),spikeMark.getHeading())
                 .build();
-        intake1 = follower().pathBuilder()
-                .addPath(new BezierLine(spikeMark,ballMark1))
-                .setLinearHeadingInterpolation(spikeMark.getHeading(),ballMark1.getHeading())
-                .build();
-        intake2 = follower().pathBuilder()
-                .addPath(new BezierLine(ballMark1,ballMark2))
-                .setLinearHeadingInterpolation(ballMark1.getHeading(),ballMark2.getHeading())
-                .build();
-        intake3 = follower().pathBuilder()
-                .addPath(new BezierLine(ballMark2,ballMark3))
-                .setLinearHeadingInterpolation(ballMark2.getHeading(),ballMark3.getHeading())
-                .build();
-
-
 
         newIntake1 = follower().pathBuilder()
                 .addPath(new BezierLine(spikeMark,ballMark3))
-                .setLinearHeadingInterpolation(ballMark2.getHeading(),ballMark3.getHeading())
+                .setLinearHeadingInterpolation(spikeMark.getHeading(),ballMark3.getHeading())
                 .build();
-
-
 
         shootMark1 = follower().pathBuilder()
                 .addPath(new BezierCurve(ballMark3,
-                        new Pose(144 - 30.210,88.807 - 56,Math.toRadians(0)).mirror()
+                        new Pose(144 - 30.210,70,Math.toRadians(180)).mirror()
                         ,initialFire))
                 .setLinearHeadingInterpolation(ballMark3.getHeading(), initialFire.getHeading())
                 .build();
@@ -380,26 +239,14 @@ public class Sorted_Blue extends NextFTCOpMode {
                 .build();
         secondSpikeMarkPath = follower().pathBuilder()
                 .addPath(new BezierLine(initialFire,secondSpikeMarkPos))
-                .setLinearHeadingInterpolation(initialFire.getHeading(), secondBallMark2.getHeading())
+                .setLinearHeadingInterpolation(initialFire.getHeading(), secondSpikeMarkPos.getHeading())
                 .build();
 
-        secondIntake1 = follower().pathBuilder()
-                .addPath(new BezierLine(secondSpikeMarkPos,secondBallMark1))
-                .setLinearHeadingInterpolation(secondSpikeMarkPos.getHeading(),secondBallMark1.getHeading())
-                .build();
-        secondIntake2 = follower().pathBuilder()
-                .addPath(new BezierLine(secondBallMark1,secondBallMark2))
-                .setLinearHeadingInterpolation(secondBallMark1.getHeading(),secondBallMark2.getHeading())
-                .build();
-        secondIntake3 = follower().pathBuilder()
-                .addPath(new BezierLine(secondBallMark2,secondBallMark3))
-                .setLinearHeadingInterpolation(secondBallMark2.getHeading(),secondBallMark3.getHeading())
-                .build();
 
 
         newIntake2 = follower().pathBuilder()
                 .addPath(new BezierLine(secondSpikeMarkPos,secondBallMark3))
-                .setLinearHeadingInterpolation(ballMark2.getHeading(),ballMark3.getHeading())
+                .setLinearHeadingInterpolation(secondSpikeMarkPos.getHeading(),ballMark3.getHeading())
                 .build();
 
 
@@ -414,41 +261,17 @@ public class Sorted_Blue extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(initialFire.getHeading(),thirdSpikeMarkPos.getHeading())
                 .build();
 
-        thirdIntake1 = follower().pathBuilder()
-                .addPath(new BezierLine(secondSpikeMarkPos,thirdBallMark1))
-                .setLinearHeadingInterpolation(thirdSpikeMarkPos.getHeading(),thirdBallMark1.getHeading())
-                .build();
-        thirdIntake2 = follower().pathBuilder()
-                .addPath(new BezierLine(thirdBallMark1,thirdBallMark2))
-                .setLinearHeadingInterpolation(thirdBallMark1.getHeading(),thirdBallMark2.getHeading())
-                .build();
-        thirdIntake3 = follower().pathBuilder()
-                .addPath(new BezierLine(thirdBallMark2,thirdBallMark3))
-                .setLinearHeadingInterpolation(thirdBallMark2.getHeading(),thirdBallMark3.getHeading())
-                .build();
+
         newIntake3 = follower().pathBuilder()
                 .addPath(new BezierLine(thirdSpikeMarkPos,thirdBallMark3))
-                .setLinearHeadingInterpolation(ballMark2.getHeading(),ballMark3.getHeading())
+                .setLinearHeadingInterpolation(thirdSpikeMarkPos.getHeading(),ballMark3.getHeading())
                 .build();
         thirdShootMark1 = follower().pathBuilder()
-                .addPath(new BezierCurve(thirdBallMark3, new Pose(144 - 30.210,88.807 - 56,Math.toRadians(0)).mirror(), initialFire))
+                .addPath(new BezierCurve(thirdBallMark3, new Pose(144 - 30.210,70,Math.toRadians(180)), initialFire))
                 .setLinearHeadingInterpolation(thirdBallMark3.getHeading(), initialFire.getHeading())
                 .build();
 
-        leverPathIntake = follower().pathBuilder()
-                .addPath(new BezierCurve(initialFire, new Pose(144 - 30,88.807 - 34,Math.toRadians(35)).mirror(), gateIntake))
-                .setLinearHeadingInterpolation(initialFire.getHeading(), gateIntake.getHeading())
-                .build();
 
-        leverPathIntakePivot = follower().pathBuilder()
-                .addPath(new BezierLine(gateIntake, gateIntake2))
-                .setLinearHeadingInterpolation(gateIntake.getHeading(), gateIntake2.getHeading())
-                .build();
-
-        shootGate = follower().pathBuilder()
-                .addPath(new BezierCurve(gateIntake2, new Pose(144 - 30,88.807 - 34,Math.toRadians(35)).mirror(),initialFire))
-                .setLinearHeadingInterpolation(gateIntake2.getHeading(), initialFire.getHeading())
-                .build();
     }
 
     private Command PPG(){
@@ -461,7 +284,7 @@ public class Sorted_Blue extends NextFTCOpMode {
 
                 new ParallelGroup(
                         new SequentialGroup(
-                                new Delay(0.3),
+                                new Delay(0.5),
                                 Intaker.INSTANCE.stop
                         ),
 
@@ -481,22 +304,6 @@ public class Sorted_Blue extends NextFTCOpMode {
                 spinSpindex().thenWait(0.6),
                 scoreThirdSpikeMark(),
                 Intaker.INSTANCE.stop
-
-
-                /*scorePreload(),
-                Intaker.INSTANCE.run,
-                new FollowPath(secondSpikeMarkPath),
-                newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath),
-                scoreFirstSpikeMark(),
-                new FollowPath(spikeMark1),
-                newIntakeSecondSpikeMark(),
-                scoreSecondSpikeMark(),
-                Intaker.INSTANCE.run,
-                new FollowPath(thirdSpikeMarkPath),
-                newIntakeThirdSpikeMark(),
-                scoreThirdSpikeMark()*/
-
 
         );
     }
@@ -511,7 +318,7 @@ public class Sorted_Blue extends NextFTCOpMode {
                 newIntakeFirstSpikeMark(),
                 new ParallelGroup(
                         new SequentialGroup(
-                                new Delay(0.3),
+                                new Delay(0.5),
                                 Intaker.INSTANCE.stop
                         ),
 
@@ -532,21 +339,6 @@ public class Sorted_Blue extends NextFTCOpMode {
                 spinSpindex().thenWait(0.5),
                 scoreThirdSpikeMark(),
                 Intaker.INSTANCE.stop
-
-//                new FollowPath(spikeMark1),
-//
-//                Intaker.INSTANCE.run,
-//                newIntakeSecondSpikeMark(),
-//                Intaker.INSTANCE.stop,
-
-
-                //   scoreSecondSpikeMark(),
-//                new FollowPath(thirdSpikeMarkPath),
-//
-//                Intaker.INSTANCE.run,
-//                newIntakeThirdSpikeMark(),
-//                Intaker.INSTANCE.stop,
-//                scoreThirdSpikeMark(),
 
 
         );
@@ -562,7 +354,7 @@ public class Sorted_Blue extends NextFTCOpMode {
 
                 new ParallelGroup(
                         new SequentialGroup(
-                                new Delay(0.3),
+                                new Delay(0.5),
                                 Intaker.INSTANCE.stop
                         ),
 
@@ -583,28 +375,12 @@ public class Sorted_Blue extends NextFTCOpMode {
                 Intaker.INSTANCE.stop
 
 
-//
-//               new FollowPath(spikeMark1),
-//
-//                Intaker.INSTANCE.run,
-//                newIntakeSecondSpikeMark(),
-//                Intaker.INSTANCE.stop,
-
-                // scoreSecondSpikeMark(),
-//                new FollowPath(thirdSpikeMarkPath),
-//
-//                Intaker.INSTANCE.run,
-//                newIntakeThirdSpikeMark(),
-//                Intaker.INSTANCE.stop,
-//                scoreThirdSpikeMark(),
-
 
         );
     }
 
     @Override
     public void onInit() {
-        //follower = Constants.createFollower(hardwareMap);
         follower().setStartingPose(startPose);
         buildPaths();
         initializeLimelight();
@@ -612,7 +388,6 @@ public class Sorted_Blue extends NextFTCOpMode {
     }
     @Override
     public void onWaitForStart() {
-        //follower = Constants.createFollower(hardwareMap);
         int result = processLimelightResults();
 
         if(result == 21){

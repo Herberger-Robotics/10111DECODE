@@ -59,8 +59,8 @@ public class Rapid_Red extends NextFTCOpMode {
     private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0));
     private final Pose secondBallMark3 = new Pose(144 - 24.210,88.807 - 23,Math.toRadians(0));
 
-    private final Pose lever = new Pose(144 - 21.210,88.807 - 38,Math.toRadians(0));
-    private final Pose lever2 = new Pose(144 - 21.210,88.807 - 30,Math.toRadians(0));
+    private final Pose lever = new Pose(144 - 22.210,88.807 - 38,Math.toRadians(0));
+    private final Pose lever2 = new Pose(144 - 22.210,88.807 - 30,Math.toRadians(0));
 
     private final Pose backitup = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
     private final Pose backitup2 = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0));
