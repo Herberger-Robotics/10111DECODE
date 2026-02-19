@@ -48,7 +48,7 @@ public class Sorted_Blue extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(17.5,  118.16, Math.toRadians(137));
 
-    private final Pose initialFire = new Pose( 44.28,78.1,Math.toRadians(127));
+    private final Pose initialFire = new Pose( 47.78,77.1,Math.toRadians(129));
 
 
 
@@ -58,17 +58,17 @@ public class Sorted_Blue extends NextFTCOpMode {
 
 
 
-    private final Pose secondSpikeMarkPos = new Pose( 39, 85.4, Math.toRadians(180));
+    private final Pose secondSpikeMarkPos = new Pose( 40, 85.4, Math.toRadians(180));
 
-    private final Pose secondBallMark3 = new Pose( 11.210,85.4,Math.toRadians(180));
+    private final Pose secondBallMark3 = new Pose( 10.210,85.4,Math.toRadians(180));
 
-    private final Pose lever = new Pose( 8.210,74.6,Math.toRadians(180));
+    private final Pose lever = new Pose( 7.210,77.6,Math.toRadians(180));
     private final Pose backitup = new Pose( 29.210,76.83,Math.toRadians(180));
 
 
-    private final Pose thirdSpikeMarkPos = new Pose(40.406, 37, Math.toRadians(180));
+    private final Pose thirdSpikeMarkPos = new Pose(32.406, 37, Math.toRadians(178));
 
-    private final Pose thirdBallMark3 = new Pose(2,37,Math.toRadians(180));
+    private final Pose thirdBallMark3 = new Pose(0,37,Math.toRadians(178));
 
 
 
@@ -267,7 +267,7 @@ public class Sorted_Blue extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(thirdSpikeMarkPos.getHeading(),ballMark3.getHeading())
                 .build();
         thirdShootMark1 = follower().pathBuilder()
-                .addPath(new BezierCurve(thirdBallMark3, new Pose(144 - 30.210,70,Math.toRadians(180)), initialFire))
+                .addPath(new BezierLine(thirdBallMark3, initialFire))
                 .setLinearHeadingInterpolation(thirdBallMark3.getHeading(), initialFire.getHeading())
                 .build();
 
@@ -303,7 +303,10 @@ public class Sorted_Blue extends NextFTCOpMode {
                 spinSpindex().thenWait(0.6),
                 spinSpindex().thenWait(0.6),
                 scoreThirdSpikeMark(),
-                Intaker.INSTANCE.stop
+                Intaker.INSTANCE.stop,
+                new FollowPath(spikeMark1)
+
+
 
         );
     }
@@ -338,7 +341,9 @@ public class Sorted_Blue extends NextFTCOpMode {
                 newIntakeThirdSpikeMark(),
                 spinSpindex().thenWait(0.5),
                 scoreThirdSpikeMark(),
-                Intaker.INSTANCE.stop
+                Intaker.INSTANCE.stop,
+                new FollowPath(spikeMark1)
+
 
 
         );
@@ -372,7 +377,9 @@ public class Sorted_Blue extends NextFTCOpMode {
                 new FollowPath(thirdSpikeMarkPath),
                 newIntakeThirdSpikeMark(),
                 scoreThirdSpikeMark(),
-                Intaker.INSTANCE.stop
+                Intaker.INSTANCE.stop,
+                new FollowPath(spikeMark1)
+
 
 
 

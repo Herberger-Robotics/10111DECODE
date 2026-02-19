@@ -12,13 +12,15 @@ import dev.nextftc.core.subsystems.Subsystem;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.controllable.RunToVelocity;
 import dev.nextftc.hardware.impl.MotorEx;
+import dev.nextftc.hardware.impl.ServoEx;
+
 @Configurable
 public class Shooter implements Subsystem {
     public static PIDCoefficients coefficients = new PIDCoefficients(0.005,0.0,0.0001);
     public static BasicFeedforwardParameters ffcoefficients = new BasicFeedforwardParameters(0.0,0.0,0.0);
 
     public static double closevelo = 1610;
-    public static double farvelo = 1610;
+    public static double farvelo = 2400;
     public static final Shooter INSTANCE = new Shooter();
     private Shooter() { }
 
@@ -26,7 +28,7 @@ public class Shooter implements Subsystem {
     private MotorEx shooter = new MotorEx("shooter").brakeMode();
     private MotorEx shooter2 = new MotorEx("shooter2").brakeMode().reversed();
 
-
+    private ServoEx light = new ServoEx("light");
     private ControlSystem controlSystem = ControlSystem.builder()
             .velPid(coefficients)
             .basicFF(ffcoefficients)
@@ -49,7 +51,13 @@ public class Shooter implements Subsystem {
     @Override
     public void periodic(){
         velocity = shooter.getVelocity();
+
         shooter.setPower(controlSystem.calculate(shooter.getState()));
         shooter2.setPower(controlSystem.calculate(shooter.getState()));
+        if(velocity > 1000){
+            light.setPosition(1);
+        }else{
+            light.setPosition(0);
+        }
     }
 }

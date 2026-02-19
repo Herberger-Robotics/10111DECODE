@@ -110,7 +110,7 @@ public class Spindex implements Subsystem {
     }
 
     public void rapid(){
-        target += tpr * 4/3;
+        target += tpr * 5/3;
     }
 
     public void zeroAuto(){
