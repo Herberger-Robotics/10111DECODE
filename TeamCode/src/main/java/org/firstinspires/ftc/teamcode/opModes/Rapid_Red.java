@@ -48,7 +48,9 @@ public class Rapid_Red extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45));
 
-    private final Pose initialFire = new Pose(144 - 50.517,88.807- 26,Math.toRadians(54));
+    private final Pose initialFire = new Pose(144 - 49.517,88.807- 25,Math.toRadians(54));
+
+    private final Pose leaveFire = new Pose( 144 - 52.517,88.807,Math.toRadians(37));
     private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0));
     private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0));
     private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
@@ -59,8 +61,10 @@ public class Rapid_Red extends NextFTCOpMode {
     private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0));
     private final Pose secondBallMark3 = new Pose(144 - 24.210,88.807 - 23,Math.toRadians(0));
 
+    private final Pose secondSpikeMarkCtrl = new Pose( 144 - 34.210, 88.807 - 23, Math.toRadians(180));
+
     private final Pose lever = new Pose(144 - 22.210,88.807 - 38,Math.toRadians(0));
-    private final Pose lever2 = new Pose(144 - 22.210,88.807 - 30,Math.toRadians(0));
+    private final Pose lever2 = new Pose(144 - 22.210,88.807 - 28,Math.toRadians(7));
 
     private final Pose backitup = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
     private final Pose backitup2 = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0));
@@ -117,6 +121,8 @@ public class Rapid_Red extends NextFTCOpMode {
     private PathChain leverPathIntakeShimmy;
 
     private PathChain shootGate;
+
+    private PathChain finalGate;
     private Command scorePreload(){
         return new SequentialGroup(
 
@@ -278,16 +284,16 @@ public class Rapid_Red extends NextFTCOpMode {
 
     private Command cycle2(){
         return new SequentialGroup(
-                new FollowPath(leverPathIntake,true).thenWait(.2),
+                new FollowPath(leverPathIntake,true).thenWait(1),
                 new ParallelGroup(
                 new SequentialGroup(
                         new Delay(1.1),
                         spinSpindex(),
-                        new Delay(0.3),
+                        new Delay(0.5),
 
                         Shooter.INSTANCE.startclose,
                         new ParallelGroup(
-                                new FollowPath(shootGate,true),
+                                new FollowPath(finalGate,true),
                                 new SequentialGroup(
                                         new Delay(0.4),
                                         spinSpindex().thenWait(0.2)
@@ -403,8 +409,8 @@ public class Rapid_Red extends NextFTCOpMode {
 
 
         newIntake2 = follower().pathBuilder()
-                .addPath(new BezierLine(secondSpikeMarkPos,secondBallMark3))
-                .setLinearHeadingInterpolation(ballMark2.getHeading(),ballMark3.getHeading())
+                .addPath(new BezierCurve(secondSpikeMarkPos, secondSpikeMarkCtrl, lever2))
+                .setLinearHeadingInterpolation(ballMark2.getHeading(),lever2.getHeading())
                 .build();
 
 
@@ -456,8 +462,14 @@ public class Rapid_Red extends NextFTCOpMode {
                 .build();
 
         shootGate = follower().pathBuilder()
-                .addPath(new BezierCurve(gateIntake2, new Pose(144 - 40,88.807 - 40,Math.toRadians(35)),initialFire))
+                .addPath(new BezierLine(gateIntake2,initialFire))
                 .setLinearHeadingInterpolation(gateIntake2.getHeading(), initialFire.getHeading())
+                .build();
+
+
+        finalGate = follower().pathBuilder()
+                .addPath(new BezierCurve(gateIntake2, secondSpikeMarkPos, leaveFire))
+                .setLinearHeadingInterpolation(gateIntake2.getHeading(), leaveFire.getHeading())
                 .build();
     }
 
@@ -479,10 +491,10 @@ public class Rapid_Red extends NextFTCOpMode {
                 new FollowPath(secondSpikeMarkPath),
 
                 newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath2),
+                //new FollowPath(leverPath2),
                 scoreFirstSpikeMark(),
                 cycle1(),
-                cycle1(),
+                cycle2(),
                 Intaker.INSTANCE.stop
 
                 /*scorePreload(),

@@ -54,7 +54,7 @@ public class Shooter implements Subsystem {
 
         shooter.setPower(controlSystem.calculate(shooter.getState()));
         shooter2.setPower(controlSystem.calculate(shooter.getState()));
-        if(velocity > 1000){
+        if(velocity > 1400){
             light.setPosition(1);
         }else{
             light.setPosition(0);

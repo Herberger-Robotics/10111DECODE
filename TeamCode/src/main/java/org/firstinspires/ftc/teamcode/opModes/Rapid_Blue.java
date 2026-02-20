@@ -48,7 +48,10 @@ public class Rapid_Blue extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(17.5,  118.16, Math.toRadians(137));
 
+    private final Pose firstFire = new Pose( 47.78,77.1,Math.toRadians(129.5));
     private final Pose initialFire = new Pose( 47.78,77.1,Math.toRadians(129));
+
+    private final Pose leaveFire = new Pose( 47.78,110.1,Math.toRadians(144));
 
 
 
@@ -60,8 +63,9 @@ public class Rapid_Blue extends NextFTCOpMode {
 
     private final Pose secondBallMark3 = new Pose( 10.210,85.4,Math.toRadians(180));
 
+    private final Pose secondSpikeMarkCtrl = new Pose( 20, 85.4, Math.toRadians(180));
 
-    private final Pose lever2 = new Pose( 7.210,78.6,Math.toRadians(180));
+    private final Pose lever2 = new Pose( 7.210,80.6,Math.toRadians(187));
     private final Pose backitup2 = new Pose( 29.210,77.83,Math.toRadians(180));
 
 
@@ -69,7 +73,7 @@ public class Rapid_Blue extends NextFTCOpMode {
     private final Pose backitup = new Pose(29.210,69,Math.toRadians(180));
 
 
-    private final Pose gateIntake = new Pose(2,57.2,Math.toRadians(148.9));
+    private final Pose gateIntake = new Pose(2,57.7,Math.toRadians(149.8));
     private final Pose gateIntake2 = new Pose(4,57,Math.toRadians(180));
 
 
@@ -106,6 +110,7 @@ public class Rapid_Blue extends NextFTCOpMode {
 
 
     private PathChain shootGate;
+    private PathChain finalGate;
     private Command scorePreload() {
         return new SequentialGroup(
 
@@ -248,10 +253,39 @@ public class Rapid_Blue extends NextFTCOpMode {
         );
     };
 
+    private Command cycle2(){
+        return new SequentialGroup(
+                new FollowPath(leverPathIntake,true).thenWait(1),
+                new ParallelGroup(
+                        new SequentialGroup(
+                                new Delay(0.8),
+                                spinSpindex(),
+                                new Delay(0.5),
+
+                                Shooter.INSTANCE.startclose,
+
+                                new ParallelGroup(
+                                        new FollowPath(finalGate,true),
+                                        new SequentialGroup(
+                                                new Delay(0.4),
+                                                spinSpindex().thenWait(0.2)
+
+                                        )
+                                ),
+                                rapid().thenWait(0.7),
+                                Shooter.INSTANCE.stop,
+                                Intaker.INSTANCE.run
+                        )
+                )
+
+
+        );
+    };
+
     public void buildPaths(){
         testPath = follower().pathBuilder()
-                .addPath(new BezierLine(startPose, initialFire))
-                .setLinearHeadingInterpolation(startPose.getHeading(), initialFire.getHeading())
+                .addPath(new BezierLine(startPose, firstFire))
+                .setLinearHeadingInterpolation(startPose.getHeading(), firstFire.getHeading())
                 .setBrakingStart(0.5)
                 .build();
         spikeMark1 = follower().pathBuilder()
@@ -293,7 +327,7 @@ public class Rapid_Blue extends NextFTCOpMode {
 
 
         newIntake2 = follower().pathBuilder()
-                .addPath(new BezierLine(secondSpikeMarkPos,secondBallMark3))
+                .addPath(new BezierCurve(secondSpikeMarkPos, secondSpikeMarkCtrl, lever2))
                 .setLinearHeadingInterpolation(secondSpikeMarkPos.getHeading(),ballMark3.getHeading())
                 .build();
 
@@ -329,6 +363,11 @@ public class Rapid_Blue extends NextFTCOpMode {
                 .addPath(new BezierLine(gateIntake, initialFire))
                 .setLinearHeadingInterpolation(gateIntake.getHeading(), initialFire.getHeading())
                 .build();
+
+        finalGate = follower().pathBuilder()
+                .addPath(new BezierLine(gateIntake, leaveFire))
+                .setLinearHeadingInterpolation(gateIntake.getHeading(), leaveFire.getHeading())
+                .build();
     }
 
     private Command GPP(){
@@ -349,10 +388,10 @@ public class Rapid_Blue extends NextFTCOpMode {
                 new FollowPath(secondSpikeMarkPath),
 
                 newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath2),
+                //new FollowPath(leverPath2),
                 scoreFirstSpikeMark(),
                 cycle1(),
-                cycle1(),
+                cycle2(),
                 Intaker.INSTANCE.stop
 
 

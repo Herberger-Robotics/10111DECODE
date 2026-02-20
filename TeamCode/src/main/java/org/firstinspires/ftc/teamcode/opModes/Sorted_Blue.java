@@ -103,7 +103,7 @@ public class Sorted_Blue extends NextFTCOpMode {
         return new SequentialGroup(
 
                 Shooter.INSTANCE.startclose,
-                new FollowPath(testPath,true),
+                new FollowPath(testPath,true).thenWait(0.1),
 
                 rapid().thenWait(.7),
                 Shooter.INSTANCE.stop
