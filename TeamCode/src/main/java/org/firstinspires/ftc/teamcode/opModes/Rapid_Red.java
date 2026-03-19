@@ -54,12 +54,12 @@ public class Rapid_Red extends NextFTCOpMode {
     private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0));
     private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0));
     private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
-    private final Pose ballMark3 = new Pose(144 - 16.0,88.807 - 45,Math.toRadians(0));
+    private final Pose ballMark3 = new Pose(144 - 13.0,88.807 - 45,Math.toRadians(0));
 
     private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 23, Math.toRadians(0));
     private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0));
     private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0));
-    private final Pose secondBallMark3 = new Pose(144 - 24.210,88.807 - 23,Math.toRadians(0));
+    private final Pose secondBallMark3 = new Pose(144 - 20.210,88.807 - 23,Math.toRadians(0));
 
     private final Pose secondSpikeMarkCtrl = new Pose( 144 - 34.210, 88.807 - 23, Math.toRadians(180));
 
@@ -74,9 +74,9 @@ public class Rapid_Red extends NextFTCOpMode {
     private final Pose thirdSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 70, Math.toRadians(0));
     private final Pose thirdBallMark1 = new Pose(144 - 44.210,88.807 - 70,Math.toRadians(0));
     private final Pose thirdBallMark2 = new Pose(144 - 39.210,88.807 - 70,Math.toRadians(0));
-    private final Pose thirdBallMark3 = new Pose(144 - 12,88.807 - 70,Math.toRadians(0));
+    private final Pose thirdBallMark3 = new Pose(144 - 9,88.807 - 70,Math.toRadians(0));
 
-    private final Pose gateIntake = new Pose(144 - 9,88.807 - 46.5,Math.toRadians(33.5));
+    private final Pose gateIntake = new Pose(144 - 8,88.807 - 46.5,Math.toRadians(33.5));
     private final Pose gateIntake2 = new Pose(144 - 6,88.807 - 50,Math.toRadians(0));
 
     private final Pose gateIntake3 = new Pose(144 - 9,88.807 - 47,Math.toRadians(60));
@@ -497,19 +497,6 @@ public class Rapid_Red extends NextFTCOpMode {
                 cycle2(),
                 Intaker.INSTANCE.stop
 
-                /*scorePreload(),
-                Intaker.INSTANCE.run,
-                new FollowPath(secondSpikeMarkPath),
-                newIntakeFirstSpikeMark(),
-                new FollowPath(leverPath),
-                scoreFirstSpikeMark(),
-                new FollowPath(spikeMark1),
-                newIntakeSecondSpikeMark(),
-                scoreSecondSpikeMark(),
-                Intaker.INSTANCE.run,
-                new FollowPath(thirdSpikeMarkPath),
-                newIntakeThirdSpikeMark(),
-                scoreThirdSpikeMark()*/
 
 
         );
@@ -557,7 +544,7 @@ public class Rapid_Red extends NextFTCOpMode {
                 scorePreload(),
                 Intaker.INSTANCE.run,
                 new FollowPath(secondSpikeMarkPath),
-                
+
                 newIntakeFirstSpikeMark(),
                 new FollowPath(leverPath),
                 scoreFirstSpikeMark(),
@@ -590,29 +577,13 @@ public class Rapid_Red extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        //follower = Constants.createFollower(hardwareMap);
+
         follower().setStartingPose(startPose);
         buildPaths();
-        initializeLimelight();
 
     }
     @Override
     public void onWaitForStart() {
-        //follower = Constants.createFollower(hardwareMap);
-        int result = processLimelightResults();
-
-        if(result == 21){
-            pathType = 0;
-        } else if(result == 22){
-            pathType = 1;
-
-        } else if(result == 23){
-            pathType = 2;
-        }else{
-            pathType = 0;
-        }
-        telemetry.addData("Path type", pathType);
-        telemetry.update();
 
     }
 
@@ -620,32 +591,12 @@ public class Rapid_Red extends NextFTCOpMode {
     public void onStartButtonPressed() {
 
 
-                GPP().schedule();
+        GPP().schedule();
 
-        stopLimelight();
-
-    }
-
-    public Command stopLimelight(){
-        return new InstantCommand(()->{
-            limelight.stop();
-        });
-    }
-    private int processLimelightResults() {
-        List<LLResultTypes.FiducialResult> fiducials = limelight.getLatestResult().getFiducialResults();
-        int id = 0;
-        for (LLResultTypes.FiducialResult fiducial : fiducials) {
-            id = fiducial.getFiducialId(); // The ID number of the fiducial
-        }
-        return id;
-    }
-    private void initializeLimelight() {
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        limelight.pipelineSwitch(0);
-        limelight.setPollRateHz(100);
-        limelight.start();
 
     }
+
+
 
     public Command turnSpindex(){
         return new InstantCommand(Spindex.INSTANCE::newReTurn);

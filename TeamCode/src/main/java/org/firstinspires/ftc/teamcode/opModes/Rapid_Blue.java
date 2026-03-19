@@ -49,15 +49,15 @@ public class Rapid_Blue extends NextFTCOpMode {
     private final Pose startPose = new Pose(17.5,  118.16, Math.toRadians(137));
 
     private final Pose firstFire = new Pose( 47.78,77.1,Math.toRadians(129.5));
-    private final Pose initialFire = new Pose( 47.78,77.1,Math.toRadians(129));
+    private final Pose initialFire = new Pose( 47.78,77.1,Math.toRadians(129.6));
 
-    private final Pose leaveFire = new Pose( 47.78,110.1,Math.toRadians(144));
+    private final Pose leaveFire = new Pose( 47.78,110.1,Math.toRadians(144.8));
 
 
 
     private final Pose spikeMark = new Pose( 36.406, 63, Math.toRadians(180));
 
-    private final Pose ballMark3 = new Pose( 1.0,63,Math.toRadians(180));
+    private final Pose ballMark3 = new Pose( -1.0,63,Math.toRadians(180));
 
     private final Pose secondSpikeMarkPos = new Pose( 40, 85.4, Math.toRadians(180));
 
@@ -69,11 +69,11 @@ public class Rapid_Blue extends NextFTCOpMode {
     private final Pose backitup2 = new Pose( 29.210,77.83,Math.toRadians(180));
 
 
-    private final Pose lever = new Pose(7,69,Math.toRadians(180));
+    private final Pose lever = new Pose(6,69,Math.toRadians(180));
     private final Pose backitup = new Pose(29.210,69,Math.toRadians(180));
 
 
-    private final Pose gateIntake = new Pose(2,57.7,Math.toRadians(149.8));
+    private final Pose gateIntake = new Pose(2,59.7,Math.toRadians(149.8));
     private final Pose gateIntake2 = new Pose(4,57,Math.toRadians(180));
 
 
@@ -402,7 +402,6 @@ public class Rapid_Blue extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-        //follower = Constants.createFollower(hardwareMap);
         follower().setStartingPose(startPose);
         buildPaths();
 

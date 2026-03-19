@@ -48,27 +48,27 @@ public class Sorted_Blue extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(17.5,  118.16, Math.toRadians(137));
 
-    private final Pose initialFire = new Pose( 47.78,77.1,Math.toRadians(129));
+    private final Pose initialFire = new Pose( 47.78,77.1,Math.toRadians(128.5));
 
 
 
     private final Pose spikeMark = new Pose( 36.406, 63, Math.toRadians(180));
 
-    private final Pose ballMark3 = new Pose( 1.0,63,Math.toRadians(180));
+    private final Pose ballMark3 = new Pose( -2.0,63,Math.toRadians(180));
 
 
 
     private final Pose secondSpikeMarkPos = new Pose( 40, 85.4, Math.toRadians(180));
 
-    private final Pose secondBallMark3 = new Pose( 10.210,85.4,Math.toRadians(180));
+    private final Pose secondBallMark3 = new Pose( 6.210,85.4,Math.toRadians(180));
 
-    private final Pose lever = new Pose( 7.210,77.6,Math.toRadians(180));
-    private final Pose backitup = new Pose( 29.210,76.83,Math.toRadians(180));
+    private final Pose lever = new Pose( 4.210,79.6,Math.toRadians(180));
+    private final Pose backitup = new Pose( 29.210,79.83,Math.toRadians(180));
 
 
-    private final Pose thirdSpikeMarkPos = new Pose(32.406, 37, Math.toRadians(178));
+    private final Pose thirdSpikeMarkPos = new Pose(31.406, 38, Math.toRadians(177));
 
-    private final Pose thirdBallMark3 = new Pose(0,37,Math.toRadians(178));
+    private final Pose thirdBallMark3 = new Pose(-7,38,Math.toRadians(177));
 
 
 

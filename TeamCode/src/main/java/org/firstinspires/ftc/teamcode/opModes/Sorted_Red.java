@@ -46,24 +46,24 @@ public class Sorted_Red extends NextFTCOpMode {
     private Limelight3A limelight;
 
     int pathType = 1;
-    private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45));
+    private final Pose startPose = new Pose(122.04, 103.225, Math.toRadians(45)); //144 - 21.960, 125.225 - 22
 
-    private final Pose initialFire = new Pose(144 - 50.517,88.807- 26,Math.toRadians(54));
-    private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0));
+    private final Pose initialFire = new Pose(93.483,62.807,Math.toRadians(54)); // 144-50.517, 88.807 - 26
+    private final Pose spikeMark = new Pose(96.594, 43.807, Math.toRadians(0)); // 144 - 48.406, 88.807 - 45
 
-    private final Pose ballMark3 = new Pose(144 - 14.0,88.807 - 45,Math.toRadians(0));
+    private final Pose ballMark3 = new Pose(132,43.807,Math.toRadians(0)); // 144 - 14.0, 88.807 - 45
 
-    private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 23, Math.toRadians(0));
+    private final Pose secondSpikeMarkPos = new Pose(95.594, 65.807, Math.toRadians(0)); // 144 - 48.406, 88.807 - 23
 
-    private final Pose secondBallMark3 = new Pose(144 - 25.210,88.807 - 23,Math.toRadians(0));
+    private final Pose secondBallMark3 = new Pose(122.79,65.807,Math.toRadians(0)); // 144 - 25.210, 88.807 - 23
 
-    private final Pose lever = new Pose(144 - 20.210,88.807 - 30,Math.toRadians(0));
-    private final Pose backitup = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0));
+    private final Pose lever = new Pose(123.79,58.807,Math.toRadians(0)); // 144-20.210, 88.807 - 30
+    private final Pose backitup = new Pose(104.79,58.807,Math.toRadians(0)); // 144 - 39.210, 88.807 - 30
 
 
-    private final Pose thirdSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 70, Math.toRadians(0));
+    private final Pose thirdSpikeMarkPos = new Pose(95.594, 18.807, Math.toRadians(0)); // 144 - 48.406, 88.807 - 70
 
-    private final Pose thirdBallMark3 = new Pose(144 - 12,88.807 - 70,Math.toRadians(0));
+    private final Pose thirdBallMark3 = new Pose(138,18.807,Math.toRadians(0)); // 144 - 12, 88.807 - 70
 
 
 
@@ -227,7 +227,7 @@ public class Sorted_Red extends NextFTCOpMode {
 
         shootMark1 = follower().pathBuilder()
                 .addPath(new BezierCurve(ballMark3,
-                        new Pose(144 - 40.210,88.807 - 62,Math.toRadians(0))
+                        new Pose(103.79,26.807,Math.toRadians(0))
                         ,initialFire))
                 .setLinearHeadingInterpolation(ballMark3.getHeading(), initialFire.getHeading())
                 .build();
@@ -266,7 +266,7 @@ public class Sorted_Red extends NextFTCOpMode {
                 .setLinearHeadingInterpolation(thirdSpikeMarkPos.getHeading(),ballMark3.getHeading())
                 .build();
         thirdShootMark1 = follower().pathBuilder()
-                .addPath(new BezierCurve(thirdBallMark3, new Pose(144 - 40.210,88.807 - 62,Math.toRadians(0)), initialFire))
+                .addPath(new BezierCurve(thirdBallMark3, new Pose(103.79,26.807,Math.toRadians(0)), initialFire))
                 .setLinearHeadingInterpolation(thirdBallMark3.getHeading(), initialFire.getHeading())
                 .build();
 
@@ -389,15 +389,16 @@ public class Sorted_Red extends NextFTCOpMode {
         int result = processLimelightResults();
 
         if(result == 21){
-            pathType = 2;
+            pathType = 1;
         } else if(result == 22){
-            pathType = 0;
+            pathType = 2;
 
         } else if(result == 23){
-            pathType = 1;
+            pathType = 0;
         }else{
             pathType = 0;
         }
+
         telemetry.addData("Path type", pathType);
         telemetry.update();
 
