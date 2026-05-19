@@ -24,6 +24,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.subs.Hood;
 import org.firstinspires.ftc.teamcode.subs.Kicker;
 import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
@@ -69,7 +70,8 @@ public class FirstSteps extends NextFTCOpMode {
                         Shooter.INSTANCE,
                         Intaker.INSTANCE,
                         Kicker.INSTANCE,
-                        Spindex.INSTANCE
+                        Spindex.INSTANCE,
+                        Hood.INSTANCE
                 ),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
@@ -138,7 +140,11 @@ public class FirstSteps extends NextFTCOpMode {
                         .whenBecomesTrue(Shooter.INSTANCE.stop);
 
 
+        Gamepads.gamepad2().dpadDown()
+                        .whenBecomesTrue(Hood.INSTANCE.base);
 
+        Gamepads.gamepad2().dpadUp()
+                .whenBecomesTrue(Hood.INSTANCE.turn);
 
 
         Gamepads.gamepad1().dpadUp()

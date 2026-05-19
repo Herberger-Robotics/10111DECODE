@@ -39,7 +39,7 @@ public class Spindex implements Subsystem {
 
     private PIDController controller;
 
-    public static double p = 0.00375, i = 0, d = 0.0001;
+    public static double p = 0.01, i = 0, d = 0.001;
     public static double f = 0;
 
     public int target = 0;
@@ -54,7 +54,7 @@ public class Spindex implements Subsystem {
     public static final Spindex INSTANCE = new Spindex();
     private Spindex() { }
 
-    public double tpr = 1425.1 * 16/24;
+    public double tpr = 103.8 * 285/36;
 
     public int toggle = 0;
 
