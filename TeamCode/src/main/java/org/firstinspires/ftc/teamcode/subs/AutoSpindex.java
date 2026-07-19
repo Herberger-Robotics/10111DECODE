@@ -17,7 +17,7 @@ public class AutoSpindex implements Subsystem {
 
     private PIDController controller;
 
-    public static double p = 0.01, i = 0, d = 0.001;
+    public static double p = 0.01, i = 0, d = 0.0001;
     public static double f = 0;
 
     public int target = 0;
@@ -53,27 +53,27 @@ public class AutoSpindex implements Subsystem {
 
 
     public void newTurn(){
-        target -= tpr * 1/3;
+        target += tpr * 1/3;
     }
 
     public void newReTurn(){
-        target += tpr * 1/3;
+        target -= tpr * 1/3;
     }
     public void zero(){
         if(toggle == 0) {
             target = 0;
             toggle++;
         }else{
-            target += tpr * .07;
+            target -= tpr * .07;
             toggle = 0;
         }
     }
     public void micro(){
-        target += tpr * .14;
+        target -= tpr * .14;
     }
 
     public void rapid(){
-        target += tpr * 5/3;
+        target -= tpr * 5/3;
     }
     public void resetCount(){
         ball_count = 0;

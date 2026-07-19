@@ -14,6 +14,7 @@ import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.panels.Panels;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -24,10 +25,12 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.subs.Hood;
+import org.firstinspires.ftc.teamcode.Save;
+import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subs.Kicker;
 import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
+import org.firstinspires.ftc.teamcode.subs.TurretSubsystem;
 import org.opencv.dnn.Layer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +40,7 @@ import dev.nextftc.bindings.Button;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.components.BindingsComponent;
 import dev.nextftc.core.components.SubsystemComponent;
+import dev.nextftc.extensions.pedro.PedroComponent;
 import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.ftc.GamepadEx;
 import dev.nextftc.ftc.Gamepads;
@@ -51,6 +55,7 @@ import kotlin.jvm.functions.Function0;
 
 import org.firstinspires.ftc.teamcode.subs.Intaker;
 import static dev.nextftc.bindings.Bindings.*;
+import static dev.nextftc.extensions.pedro.PedroComponent.follower;
 
 @Configurable
 @TeleOp(name = "Drive")
@@ -71,17 +76,18 @@ public class FirstSteps extends NextFTCOpMode {
                         Intaker.INSTANCE,
                         Kicker.INSTANCE,
                         Spindex.INSTANCE,
-                        Hood.INSTANCE
+                        TurretSubsystem.INSTANCE
                 ),
+                new PedroComponent(Constants::createFollower),
                 BulkReadComponent.INSTANCE,
                 BindingsComponent.INSTANCE
         );
     }
 
     private final MotorEx frontLeftMotor = new MotorEx("front_left").brakeMode().reversed();
-    private final MotorEx frontRightMotor = new MotorEx("front_right").brakeMode();
+    private final MotorEx frontRightMotor = new MotorEx("front_right").brakeMode().reversed();
     private final MotorEx backLeftMotor = new MotorEx("back_left").brakeMode().reversed();
-    private final MotorEx backRightMotor = new MotorEx("back_right").brakeMode();
+    private final MotorEx backRightMotor = new MotorEx("back_right").brakeMode().reversed();
 
 //    Button colorSens = button(() -> ( ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM) < 2));
     //private IMUEx imu = new IMUEx("imu", Direction.UP, Direction.FORWARD).zeroed()
@@ -91,6 +97,10 @@ public class FirstSteps extends NextFTCOpMode {
     @Override
     public void onInit() {
         BindingManager.setLayer("short");
+
+
+        follower().setStartingPose(Save.savedPose);
+
 //        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
 
 //        colorSensor.setGain(gain);
@@ -130,28 +140,37 @@ public class FirstSteps extends NextFTCOpMode {
 
 
         Gamepads.gamepad2().square()
+                .whenBecomesTrue(TurretSubsystem.INSTANCE.autoAimOn())
                 .inLayer("far")
                 .whenBecomesTrue(Shooter.INSTANCE.start)
+
                 .inLayer("short")
                 .whenBecomesTrue(Shooter.INSTANCE.startclose);
 
 
         Gamepads.gamepad2().triangle()
-                        .whenBecomesTrue(Shooter.INSTANCE.stop);
-
-
-        Gamepads.gamepad2().dpadDown()
-                        .whenBecomesTrue(Hood.INSTANCE.base);
+                .whenBecomesTrue(TurretSubsystem.INSTANCE.autoAimOff())
+                .whenBecomesTrue(Shooter.INSTANCE.stop);
 
         Gamepads.gamepad2().dpadUp()
-                .whenBecomesTrue(Hood.INSTANCE.turn);
+                .whenBecomesTrue(TurretSubsystem.INSTANCE.increment());
+
+        Gamepads.gamepad2().dpadDown()
+                .whenBecomesTrue(TurretSubsystem.INSTANCE.decrement());
+
 
 
         Gamepads.gamepad1().dpadUp()
-                        .whenBecomesTrue(() -> BindingManager.setLayer("far"));
+                .whenBecomesTrue(() -> BindingManager.setLayer("far"));
 
         Gamepads.gamepad1().dpadDown()
-                        .whenBecomesTrue(() -> BindingManager.setLayer("short"));
+                .whenBecomesTrue(() -> BindingManager.setLayer("short"));
+
+        Gamepads.gamepad2().dpadLeft()
+                .whenBecomesTrue(TurretSubsystem.INSTANCE.autoAimOn());
+
+        Gamepads.gamepad2().dpadRight()
+                .whenBecomesTrue(TurretSubsystem.INSTANCE.autoAimOff());
 
 //        colorSens.whenBecomesTrue(()->{
 //            if(count<3) {
@@ -173,16 +192,23 @@ public class FirstSteps extends NextFTCOpMode {
             Spindex.INSTANCE.newTurn();
         }
 
+        if(gamepad2.xWasPressed()){
+            //Spindex.INSTANCE.newReTurn();
+        }
+
+
+
         if(gamepad1.squareWasPressed()){
             Spindex.INSTANCE.rapid();
         }
 
         if(gamepad1.triangleWasPressed()){
-            Spindex.INSTANCE.zeroAuto();
+            Spindex.INSTANCE.newReTurn();
         }
 
         if(gamepad1.leftBumperWasPressed()){
-            Spindex.INSTANCE.micro();
+
+            Spindex.INSTANCE.zeroAuto();
         }
 
         if(gamepad1.bWasPressed()){
@@ -190,8 +216,12 @@ public class FirstSteps extends NextFTCOpMode {
         }
 
         if(gamepad1.optionsWasPressed()){
-            Spindex.INSTANCE.newReTurn();
+            Spindex.INSTANCE.micro();
         }
+
+
+
+
 //
 //        if(gamepad1.dpadLeftWasPressed()){
 //            count = 0;

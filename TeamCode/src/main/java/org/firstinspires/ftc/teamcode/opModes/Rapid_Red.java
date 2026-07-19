@@ -10,11 +10,13 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Save;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subs.Intaker;
 import org.firstinspires.ftc.teamcode.subs.Kicker;
 import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
+import org.firstinspires.ftc.teamcode.subs.TurretSubsystem;
 
 import java.util.List;
 
@@ -38,7 +40,9 @@ public class Rapid_Red extends NextFTCOpMode {
                         Shooter.INSTANCE,
                         Intaker.INSTANCE,
                         Kicker.INSTANCE,
-                        Spindex.INSTANCE),
+                        Spindex.INSTANCE,
+                        TurretSubsystem.INSTANCE
+                ),
                 new PedroComponent(Constants::createFollower),
                 BulkReadComponent.INSTANCE
         );
@@ -48,25 +52,25 @@ public class Rapid_Red extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(144 - 21.960, 125.225 - 22, Math.toRadians(45));
 
-    private final Pose initialFire = new Pose(144 - 49.517,88.807- 25,Math.toRadians(54));
+    private final Pose initialFire = new Pose(144 - 49.517,88.807- 25,Math.toRadians(0));
 
     private final Pose leaveFire = new Pose( 144 - 52.517,88.807,Math.toRadians(37));
-    private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 45, Math.toRadians(0));
-    private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 45,Math.toRadians(0));
-    private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
-    private final Pose ballMark3 = new Pose(144 - 13.0,88.807 - 45,Math.toRadians(0));
+    private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 46, Math.toRadians(0));
+    private final Pose ballMark1 = new Pose(144 - 44.210, 88.807 - 46,Math.toRadians(0));
+    private final Pose ballMark2 = new Pose(144 - 39.210,88.807 - 46,Math.toRadians(0));
+    private final Pose ballMark3 = new Pose(144 - 9,88.807 - 46,Math.toRadians(0));
 
     private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 23, Math.toRadians(0));
     private final Pose secondBallMark1 = new Pose(144 - 44.210,88.807 - 37,Math.toRadians(0));
     private final Pose secondBallMark2 = new Pose(144 - 39.210,88.807 - 37,Math.toRadians(0));
-    private final Pose secondBallMark3 = new Pose(144 - 20.210,88.807 - 23,Math.toRadians(0));
+    private final Pose secondBallMark3 = new Pose(144 - 8.210,88.807 - 23,Math.toRadians(0));
 
     private final Pose secondSpikeMarkCtrl = new Pose( 144 - 34.210, 88.807 - 23, Math.toRadians(180));
 
-    private final Pose lever = new Pose(144 - 22.210,88.807 - 38,Math.toRadians(0));
-    private final Pose lever2 = new Pose(144 - 22.210,88.807 - 28,Math.toRadians(7));
+    private final Pose lever = new Pose(144 - 22.210,88.807 - 40,Math.toRadians(0));
+    private final Pose lever2 = new Pose(144 - 16.210,88.807 - 28,Math.toRadians(7));
 
-    private final Pose backitup = new Pose(144 - 39.210,88.807 - 45,Math.toRadians(0));
+    private final Pose backitup = new Pose(144 - 39.210,88.807 - 50,Math.toRadians(0));
     private final Pose backitup2 = new Pose(144 - 39.210,88.807 - 30,Math.toRadians(0));
 
 
@@ -160,7 +164,7 @@ public class Rapid_Red extends NextFTCOpMode {
                 new SequentialGroup(
                         new Delay(0.8),
                         spinSpindex(),
-                        new Delay(0.4),
+                        new Delay(0.6),
                         spinSpindex(),
                         new Delay(0.3)
                 )
@@ -205,7 +209,7 @@ public class Rapid_Red extends NextFTCOpMode {
                         Shooter.INSTANCE.stop
                 ),
                 new SequentialGroup(
-                        new Delay(0.6),
+                        new Delay(0.8),
                         spinSpindex(),
                         new Delay(0.4),
                         spinSpindex(),
@@ -577,7 +581,7 @@ public class Rapid_Red extends NextFTCOpMode {
 
     @Override
     public void onInit() {
-
+        Save.side = 0;
         follower().setStartingPose(startPose);
         buildPaths();
 
@@ -618,6 +622,11 @@ public class Rapid_Red extends NextFTCOpMode {
     @Override
     public void onUpdate(){
         follower().update();
+    }
+
+    @Override
+    public void onStop(){
+        Save.savedPose = follower().getPose();
     }
 }
 

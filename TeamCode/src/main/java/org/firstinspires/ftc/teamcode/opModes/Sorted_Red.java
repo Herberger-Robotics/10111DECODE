@@ -10,11 +10,13 @@ import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.Save;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 import org.firstinspires.ftc.teamcode.subs.Intaker;
 import org.firstinspires.ftc.teamcode.subs.Kicker;
 import org.firstinspires.ftc.teamcode.subs.Shooter;
 import org.firstinspires.ftc.teamcode.subs.Spindex;
+import org.firstinspires.ftc.teamcode.subs.TurretSubsystem;
 
 import java.util.List;
 
@@ -38,7 +40,10 @@ public class Sorted_Red extends NextFTCOpMode {
                         Shooter.INSTANCE,
                         Intaker.INSTANCE,
                         Kicker.INSTANCE,
-                        Spindex.INSTANCE),
+                        Spindex.INSTANCE,
+                        TurretSubsystem.INSTANCE
+                ),
+
                 new PedroComponent(Constants::createFollower),
                 BulkReadComponent.INSTANCE
         );
@@ -48,17 +53,17 @@ public class Sorted_Red extends NextFTCOpMode {
     int pathType = 1;
     private final Pose startPose = new Pose(122.04, 103.225, Math.toRadians(45)); //144 - 21.960, 125.225 - 22
 
-    private final Pose initialFire = new Pose(93.483,62.807,Math.toRadians(54)); // 144-50.517, 88.807 - 26
-    private final Pose spikeMark = new Pose(96.594, 43.807, Math.toRadians(0)); // 144 - 48.406, 88.807 - 45
+    private final Pose initialFire = new Pose(144 - 49.517,88.807- 25,Math.toRadians(0));
+    private final Pose spikeMark = new Pose(144 - 48.406, 88.807 - 46, Math.toRadians(0));
 
-    private final Pose ballMark3 = new Pose(132,43.807,Math.toRadians(0)); // 144 - 14.0, 88.807 - 45
+    private final Pose ballMark3 = new Pose(144 - 9,88.807 - 46,Math.toRadians(0));
 
-    private final Pose secondSpikeMarkPos = new Pose(95.594, 65.807, Math.toRadians(0)); // 144 - 48.406, 88.807 - 23
+    private final Pose secondSpikeMarkPos = new Pose(144 - 48.406, 88.807 - 23, Math.toRadians(0));
 
-    private final Pose secondBallMark3 = new Pose(122.79,65.807,Math.toRadians(0)); // 144 - 25.210, 88.807 - 23
+    private final Pose secondBallMark3 = new Pose(144 - 8.210,88.807 - 23,Math.toRadians(0));
 
-    private final Pose lever = new Pose(123.79,58.807,Math.toRadians(0)); // 144-20.210, 88.807 - 30
-    private final Pose backitup = new Pose(104.79,58.807,Math.toRadians(0)); // 144 - 39.210, 88.807 - 30
+    private final Pose lever = new Pose(144 - 22.210,88.807 - 40,Math.toRadians(0));
+    private final Pose backitup = new Pose(144 - 39.210,88.807 - 50,Math.toRadians(0));
 
 
     private final Pose thirdSpikeMarkPos = new Pose(95.594, 18.807, Math.toRadians(0)); // 144 - 48.406, 88.807 - 70
@@ -109,11 +114,11 @@ public class Sorted_Red extends NextFTCOpMode {
 
                 new FollowPath(newIntake1, true, 0.7),
                 new SequentialGroup(
+                        new Delay(0.8),
+                        spinSpindex(),
                         new Delay(0.6),
                         spinSpindex(),
-                        new Delay(0.5),
-                        spinSpindex(),
-                        new Delay(.4)
+                        new Delay(.3)
                 )
 
 
@@ -141,9 +146,9 @@ public class Sorted_Red extends NextFTCOpMode {
                 new FollowPath(newIntake2, true, 0.7),
 
                 new SequentialGroup(
-                        new Delay(0.7),
+                        new Delay(0.8),
                         spinSpindex(),
-                        new Delay(0.3),
+                        new Delay(0.4),
                         spinSpindex(),
                         new Delay(0.3)
 
@@ -379,9 +384,12 @@ public class Sorted_Red extends NextFTCOpMode {
 
     @Override
     public void onInit() {
+        Save.side = 0;
+
         follower().setStartingPose(startPose);
         buildPaths();
         initializeLimelight();
+
 
     }
     @Override
@@ -442,6 +450,11 @@ public class Sorted_Red extends NextFTCOpMode {
 
     }
 
+
+    @Override
+    public void onStop(){
+        Save.savedPose = follower().getPose();
+    }
     public Command turnSpindex(){
         return new InstantCommand(Spindex.INSTANCE::newReTurn);
     }

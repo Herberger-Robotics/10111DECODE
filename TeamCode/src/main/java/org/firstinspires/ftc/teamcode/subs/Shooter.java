@@ -9,6 +9,7 @@ import dev.nextftc.control.feedforward.BasicFeedforwardParameters;
 import dev.nextftc.core.commands.Command;
 import dev.nextftc.core.commands.utility.InstantCommand;
 import dev.nextftc.core.subsystems.Subsystem;
+import dev.nextftc.ftc.ActiveOpMode;
 import dev.nextftc.hardware.controllable.RunToPosition;
 import dev.nextftc.hardware.controllable.RunToVelocity;
 import dev.nextftc.hardware.impl.MotorEx;
@@ -19,8 +20,8 @@ public class Shooter implements Subsystem {
     public static PIDCoefficients coefficients = new PIDCoefficients(0.005,0.0,0.0001);
     public static BasicFeedforwardParameters ffcoefficients = new BasicFeedforwardParameters(0.0,0.0,0.0);
 
-    public static double closevelo = 1610;
-    public static double farvelo = 2400;
+    public static double closevelo = 1700;
+    public static double farvelo = 1900;
     public static final Shooter INSTANCE = new Shooter();
     private Shooter() { }
 
@@ -59,5 +60,7 @@ public class Shooter implements Subsystem {
         }else{
             light.setPosition(0);
         }
+        ActiveOpMode.telemetry().addData("shooterpower", String.format("%.3f", velocity));
+
     }
 }
