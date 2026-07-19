@@ -29,6 +29,9 @@ public class TurretSubsystem implements Subsystem {
     public static double MIN_POSITION     = 0.0;
     public static double MAX_POSITION     = 1.0;
 
+    public static double TURRET_OFFSET_X = -3.4; // inches, negative = turret is behind center
+    public static double TURRET_OFFSET_Y = 0.0; // inches, negative = turret is right of center
+
     private final ServoEx hood1  = new ServoEx("hood1");
     private final ServoEx hood2 = new ServoEx("hood2");
 
@@ -239,8 +242,15 @@ public class TurretSubsystem implements Subsystem {
             currentPose = lastKnownPose;
         }
 
-        double dx = goal.getX() - currentPose.getX();
-        double dy = goal.getY() - currentPose.getY();
+        double heading = currentPose.getHeading();
+        double turretFieldX = currentPose.getX()
+                + TURRET_OFFSET_X * Math.cos(heading)
+                - TURRET_OFFSET_Y * Math.sin(heading);
+        double turretFieldY = currentPose.getY()
+                + TURRET_OFFSET_X * Math.sin(heading)
+                + TURRET_OFFSET_Y * Math.cos(heading);
+        double dx = goal.getX() - turretFieldX;
+        double dy = goal.getY() - turretFieldY;
 
         double goalFieldDeg = Math.toDegrees(Math.atan2(dy, dx));
         double headingDeg   = Math.toDegrees(currentPose.getHeading());
@@ -250,8 +260,15 @@ public class TurretSubsystem implements Subsystem {
     }
 
     public void turretAuto(Pose p) {
-        double dx = goal.getX() - p.getX();
-        double dy = goal.getY() - p.getY();
+        double heading = p.getHeading();
+        double turretFieldX = p.getX()
+                + TURRET_OFFSET_X * Math.cos(heading)
+                - TURRET_OFFSET_Y * Math.sin(heading);
+        double turretFieldY = p.getY()
+                + TURRET_OFFSET_X * Math.sin(heading)
+                + TURRET_OFFSET_Y * Math.cos(heading);
+        double dx = goal.getX() - turretFieldX;
+        double dy = goal.getY() - turretFieldY;
 
         double goalFieldDeg = Math.toDegrees(Math.atan2(dy, dx));
         double headingDeg   = Math.toDegrees(p.getHeading());
